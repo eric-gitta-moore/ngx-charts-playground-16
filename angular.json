@@ -47,19 +47,20 @@
             "outputPath": "dist/ngx-charts-playground-16",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
-            "scripts": []
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.scss"],
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "emoji-flags",
+              "codemirror",
+              "moment-timezone",
+              "ajv",
+              "rfdc",
+              "mousetrap"
+            ]
           },
           "configurations": {
             "production": {

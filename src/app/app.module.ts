@@ -10,6 +10,7 @@ import { ComboChartComponent, ComboSeriesVerticalComponent } from './custom-char
 import { BubbleChartInteractiveModule } from './custom-charts/bubble-chart-interactive';
 import { FormsModule } from '@angular/forms';
 import { NgxUIModule } from '@swimlane/ngx-ui';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { NgxUIModule } from '@swimlane/ngx-ui';
     BubbleChartInteractiveModule,
     FormsModule,
     NgxUIModule,
+    BrowserAnimationsModule,
   ],
   bootstrap: [AppComponent],
 })
