@@ -44,7 +44,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ngx-charts-playground-16",
+            "outputPath": "dist/ngx-charts-playground-16/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -106,6 +106,61 @@
           "options": {
             "browserTarget": "ngx-charts-playground-16:build"
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/ngx-charts-playground-16/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json",
+            "inlineStyleLanguage": "scss"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false,
+              "vendorChunk": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "ngx-charts-playground-16:build:development",
+              "serverTarget": "ngx-charts-playground-16:server:development"
+            },
+            "production": {
+              "browserTarget": "ngx-charts-playground-16:build:production",
+              "serverTarget": "ngx-charts-playground-16:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "routes": [
+              "/"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ngx-charts-playground-16:build:production",
+              "serverTarget": "ngx-charts-playground-16:server:production"
+            },
+            "development": {
+              "browserTarget": "ngx-charts-playground-16:build:development",
+              "serverTarget": "ngx-charts-playground-16:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }
