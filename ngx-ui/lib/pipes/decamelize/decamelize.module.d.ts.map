@@ -1,0 +1,1 @@
+{"version":3,"file":"decamelize.module.d.ts","sources":["decamelize.module.d.ts"],"names":[],"mappings":";;;AAAA;;;;AACA","sourcesContent":["export declare class DecamelizeModule {\n}\n"]}

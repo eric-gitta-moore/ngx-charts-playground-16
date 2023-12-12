@@ -1,0 +1,64 @@
+import { Directive, Output, EventEmitter, ElementRef, HostBinding, NgZone } from '@angular/core';
+/**
+ * Visibility Observer Directive
+ *
+ * Usage:
+ *
+ * 		<div
+ * 			visibilityObserver
+ * 			(visible)="onVisible($event)">
+ * 		</div>
+ *
+ */
+export class VisibilityDirective {
+    constructor(element, zone) {
+        this.element = element;
+        this.zone = zone;
+        this.isVisible = false;
+        this.visible = new EventEmitter();
+    }
+    ngOnInit() {
+        this.runCheck();
+    }
+    ngOnDestroy() {
+        clearTimeout(this.timeout);
+    }
+    onVisibilityChange() {
+        // trigger zone recalc for columns
+        this.zone.run(() => {
+            this.isVisible = true;
+            this.visible.emit(true);
+        });
+    }
+    runCheck() {
+        const check = () => {
+            // https://davidwalsh.name/offsetheight-visibility
+            const { offsetHeight, offsetWidth } = this.element.nativeElement;
+            if (offsetHeight && offsetWidth) {
+                clearTimeout(this.timeout);
+                this.onVisibilityChange();
+            }
+            else {
+                clearTimeout(this.timeout);
+                this.zone.runOutsideAngular(() => {
+                    this.timeout = setTimeout(() => check(), 50);
+                });
+            }
+        };
+        setTimeout(() => check());
+    }
+}
+VisibilityDirective.decorators = [
+    { type: Directive, args: [{
+                selector: '[visibilityObserver]'
+            },] }
+];
+VisibilityDirective.ctorParameters = () => [
+    { type: ElementRef },
+    { type: NgZone }
+];
+VisibilityDirective.propDecorators = {
+    isVisible: [{ type: HostBinding, args: ['class.visible',] }],
+    visible: [{ type: Output }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidmlzaWJpbGl0eS5kaXJlY3RpdmUuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9kaXJlY3RpdmVzL3Zpc2liaWxpdHkvdmlzaWJpbGl0eS5kaXJlY3RpdmUudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLFNBQVMsRUFBRSxNQUFNLEVBQUUsWUFBWSxFQUFFLFVBQVUsRUFBRSxXQUFXLEVBQUUsTUFBTSxFQUFxQixNQUFNLGVBQWUsQ0FBQztBQUVwSDs7Ozs7Ozs7OztHQVVHO0FBS0gsTUFBTSxPQUFPLG1CQUFtQjtJQU85QixZQUE2QixPQUFnQyxFQUFtQixJQUFZO1FBQS9ELFlBQU8sR0FBUCxPQUFPLENBQXlCO1FBQW1CLFNBQUksR0FBSixJQUFJLENBQVE7UUFOOUQsY0FBUyxHQUFHLEtBQUssQ0FBQztRQUV0QyxZQUFPLEdBQUcsSUFBSSxZQUFZLEVBQVcsQ0FBQztJQUkrQyxDQUFDO0lBRWhHLFFBQVE7UUFDTixJQUFJLENBQUMsUUFBUSxFQUFFLENBQUM7SUFDbEIsQ0FBQztJQUVELFdBQVc7UUFDVCxZQUFZLENBQUMsSUFBSSxDQUFDLE9BQU8sQ0FBQyxDQUFDO0lBQzdCLENBQUM7SUFFRCxrQkFBa0I7UUFDaEIsa0NBQWtDO1FBQ2xDLElBQUksQ0FBQyxJQUFJLENBQUMsR0FBRyxDQUFDLEdBQUcsRUFBRTtZQUNqQixJQUFJLENBQUMsU0FBUyxHQUFHLElBQUksQ0FBQztZQUN0QixJQUFJLENBQUMsT0FBTyxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsQ0FBQztRQUMxQixDQUFDLENBQUMsQ0FBQztJQUNMLENBQUM7SUFFRCxRQUFRO1FBQ04sTUFBTSxLQUFLLEdBQUcsR0FBRyxFQUFFO1lBQ2pCLGtEQUFrRDtZQUNsRCxNQUFNLEVBQUUsWUFBWSxFQUFFLFdBQVcsRUFBRSxHQUFHLElBQUksQ0FBQyxPQUFPLENBQUMsYUFBYSxDQUFDO1lBRWpFLElBQUksWUFBWSxJQUFJLFdBQVcsRUFBRTtnQkFDL0IsWUFBWSxDQUFDLElBQUksQ0FBQyxPQUFPLENBQUMsQ0FBQztnQkFDM0IsSUFBSSxDQUFDLGtCQUFrQixFQUFFLENBQUM7YUFDM0I7aUJBQU07Z0JBQ0wsWUFBWSxDQUFDLElBQUksQ0FBQyxPQUFPLENBQUMsQ0FBQztnQkFDM0IsSUFBSSxDQUFDLElBQUksQ0FBQyxpQkFBaUIsQ0FBQyxHQUFHLEVBQUU7b0JBQy9CLElBQUksQ0FBQyxPQUFPLEdBQUcsVUFBVSxDQUFDLEdBQUcsRUFBRSxDQUFDLEtBQUssRUFBRSxFQUFFLEVBQUUsQ0FBQyxDQUFDO2dCQUMvQyxDQUFDLENBQUMsQ0FBQzthQUNKO1FBQ0gsQ0FBQyxDQUFDO1FBRUYsVUFBVSxDQUFDLEdBQUcsRUFBRSxDQUFDLEtBQUssRUFBRSxDQUFDLENBQUM7SUFDNUIsQ0FBQzs7O1lBN0NGLFNBQVMsU0FBQztnQkFDVCxRQUFRLEVBQUUsc0JBQXNCO2FBQ2pDOzs7WUFoQnlDLFVBQVU7WUFBZSxNQUFNOzs7d0JBa0J0RSxXQUFXLFNBQUMsZUFBZTtzQkFFM0IsTUFBTSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IERpcmVjdGl2ZSwgT3V0cHV0LCBFdmVudEVtaXR0ZXIsIEVsZW1lbnRSZWYsIEhvc3RCaW5kaW5nLCBOZ1pvbmUsIE9uSW5pdCwgT25EZXN0cm95IH0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5cbi8qKlxuICogVmlzaWJpbGl0eSBPYnNlcnZlciBEaXJlY3RpdmVcbiAqXG4gKiBVc2FnZTpcbiAqXG4gKiBcdFx0PGRpdlxuICogXHRcdFx0dmlzaWJpbGl0eU9ic2VydmVyXG4gKiBcdFx0XHQodmlzaWJsZSk9XCJvblZpc2libGUoJGV2ZW50KVwiPlxuICogXHRcdDwvZGl2PlxuICpcbiAqL1xuXG5ARGlyZWN0aXZlKHtcbiAgc2VsZWN0b3I6ICdbdmlzaWJpbGl0eU9ic2VydmVyXSdcbn0pXG5leHBvcnQgY2xhc3MgVmlzaWJpbGl0eURpcmVjdGl2ZSBpbXBsZW1lbnRzIE9uSW5pdCwgT25EZXN0cm95IHtcbiAgQEhvc3RCaW5kaW5nKCdjbGFzcy52aXNpYmxlJykgaXNWaXNpYmxlID0gZmFsc2U7XG5cbiAgQE91dHB1dCgpIHZpc2libGUgPSBuZXcgRXZlbnRFbWl0dGVyPGJvb2xlYW4+KCk7XG5cbiAgdGltZW91dDogYW55O1xuXG4gIGNvbnN0cnVjdG9yKHByaXZhdGUgcmVhZG9ubHkgZWxlbWVudDogRWxlbWVudFJlZjxIVE1MRWxlbWVudD4sIHByaXZhdGUgcmVhZG9ubHkgem9uZTogTmdab25lKSB7fVxuXG4gIG5nT25Jbml0KCk6IHZvaWQge1xuICAgIHRoaXMucnVuQ2hlY2soKTtcbiAgfVxuXG4gIG5nT25EZXN0cm95KCk6IHZvaWQge1xuICAgIGNsZWFyVGltZW91dCh0aGlzLnRpbWVvdXQpO1xuICB9XG5cbiAgb25WaXNpYmlsaXR5Q2hhbmdlKCk6IHZvaWQge1xuICAgIC8vIHRyaWdnZXIgem9uZSByZWNhbGMgZm9yIGNvbHVtbnNcbiAgICB0aGlzLnpvbmUucnVuKCgpID0+IHtcbiAgICAgIHRoaXMuaXNWaXNpYmxlID0gdHJ1ZTtcbiAgICAgIHRoaXMudmlzaWJsZS5lbWl0KHRydWUpO1xuICAgIH0pO1xuICB9XG5cbiAgcnVuQ2hlY2soKTogdm9pZCB7XG4gICAgY29uc3QgY2hlY2sgPSAoKSA9PiB7XG4gICAgICAvLyBodHRwczovL2Rhdmlkd2Fsc2gubmFtZS9vZmZzZXRoZWlnaHQtdmlzaWJpbGl0eVxuICAgICAgY29uc3QgeyBvZmZzZXRIZWlnaHQsIG9mZnNldFdpZHRoIH0gPSB0aGlzLmVsZW1lbnQubmF0aXZlRWxlbWVudDtcblxuICAgICAgaWYgKG9mZnNldEhlaWdodCAmJiBvZmZzZXRXaWR0aCkge1xuICAgICAgICBjbGVhclRpbWVvdXQodGhpcy50aW1lb3V0KTtcbiAgICAgICAgdGhpcy5vblZpc2liaWxpdHlDaGFuZ2UoKTtcbiAgICAgIH0gZWxzZSB7XG4gICAgICAgIGNsZWFyVGltZW91dCh0aGlzLnRpbWVvdXQpO1xuICAgICAgICB0aGlzLnpvbmUucnVuT3V0c2lkZUFuZ3VsYXIoKCkgPT4ge1xuICAgICAgICAgIHRoaXMudGltZW91dCA9IHNldFRpbWVvdXQoKCkgPT4gY2hlY2soKSwgNTApO1xuICAgICAgICB9KTtcbiAgICAgIH1cbiAgICB9O1xuXG4gICAgc2V0VGltZW91dCgoKSA9PiBjaGVjaygpKTtcbiAgfVxufVxuIl19

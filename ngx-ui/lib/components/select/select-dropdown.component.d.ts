@@ -1,0 +1,64 @@
+import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, TemplateRef } from '@angular/core';
+import { SelectDropdownOption } from './select-dropdown-option.interface';
+import * as ɵngcc0 from '@angular/core';
+export declare class SelectDropdownComponent implements AfterViewInit {
+    private readonly elementRef;
+    private readonly cdr;
+    selected: any[];
+    identifier: any;
+    filterPlaceholder: string;
+    filterEmptyPlaceholder: string;
+    emptyPlaceholder: string;
+    allowAdditionsText: string | TemplateRef<any>;
+    get tagging(): boolean;
+    set tagging(tagging: boolean);
+    get allowAdditions(): boolean;
+    set allowAdditions(allowAdditions: boolean);
+    get filterable(): boolean;
+    set filterable(filterable: boolean);
+    get filterCaseSensitive(): boolean;
+    set filterCaseSensitive(filterCaseSensitive: boolean);
+    get focusIndex(): number;
+    set focusIndex(val: number);
+    get filterQuery(): string;
+    set filterQuery(val: string);
+    get groupBy(): string;
+    set groupBy(val: string);
+    groupByTemplate: TemplateRef<unknown>;
+    get options(): SelectDropdownOption[];
+    set options(val: SelectDropdownOption[]);
+    keyup: EventEmitter<{
+        event: KeyboardEvent;
+        value?: string;
+    }>;
+    selection: EventEmitter<SelectDropdownOption>;
+    close: EventEmitter<boolean>;
+    readonly filterInput?: ElementRef<HTMLInputElement>;
+    get element(): any;
+    get isNotTemplate(): boolean;
+    groups: any[];
+    filterQueryIsInOptions: boolean;
+    private _options;
+    private _groupBy;
+    private _filterQuery;
+    private _focusIndex;
+    private _tagging;
+    private _allowAdditions;
+    private _filterable;
+    private _filterCaseSensitive;
+    constructor(elementRef: ElementRef, cdr: ChangeDetectorRef);
+    ngAfterViewInit(): void;
+    isSelected(option: SelectDropdownOption): boolean;
+    updatefilterQueryIsInOptions(): void;
+    clearFilter(filterInput: HTMLInputElement): void;
+    onInputKeyUp(event: KeyboardEvent): void;
+    onOptionKeyDown(event: KeyboardEvent, option?: SelectDropdownOption): void;
+    onAddClicked(event: Event, value: any): void;
+    onShiftEnterKeyDown(event: any): void;
+    private focusElement;
+    private calculateGroups;
+    static ɵfac: ɵngcc0.ɵɵFactoryDeclaration<SelectDropdownComponent, never>;
+    static ɵcmp: ɵngcc0.ɵɵComponentDeclaration<SelectDropdownComponent, "ngx-select-dropdown", ["ngxSelectDropdown"], { "allowAdditionsText": "allowAdditionsText"; "tagging": "tagging"; "allowAdditions": "allowAdditions"; "filterable": "filterable"; "filterCaseSensitive": "filterCaseSensitive"; "focusIndex": "focusIndex"; "filterQuery": "filterQuery"; "groupBy": "groupBy"; "options": "options"; "selected": "selected"; "identifier": "identifier"; "filterPlaceholder": "filterPlaceholder"; "filterEmptyPlaceholder": "filterEmptyPlaceholder"; "emptyPlaceholder": "emptyPlaceholder"; "groupByTemplate": "groupByTemplate"; }, { "keyup": "keyup"; "selection": "selection"; "close": "close"; }, never, never>;
+}
+
+//# sourceMappingURL=select-dropdown.component.d.ts.map

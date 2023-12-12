@@ -1,0 +1,6 @@
+export var Appearance;
+(function (Appearance) {
+    Appearance["Legacy"] = "legacy";
+    Appearance["Fill"] = "fill";
+})(Appearance || (Appearance = {}));
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXBwZWFyYW5jZS5lbnVtLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvc3dpbWxhbmUvbmd4LXVpL3NyYy9saWIvbWl4aW5zL2FwcGVhcmFuY2UvYXBwZWFyYW5jZS5lbnVtLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE1BQU0sQ0FBTixJQUFZLFVBR1g7QUFIRCxXQUFZLFVBQVU7SUFDcEIsK0JBQWlCLENBQUE7SUFDakIsMkJBQWEsQ0FBQTtBQUNmLENBQUMsRUFIVyxVQUFVLEtBQVYsVUFBVSxRQUdyQiIsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBlbnVtIEFwcGVhcmFuY2Uge1xuICBMZWdhY3kgPSAnbGVnYWN5JyxcbiAgRmlsbCA9ICdmaWxsJ1xufVxuIl19

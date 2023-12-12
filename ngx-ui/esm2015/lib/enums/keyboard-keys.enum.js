@@ -1,0 +1,12 @@
+export var KeyboardKeys;
+(function (KeyboardKeys) {
+    KeyboardKeys["ENTER"] = "Enter";
+    KeyboardKeys["ESCAPE"] = "Escape";
+    KeyboardKeys["DELETE"] = "Delete";
+    KeyboardKeys["BACKSPACE"] = "Backspace";
+    KeyboardKeys["ARROW_DOWN"] = "ArrowDown";
+    KeyboardKeys["ARROW_UP"] = "ArrowUp";
+    KeyboardKeys["ARROW_LEFT"] = "ArrowLeft";
+    KeyboardKeys["ARROW_RIGHT"] = "ArrowRight";
+})(KeyboardKeys || (KeyboardKeys = {}));
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoia2V5Ym9hcmQta2V5cy5lbnVtLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvc3dpbWxhbmUvbmd4LXVpL3NyYy9saWIvZW51bXMva2V5Ym9hcmQta2V5cy5lbnVtLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE1BQU0sQ0FBTixJQUFZLFlBU1g7QUFURCxXQUFZLFlBQVk7SUFDdEIsK0JBQWUsQ0FBQTtJQUNmLGlDQUFpQixDQUFBO0lBQ2pCLGlDQUFpQixDQUFBO0lBQ2pCLHVDQUF1QixDQUFBO0lBQ3ZCLHdDQUF3QixDQUFBO0lBQ3hCLG9DQUFvQixDQUFBO0lBQ3BCLHdDQUF3QixDQUFBO0lBQ3hCLDBDQUEwQixDQUFBO0FBQzVCLENBQUMsRUFUVyxZQUFZLEtBQVosWUFBWSxRQVN2QiIsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBlbnVtIEtleWJvYXJkS2V5cyB7XG4gIEVOVEVSID0gJ0VudGVyJyxcbiAgRVNDQVBFID0gJ0VzY2FwZScsXG4gIERFTEVURSA9ICdEZWxldGUnLFxuICBCQUNLU1BBQ0UgPSAnQmFja3NwYWNlJyxcbiAgQVJST1dfRE9XTiA9ICdBcnJvd0Rvd24nLFxuICBBUlJPV19VUCA9ICdBcnJvd1VwJyxcbiAgQVJST1dfTEVGVCA9ICdBcnJvd0xlZnQnLFxuICBBUlJPV19SSUdIVCA9ICdBcnJvd1JpZ2h0J1xufVxuIl19

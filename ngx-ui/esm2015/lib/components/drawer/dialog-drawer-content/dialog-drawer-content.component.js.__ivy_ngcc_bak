@@ -1,0 +1,36 @@
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output, ViewEncapsulation } from '@angular/core';
+export class DialogDrawerContentComponent {
+    constructor() {
+        this.drawerTitle = '';
+        this.dismissBtnText = 'Dismiss';
+        this.dismiss = new EventEmitter();
+        this.hostClass = true;
+    }
+}
+DialogDrawerContentComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'ngx-dialog-drawer-content',
+                template: `
+    <header class="ngx-dialog-drawer-content__header shadow-1" (click)="dismiss.emit()">
+      <h2 class="ngx-dialog-drawer-content__header-title">{{ drawerTitle }}</h2>
+      <button type="button" class="ngx-dialog-drawer-content__dismiss-btn btn btn-link">
+        <i class="ngx-icon ngx-arrow-bold-down"></i>
+        {{ dismissBtnText }}
+      </button>
+    </header>
+    <section class="ngx-dialog-drawer-content__content">
+      <ng-content></ng-content>
+    </section>
+  `,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                encapsulation: ViewEncapsulation.None,
+                styles: [".ngx-dialog-drawer-content{display:flex;flex-direction:column;overflow:hidden;height:100%}.ngx-dialog-drawer-content__header{background-color:#313847;display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;cursor:pointer}.ngx-dialog-drawer-content__header-title{color:#818fa9;margin:0;font-size:1.125rem}.ngx-dialog-drawer-content__dismiss-btn{color:#818fa9;font-size:.875rem;padding-right:0}.ngx-dialog-drawer-content__dismiss-btn:hover{color:#fff}.ngx-dialog-drawer-content__content{height:100%;padding:0 2rem;overflow:auto}.ngx-dialog-drawer-content~ngx-drawer.ngx-drawer.large-format-dialog-drawer{margin-left:0;max-width:100%;min-height:calc(100% - 3.5rem - 4px);max-height:calc(100% - 3.5rem - 4px)}"]
+            },] }
+];
+DialogDrawerContentComponent.propDecorators = {
+    drawerTitle: [{ type: Input }],
+    dismissBtnText: [{ type: Input }],
+    dismiss: [{ type: Output }],
+    hostClass: [{ type: HostBinding, args: ['class.ngx-dialog-drawer-content',] }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZGlhbG9nLWRyYXdlci1jb250ZW50LmNvbXBvbmVudC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL3N3aW1sYW5lL25neC11aS9zcmMvbGliL2NvbXBvbmVudHMvZHJhd2VyL2RpYWxvZy1kcmF3ZXItY29udGVudC9kaWFsb2ctZHJhd2VyLWNvbnRlbnQuY29tcG9uZW50LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFDTCx1QkFBdUIsRUFDdkIsU0FBUyxFQUNULFlBQVksRUFDWixXQUFXLEVBQ1gsS0FBSyxFQUNMLE1BQU0sRUFDTixpQkFBaUIsRUFDbEIsTUFBTSxlQUFlLENBQUM7QUFvQnZCLE1BQU0sT0FBTyw0QkFBNEI7SUFsQnpDO1FBbUJXLGdCQUFXLEdBQUcsRUFBRSxDQUFDO1FBQ2pCLG1CQUFjLEdBQUcsU0FBUyxDQUFDO1FBQzFCLFlBQU8sR0FBRyxJQUFJLFlBQVksRUFBRSxDQUFDO1FBRVMsY0FBUyxHQUFHLElBQUksQ0FBQztJQUNuRSxDQUFDOzs7WUF4QkEsU0FBUyxTQUFDO2dCQUNULFFBQVEsRUFBRSwyQkFBMkI7Z0JBQ3JDLFFBQVEsRUFBRTs7Ozs7Ozs7Ozs7R0FXVDtnQkFFRCxlQUFlLEVBQUUsdUJBQXVCLENBQUMsTUFBTTtnQkFDL0MsYUFBYSxFQUFFLGlCQUFpQixDQUFDLElBQUk7O2FBQ3RDOzs7MEJBRUUsS0FBSzs2QkFDTCxLQUFLO3NCQUNMLE1BQU07d0JBRU4sV0FBVyxTQUFDLGlDQUFpQyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7XG4gIENoYW5nZURldGVjdGlvblN0cmF0ZWd5LFxuICBDb21wb25lbnQsXG4gIEV2ZW50RW1pdHRlcixcbiAgSG9zdEJpbmRpbmcsXG4gIElucHV0LFxuICBPdXRwdXQsXG4gIFZpZXdFbmNhcHN1bGF0aW9uXG59IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuXG5AQ29tcG9uZW50KHtcbiAgc2VsZWN0b3I6ICduZ3gtZGlhbG9nLWRyYXdlci1jb250ZW50JyxcbiAgdGVtcGxhdGU6IGBcbiAgICA8aGVhZGVyIGNsYXNzPVwibmd4LWRpYWxvZy1kcmF3ZXItY29udGVudF9faGVhZGVyIHNoYWRvdy0xXCIgKGNsaWNrKT1cImRpc21pc3MuZW1pdCgpXCI+XG4gICAgICA8aDIgY2xhc3M9XCJuZ3gtZGlhbG9nLWRyYXdlci1jb250ZW50X19oZWFkZXItdGl0bGVcIj57eyBkcmF3ZXJUaXRsZSB9fTwvaDI+XG4gICAgICA8YnV0dG9uIHR5cGU9XCJidXR0b25cIiBjbGFzcz1cIm5neC1kaWFsb2ctZHJhd2VyLWNvbnRlbnRfX2Rpc21pc3MtYnRuIGJ0biBidG4tbGlua1wiPlxuICAgICAgICA8aSBjbGFzcz1cIm5neC1pY29uIG5neC1hcnJvdy1ib2xkLWRvd25cIj48L2k+XG4gICAgICAgIHt7IGRpc21pc3NCdG5UZXh0IH19XG4gICAgICA8L2J1dHRvbj5cbiAgICA8L2hlYWRlcj5cbiAgICA8c2VjdGlvbiBjbGFzcz1cIm5neC1kaWFsb2ctZHJhd2VyLWNvbnRlbnRfX2NvbnRlbnRcIj5cbiAgICAgIDxuZy1jb250ZW50PjwvbmctY29udGVudD5cbiAgICA8L3NlY3Rpb24+XG4gIGAsXG4gIHN0eWxlVXJsczogWycuL2RpYWxvZy1kcmF3ZXItY29udGVudC5jb21wb25lbnQuc2NzcyddLFxuICBjaGFuZ2VEZXRlY3Rpb246IENoYW5nZURldGVjdGlvblN0cmF0ZWd5Lk9uUHVzaCxcbiAgZW5jYXBzdWxhdGlvbjogVmlld0VuY2Fwc3VsYXRpb24uTm9uZVxufSlcbmV4cG9ydCBjbGFzcyBEaWFsb2dEcmF3ZXJDb250ZW50Q29tcG9uZW50IHtcbiAgQElucHV0KCkgZHJhd2VyVGl0bGUgPSAnJztcbiAgQElucHV0KCkgZGlzbWlzc0J0blRleHQgPSAnRGlzbWlzcyc7XG4gIEBPdXRwdXQoKSBkaXNtaXNzID0gbmV3IEV2ZW50RW1pdHRlcigpO1xuXG4gIEBIb3N0QmluZGluZygnY2xhc3Mubmd4LWRpYWxvZy1kcmF3ZXItY29udGVudCcpIGhvc3RDbGFzcyA9IHRydWU7XG59XG4iXX0=

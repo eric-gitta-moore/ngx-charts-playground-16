@@ -1,0 +1,78 @@
+import { Directive, Input, HostBinding, ChangeDetectorRef } from '@angular/core';
+import { partsToStyle, basisToParts } from './utils';
+const DEFAULT_BASIS = '1 1 1e-9px';
+export function validateBasis(basis, grow = '1', shrink = '1') {
+    const parts = [grow, shrink, basis];
+    const matches = basis.split(' ');
+    if (matches.length === 3) {
+        return matches;
+    }
+    return parts;
+}
+export class SplitAreaDirective {
+    constructor(ref) {
+        this.ref = ref;
+        this.ngxSplitArea = DEFAULT_BASIS;
+        this.shouldAdjustMaxMin = false;
+        this.overflow = 'hidden';
+    }
+    get flex() {
+        return partsToStyle(this.currentFlexParts);
+    }
+    get maxWidth() {
+        if (this.shouldAdjustMaxMin) {
+            return this.currentFlexParts[2];
+        }
+    }
+    get minWidth() {
+        if (this.shouldAdjustMaxMin) {
+            return this.currentFlexParts[2];
+        }
+    }
+    ngOnChanges() {
+        if (!this.ngxSplitArea) {
+            this.ngxSplitArea = DEFAULT_BASIS;
+        }
+        const [grow, shrink, basis] = basisToParts('1', '1', this.ngxSplitArea);
+        this.currentFlexParts = [grow, shrink, basis];
+        this.initialFlexParts = [grow, shrink, basis];
+        if (!this.minBasis && shrink === '0') {
+            this.minBasis = basis;
+        }
+        if (!this.maxBasis && grow === '0') {
+            this.maxBasis = basis;
+        }
+    }
+    updateBasis(newBasis) {
+        this.currentFlexParts[2] = newBasis;
+        if (this.shouldAdjustMaxMin) {
+            this.ref.detectChanges();
+        }
+        else {
+            this.ref.markForCheck();
+        }
+    }
+}
+SplitAreaDirective.decorators = [
+    { type: Directive, args: [{
+                exportAs: 'ngxSplitArea',
+                selector: '[ngxSplitArea]',
+                host: {
+                    class: 'ngx-split-area',
+                    '[style.overflow]': 'overflow'
+                }
+            },] }
+];
+SplitAreaDirective.ctorParameters = () => [
+    { type: ChangeDetectorRef }
+];
+SplitAreaDirective.propDecorators = {
+    ngxSplitArea: [{ type: Input }],
+    minBasis: [{ type: Input }],
+    maxBasis: [{ type: Input }],
+    shouldAdjustMaxMin: [{ type: Input }],
+    flex: [{ type: HostBinding, args: ['style.flex',] }],
+    maxWidth: [{ type: HostBinding, args: ['style.max-width',] }],
+    minWidth: [{ type: HostBinding, args: ['style.min-width',] }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic3BsaXQtYXJlYS5kaXJlY3RpdmUuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9jb21wb25lbnRzL3NwbGl0L3NwbGl0LWFyZWEuZGlyZWN0aXZlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBRSxTQUFTLEVBQUUsS0FBSyxFQUFhLFdBQVcsRUFBRSxpQkFBaUIsRUFBRSxNQUFNLGVBQWUsQ0FBQztBQUM1RixPQUFPLEVBQWEsWUFBWSxFQUFFLFlBQVksRUFBRSxNQUFNLFNBQVMsQ0FBQztBQUVoRSxNQUFNLGFBQWEsR0FBRyxZQUFZLENBQUM7QUFFbkMsTUFBTSxVQUFVLGFBQWEsQ0FBQyxLQUFhLEVBQUUsSUFBSSxHQUFHLEdBQUcsRUFBRSxNQUFNLEdBQUcsR0FBRztJQUNuRSxNQUFNLEtBQUssR0FBYyxDQUFDLElBQUksRUFBRSxNQUFNLEVBQUUsS0FBSyxDQUFDLENBQUM7SUFDL0MsTUFBTSxPQUFPLEdBQUcsS0FBSyxDQUFDLEtBQUssQ0FBQyxHQUFHLENBQUMsQ0FBQztJQUNqQyxJQUFJLE9BQU8sQ0FBQyxNQUFNLEtBQUssQ0FBQyxFQUFFO1FBQ3hCLE9BQU8sT0FBb0IsQ0FBQztLQUM3QjtJQUNELE9BQU8sS0FBSyxDQUFDO0FBQ2YsQ0FBQztBQVVELE1BQU0sT0FBTyxrQkFBa0I7SUEwQjdCLFlBQW9CLEdBQXNCO1FBQXRCLFFBQUcsR0FBSCxHQUFHLENBQW1CO1FBekJqQyxpQkFBWSxHQUFXLGFBQWEsQ0FBQztRQUdyQyx1QkFBa0IsR0FBRyxLQUFLLENBQUM7UUFFcEMsYUFBUSxHQUFHLFFBQVEsQ0FBQztJQW9CeUIsQ0FBQztJQWhCOUMsSUFDSSxJQUFJO1FBQ04sT0FBTyxZQUFZLENBQUMsSUFBSSxDQUFDLGdCQUFnQixDQUFDLENBQUM7SUFDN0MsQ0FBQztJQUVELElBQW9DLFFBQVE7UUFDMUMsSUFBSSxJQUFJLENBQUMsa0JBQWtCLEVBQUU7WUFDM0IsT0FBTyxJQUFJLENBQUMsZ0JBQWdCLENBQUMsQ0FBQyxDQUFDLENBQUM7U0FDakM7SUFDSCxDQUFDO0lBQ0QsSUFBb0MsUUFBUTtRQUMxQyxJQUFJLElBQUksQ0FBQyxrQkFBa0IsRUFBRTtZQUMzQixPQUFPLElBQUksQ0FBQyxnQkFBZ0IsQ0FBQyxDQUFDLENBQUMsQ0FBQztTQUNqQztJQUNILENBQUM7SUFJRCxXQUFXO1FBQ1QsSUFBSSxDQUFDLElBQUksQ0FBQyxZQUFZLEVBQUU7WUFDdEIsSUFBSSxDQUFDLFlBQVksR0FBRyxhQUFhLENBQUM7U0FDbkM7UUFDRCxNQUFNLENBQUMsSUFBSSxFQUFFLE1BQU0sRUFBRSxLQUFLLENBQUMsR0FBRyxZQUFZLENBQUMsR0FBRyxFQUFFLEdBQUcsRUFBRSxJQUFJLENBQUMsWUFBWSxDQUFDLENBQUM7UUFDeEUsSUFBSSxDQUFDLGdCQUFnQixHQUFHLENBQUMsSUFBSSxFQUFFLE1BQU0sRUFBRSxLQUFLLENBQUMsQ0FBQztRQUM5QyxJQUFJLENBQUMsZ0JBQWdCLEdBQUcsQ0FBQyxJQUFJLEVBQUUsTUFBTSxFQUFFLEtBQUssQ0FBQyxDQUFDO1FBQzlDLElBQUksQ0FBQyxJQUFJLENBQUMsUUFBUSxJQUFJLE1BQU0sS0FBSyxHQUFHLEVBQUU7WUFDcEMsSUFBSSxDQUFDLFFBQVEsR0FBRyxLQUFLLENBQUM7U0FDdkI7UUFDRCxJQUFJLENBQUMsSUFBSSxDQUFDLFFBQVEsSUFBSSxJQUFJLEtBQUssR0FBRyxFQUFFO1lBQ2xDLElBQUksQ0FBQyxRQUFRLEdBQUcsS0FBSyxDQUFDO1NBQ3ZCO0lBQ0gsQ0FBQztJQUVELFdBQVcsQ0FBQyxRQUFnQjtRQUMxQixJQUFJLENBQUMsZ0JBQWdCLENBQUMsQ0FBQyxDQUFDLEdBQUcsUUFBUSxDQUFDO1FBRXBDLElBQUksSUFBSSxDQUFDLGtCQUFrQixFQUFFO1lBQzNCLElBQUksQ0FBQyxHQUFHLENBQUMsYUFBYSxFQUFFLENBQUM7U0FDMUI7YUFBTTtZQUNMLElBQUksQ0FBQyxHQUFHLENBQUMsWUFBWSxFQUFFLENBQUM7U0FDekI7SUFDSCxDQUFDOzs7WUEzREYsU0FBUyxTQUFDO2dCQUNULFFBQVEsRUFBRSxjQUFjO2dCQUN4QixRQUFRLEVBQUUsZ0JBQWdCO2dCQUMxQixJQUFJLEVBQUU7b0JBQ0osS0FBSyxFQUFFLGdCQUFnQjtvQkFDdkIsa0JBQWtCLEVBQUUsVUFBVTtpQkFDL0I7YUFDRjs7O1lBckJrRCxpQkFBaUI7OzsyQkF1QmpFLEtBQUs7dUJBQ0wsS0FBSzt1QkFDTCxLQUFLO2lDQUNMLEtBQUs7bUJBTUwsV0FBVyxTQUFDLFlBQVk7dUJBS3hCLFdBQVcsU0FBQyxpQkFBaUI7dUJBSzdCLFdBQVcsU0FBQyxpQkFBaUIiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBEaXJlY3RpdmUsIElucHV0LCBPbkNoYW5nZXMsIEhvc3RCaW5kaW5nLCBDaGFuZ2VEZXRlY3RvclJlZiB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHsgRmxleFBhcnRzLCBwYXJ0c1RvU3R5bGUsIGJhc2lzVG9QYXJ0cyB9IGZyb20gJy4vdXRpbHMnO1xuXG5jb25zdCBERUZBVUxUX0JBU0lTID0gJzEgMSAxZS05cHgnO1xuXG5leHBvcnQgZnVuY3Rpb24gdmFsaWRhdGVCYXNpcyhiYXNpczogc3RyaW5nLCBncm93ID0gJzEnLCBzaHJpbmsgPSAnMScpOiBGbGV4UGFydHMge1xuICBjb25zdCBwYXJ0czogRmxleFBhcnRzID0gW2dyb3csIHNocmluaywgYmFzaXNdO1xuICBjb25zdCBtYXRjaGVzID0gYmFzaXMuc3BsaXQoJyAnKTtcbiAgaWYgKG1hdGNoZXMubGVuZ3RoID09PSAzKSB7XG4gICAgcmV0dXJuIG1hdGNoZXMgYXMgRmxleFBhcnRzO1xuICB9XG4gIHJldHVybiBwYXJ0cztcbn1cblxuQERpcmVjdGl2ZSh7XG4gIGV4cG9ydEFzOiAnbmd4U3BsaXRBcmVhJyxcbiAgc2VsZWN0b3I6ICdbbmd4U3BsaXRBcmVhXScsXG4gIGhvc3Q6IHtcbiAgICBjbGFzczogJ25neC1zcGxpdC1hcmVhJyxcbiAgICAnW3N0eWxlLm92ZXJmbG93XSc6ICdvdmVyZmxvdydcbiAgfVxufSlcbmV4cG9ydCBjbGFzcyBTcGxpdEFyZWFEaXJlY3RpdmUgaW1wbGVtZW50cyBPbkNoYW5nZXMge1xuICBASW5wdXQoKSBuZ3hTcGxpdEFyZWE6IHN0cmluZyA9IERFRkFVTFRfQkFTSVM7XG4gIEBJbnB1dCgpIG1pbkJhc2lzOiBzdHJpbmc7XG4gIEBJbnB1dCgpIG1heEJhc2lzOiBzdHJpbmc7XG4gIEBJbnB1dCgpIHNob3VsZEFkanVzdE1heE1pbiA9IGZhbHNlO1xuXG4gIG92ZXJmbG93ID0gJ2hpZGRlbic7XG4gIGluaXRpYWxGbGV4UGFydHM6IEZsZXhQYXJ0cztcbiAgY3VycmVudEZsZXhQYXJ0czogRmxleFBhcnRzO1xuXG4gIEBIb3N0QmluZGluZygnc3R5bGUuZmxleCcpXG4gIGdldCBmbGV4KCkge1xuICAgIHJldHVybiBwYXJ0c1RvU3R5bGUodGhpcy5jdXJyZW50RmxleFBhcnRzKTtcbiAgfVxuXG4gIEBIb3N0QmluZGluZygnc3R5bGUubWF4LXdpZHRoJykgZ2V0IG1heFdpZHRoKCk6IHN0cmluZyB7XG4gICAgaWYgKHRoaXMuc2hvdWxkQWRqdXN0TWF4TWluKSB7XG4gICAgICByZXR1cm4gdGhpcy5jdXJyZW50RmxleFBhcnRzWzJdO1xuICAgIH1cbiAgfVxuICBASG9zdEJpbmRpbmcoJ3N0eWxlLm1pbi13aWR0aCcpIGdldCBtaW5XaWR0aCgpOiBzdHJpbmcge1xuICAgIGlmICh0aGlzLnNob3VsZEFkanVzdE1heE1pbikge1xuICAgICAgcmV0dXJuIHRoaXMuY3VycmVudEZsZXhQYXJ0c1syXTtcbiAgICB9XG4gIH1cblxuICBjb25zdHJ1Y3Rvcihwcml2YXRlIHJlZjogQ2hhbmdlRGV0ZWN0b3JSZWYpIHt9XG5cbiAgbmdPbkNoYW5nZXMoKSB7XG4gICAgaWYgKCF0aGlzLm5neFNwbGl0QXJlYSkge1xuICAgICAgdGhpcy5uZ3hTcGxpdEFyZWEgPSBERUZBVUxUX0JBU0lTO1xuICAgIH1cbiAgICBjb25zdCBbZ3Jvdywgc2hyaW5rLCBiYXNpc10gPSBiYXNpc1RvUGFydHMoJzEnLCAnMScsIHRoaXMubmd4U3BsaXRBcmVhKTtcbiAgICB0aGlzLmN1cnJlbnRGbGV4UGFydHMgPSBbZ3Jvdywgc2hyaW5rLCBiYXNpc107XG4gICAgdGhpcy5pbml0aWFsRmxleFBhcnRzID0gW2dyb3csIHNocmluaywgYmFzaXNdO1xuICAgIGlmICghdGhpcy5taW5CYXNpcyAmJiBzaHJpbmsgPT09ICcwJykge1xuICAgICAgdGhpcy5taW5CYXNpcyA9IGJhc2lzO1xuICAgIH1cbiAgICBpZiAoIXRoaXMubWF4QmFzaXMgJiYgZ3JvdyA9PT0gJzAnKSB7XG4gICAgICB0aGlzLm1heEJhc2lzID0gYmFzaXM7XG4gICAgfVxuICB9XG5cbiAgdXBkYXRlQmFzaXMobmV3QmFzaXM6IHN0cmluZykge1xuICAgIHRoaXMuY3VycmVudEZsZXhQYXJ0c1syXSA9IG5ld0Jhc2lzO1xuXG4gICAgaWYgKHRoaXMuc2hvdWxkQWRqdXN0TWF4TWluKSB7XG4gICAgICB0aGlzLnJlZi5kZXRlY3RDaGFuZ2VzKCk7XG4gICAgfSBlbHNlIHtcbiAgICAgIHRoaXMucmVmLm1hcmtGb3JDaGVjaygpO1xuICAgIH1cbiAgfVxufVxuIl19

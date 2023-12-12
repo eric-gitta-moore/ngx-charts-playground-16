@@ -1,0 +1,18 @@
+import { TemplateRef } from '@angular/core';
+import { SelectDropdownOption } from './select-dropdown-option.interface';
+export declare class SelectOptionDirective implements SelectDropdownOption {
+    name: string;
+    value: any;
+    get disabled(): boolean;
+    set disabled(disabled: boolean);
+    get hidden(): boolean;
+    set hidden(hidden: boolean);
+    _optionTemplateInput: TemplateRef<any>;
+    _optionTemplateQuery: TemplateRef<any>;
+    get optionTemplate(): TemplateRef<any>;
+    _inputTemplateInput: TemplateRef<any>;
+    _inputTemplateQuery: TemplateRef<any>;
+    get inputTemplate(): TemplateRef<any>;
+    private _disabled;
+    private _hidden;
+}

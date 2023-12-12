@@ -1,0 +1,10 @@
+import { ElementRef, EventEmitter } from '@angular/core';
+import { InViewportDirective, InViewportService } from 'ng-in-viewport';
+export declare class DropdownMenuDirective extends InViewportDirective {
+    readonly _platformIdentifier: any;
+    readonly _elementReference: ElementRef;
+    readonly _insideViewport: InViewportService;
+    readonly element: HTMLElement;
+    constructor(_platformIdentifier: any, _elementReference: ElementRef, _insideViewport: InViewportService);
+    getCallbackFn(): EventEmitter<any>;
+}

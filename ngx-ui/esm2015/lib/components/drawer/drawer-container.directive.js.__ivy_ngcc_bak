@@ -1,0 +1,14 @@
+import { Directive } from '@angular/core';
+export class DrawerContainerDirective {
+}
+DrawerContainerDirective.decorators = [
+    { type: Directive, args: [{
+                exportAs: 'drawerContainer',
+                selector: '[drawerContainer]',
+                host: {
+                    '[style.position]': '"relative"',
+                    '[style.overflow]': '"hidden"'
+                }
+            },] }
+];
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZHJhd2VyLWNvbnRhaW5lci5kaXJlY3RpdmUuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9jb21wb25lbnRzL2RyYXdlci9kcmF3ZXItY29udGFpbmVyLmRpcmVjdGl2ZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQUUsU0FBUyxFQUFFLE1BQU0sZUFBZSxDQUFDO0FBVTFDLE1BQU0sT0FBTyx3QkFBd0I7OztZQVJwQyxTQUFTLFNBQUM7Z0JBQ1QsUUFBUSxFQUFFLGlCQUFpQjtnQkFDM0IsUUFBUSxFQUFFLG1CQUFtQjtnQkFDN0IsSUFBSSxFQUFFO29CQUNKLGtCQUFrQixFQUFFLFlBQVk7b0JBQ2hDLGtCQUFrQixFQUFFLFVBQVU7aUJBQy9CO2FBQ0YiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBEaXJlY3RpdmUgfSBmcm9tICdAYW5ndWxhci9jb3JlJztcblxuQERpcmVjdGl2ZSh7XG4gIGV4cG9ydEFzOiAnZHJhd2VyQ29udGFpbmVyJyxcbiAgc2VsZWN0b3I6ICdbZHJhd2VyQ29udGFpbmVyXScsXG4gIGhvc3Q6IHtcbiAgICAnW3N0eWxlLnBvc2l0aW9uXSc6ICdcInJlbGF0aXZlXCInLFxuICAgICdbc3R5bGUub3ZlcmZsb3ddJzogJ1wiaGlkZGVuXCInXG4gIH1cbn0pXG5leHBvcnQgY2xhc3MgRHJhd2VyQ29udGFpbmVyRGlyZWN0aXZlIHt9XG4iXX0=

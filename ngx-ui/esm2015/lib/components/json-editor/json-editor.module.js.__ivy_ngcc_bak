@@ -1,0 +1,76 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { PipesModule } from '../../pipes/pipes.module';
+import { InputModule } from '../input/input.module';
+import { ButtonModule } from '../button/button.module';
+import { TooltipModule } from '../tooltip/tooltip.module';
+import { DropdownModule } from '../dropdown/dropdown.module';
+import { CodeEditorModule } from '../code-editor/code-editor.module';
+import { IconModule } from '../icon/icon.module';
+import { TabsModule } from '../tabs/tabs.module';
+import { ToggleModule } from '../toggle/toggle.module';
+import { CheckboxModule } from '../checkbox/checkbox.module';
+import { SelectModule } from '../select/select.module';
+import { JsonEditorComponent } from './json-editor/json-editor.component';
+import { JsonEditorNodeComponent } from './json-editor/json-editor-node/json-editor-node.component';
+import { ObjectNodeComponent } from './json-editor/json-editor-node/node-types/object-node/object-node.component';
+import { ArrayNodeComponent } from './json-editor/json-editor-node/node-types/array-node/array-node.component';
+import { JsonEditorFlatComponent } from './json-editor-flat/json-editor-flat.component';
+import { JsonEditorNodeFlatComponent } from './json-editor-flat/json-editor-node-flat/json-editor-node-flat.component';
+import { ArrayNodeFlatComponent } from './json-editor-flat/json-editor-node-flat/node-types/array-node-flat/array-node-flat.component';
+import { ObjectNodeFlatComponent } from './json-editor-flat/json-editor-node-flat/node-types/object-node-flat/object-node-flat.component';
+import { PropertyConfigComponent } from './json-editor-flat/json-editor-node-flat/node-types/property-config/property-config.component';
+import { OrderableInputsListComponent } from './json-editor-flat/orderable-inputs-list/orderable-inputs-list.component';
+import { ObjectValuesPipe } from './object-values.pipe';
+import { JsonEditorNodeInfoComponent } from './json-editor-flat/json-editor-node-flat/node-types/node-info/node-info.component';
+export class JsonEditorModule {
+}
+JsonEditorModule.decorators = [
+    { type: NgModule, args: [{
+                declarations: [
+                    JsonEditorComponent,
+                    JsonEditorNodeComponent,
+                    ObjectNodeComponent,
+                    ArrayNodeComponent,
+                    JsonEditorFlatComponent,
+                    JsonEditorNodeFlatComponent,
+                    JsonEditorNodeInfoComponent,
+                    ArrayNodeFlatComponent,
+                    ObjectNodeFlatComponent,
+                    PropertyConfigComponent,
+                    OrderableInputsListComponent,
+                    ObjectValuesPipe
+                ],
+                exports: [
+                    JsonEditorComponent,
+                    JsonEditorNodeComponent,
+                    ObjectNodeComponent,
+                    ArrayNodeComponent,
+                    JsonEditorFlatComponent,
+                    JsonEditorNodeFlatComponent,
+                    JsonEditorNodeInfoComponent,
+                    ArrayNodeFlatComponent,
+                    ObjectNodeFlatComponent,
+                    PropertyConfigComponent
+                ],
+                imports: [
+                    CheckboxModule,
+                    CommonModule,
+                    DragDropModule,
+                    FormsModule,
+                    PipesModule,
+                    InputModule,
+                    ButtonModule,
+                    CodeEditorModule,
+                    TooltipModule,
+                    DropdownModule,
+                    IconModule,
+                    ToggleModule,
+                    SelectModule,
+                    TabsModule
+                ]
+            },] }
+];
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoianNvbi1lZGl0b3IubW9kdWxlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvc3dpbWxhbmUvbmd4LXVpL3NyYy9saWIvY29tcG9uZW50cy9qc29uLWVkaXRvci9qc29uLWVkaXRvci5tb2R1bGUudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLFFBQVEsRUFBRSxNQUFNLGVBQWUsQ0FBQztBQUN6QyxPQUFPLEVBQUUsWUFBWSxFQUFFLE1BQU0saUJBQWlCLENBQUM7QUFDL0MsT0FBTyxFQUFFLFdBQVcsRUFBRSxNQUFNLGdCQUFnQixDQUFDO0FBQzdDLE9BQU8sRUFBRSxjQUFjLEVBQUUsTUFBTSx3QkFBd0IsQ0FBQztBQUV4RCxPQUFPLEVBQUUsV0FBVyxFQUFFLE1BQU0sMEJBQTBCLENBQUM7QUFDdkQsT0FBTyxFQUFFLFdBQVcsRUFBRSxNQUFNLHVCQUF1QixDQUFDO0FBQ3BELE9BQU8sRUFBRSxZQUFZLEVBQUUsTUFBTSx5QkFBeUIsQ0FBQztBQUN2RCxPQUFPLEVBQUUsYUFBYSxFQUFFLE1BQU0sMkJBQTJCLENBQUM7QUFDMUQsT0FBTyxFQUFFLGNBQWMsRUFBRSxNQUFNLDZCQUE2QixDQUFDO0FBQzdELE9BQU8sRUFBRSxnQkFBZ0IsRUFBRSxNQUFNLG1DQUFtQyxDQUFDO0FBQ3JFLE9BQU8sRUFBRSxVQUFVLEVBQUUsTUFBTSxxQkFBcUIsQ0FBQztBQUNqRCxPQUFPLEVBQUUsVUFBVSxFQUFFLE1BQU0scUJBQXFCLENBQUM7QUFDakQsT0FBTyxFQUFFLFlBQVksRUFBRSxNQUFNLHlCQUF5QixDQUFDO0FBQ3ZELE9BQU8sRUFBRSxjQUFjLEVBQUUsTUFBTSw2QkFBNkIsQ0FBQztBQUM3RCxPQUFPLEVBQUUsWUFBWSxFQUFFLE1BQU0seUJBQXlCLENBQUM7QUFFdkQsT0FBTyxFQUFFLG1CQUFtQixFQUFFLE1BQU0scUNBQXFDLENBQUM7QUFDMUUsT0FBTyxFQUFFLHVCQUF1QixFQUFFLE1BQU0sMkRBQTJELENBQUM7QUFDcEcsT0FBTyxFQUFFLG1CQUFtQixFQUFFLE1BQU0sNkVBQTZFLENBQUM7QUFDbEgsT0FBTyxFQUFFLGtCQUFrQixFQUFFLE1BQU0sMkVBQTJFLENBQUM7QUFFL0csT0FBTyxFQUFFLHVCQUF1QixFQUFFLE1BQU0sK0NBQStDLENBQUM7QUFDeEYsT0FBTyxFQUFFLDJCQUEyQixFQUFFLE1BQU0sMEVBQTBFLENBQUM7QUFDdkgsT0FBTyxFQUFFLHNCQUFzQixFQUFFLE1BQU0sK0ZBQStGLENBQUM7QUFDdkksT0FBTyxFQUFFLHVCQUF1QixFQUFFLE1BQU0saUdBQWlHLENBQUM7QUFDMUksT0FBTyxFQUFFLHVCQUF1QixFQUFFLE1BQU0sK0ZBQStGLENBQUM7QUFDeEksT0FBTyxFQUFFLDRCQUE0QixFQUFFLE1BQU0sMEVBQTBFLENBQUM7QUFDeEgsT0FBTyxFQUFFLGdCQUFnQixFQUFFLE1BQU0sc0JBQXNCLENBQUM7QUFDeEQsT0FBTyxFQUFFLDJCQUEyQixFQUFFLE1BQU0sbUZBQW1GLENBQUM7QUE4Q2hJLE1BQU0sT0FBTyxnQkFBZ0I7OztZQTVDNUIsUUFBUSxTQUFDO2dCQUNSLFlBQVksRUFBRTtvQkFDWixtQkFBbUI7b0JBQ25CLHVCQUF1QjtvQkFDdkIsbUJBQW1CO29CQUNuQixrQkFBa0I7b0JBQ2xCLHVCQUF1QjtvQkFDdkIsMkJBQTJCO29CQUMzQiwyQkFBMkI7b0JBQzNCLHNCQUFzQjtvQkFDdEIsdUJBQXVCO29CQUN2Qix1QkFBdUI7b0JBQ3ZCLDRCQUE0QjtvQkFDNUIsZ0JBQWdCO2lCQUNqQjtnQkFDRCxPQUFPLEVBQUU7b0JBQ1AsbUJBQW1CO29CQUNuQix1QkFBdUI7b0JBQ3ZCLG1CQUFtQjtvQkFDbkIsa0JBQWtCO29CQUNsQix1QkFBdUI7b0JBQ3ZCLDJCQUEyQjtvQkFDM0IsMkJBQTJCO29CQUMzQixzQkFBc0I7b0JBQ3RCLHVCQUF1QjtvQkFDdkIsdUJBQXVCO2lCQUN4QjtnQkFDRCxPQUFPLEVBQUU7b0JBQ1AsY0FBYztvQkFDZCxZQUFZO29CQUNaLGNBQWM7b0JBQ2QsV0FBVztvQkFDWCxXQUFXO29CQUNYLFdBQVc7b0JBQ1gsWUFBWTtvQkFDWixnQkFBZ0I7b0JBQ2hCLGFBQWE7b0JBQ2IsY0FBYztvQkFDZCxVQUFVO29CQUNWLFlBQVk7b0JBQ1osWUFBWTtvQkFDWixVQUFVO2lCQUNYO2FBQ0YiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBOZ01vZHVsZSB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHsgQ29tbW9uTW9kdWxlIH0gZnJvbSAnQGFuZ3VsYXIvY29tbW9uJztcbmltcG9ydCB7IEZvcm1zTW9kdWxlIH0gZnJvbSAnQGFuZ3VsYXIvZm9ybXMnO1xuaW1wb3J0IHsgRHJhZ0Ryb3BNb2R1bGUgfSBmcm9tICdAYW5ndWxhci9jZGsvZHJhZy1kcm9wJztcblxuaW1wb3J0IHsgUGlwZXNNb2R1bGUgfSBmcm9tICcuLi8uLi9waXBlcy9waXBlcy5tb2R1bGUnO1xuaW1wb3J0IHsgSW5wdXRNb2R1bGUgfSBmcm9tICcuLi9pbnB1dC9pbnB1dC5tb2R1bGUnO1xuaW1wb3J0IHsgQnV0dG9uTW9kdWxlIH0gZnJvbSAnLi4vYnV0dG9uL2J1dHRvbi5tb2R1bGUnO1xuaW1wb3J0IHsgVG9vbHRpcE1vZHVsZSB9IGZyb20gJy4uL3Rvb2x0aXAvdG9vbHRpcC5tb2R1bGUnO1xuaW1wb3J0IHsgRHJvcGRvd25Nb2R1bGUgfSBmcm9tICcuLi9kcm9wZG93bi9kcm9wZG93bi5tb2R1bGUnO1xuaW1wb3J0IHsgQ29kZUVkaXRvck1vZHVsZSB9IGZyb20gJy4uL2NvZGUtZWRpdG9yL2NvZGUtZWRpdG9yLm1vZHVsZSc7XG5pbXBvcnQgeyBJY29uTW9kdWxlIH0gZnJvbSAnLi4vaWNvbi9pY29uLm1vZHVsZSc7XG5pbXBvcnQgeyBUYWJzTW9kdWxlIH0gZnJvbSAnLi4vdGFicy90YWJzLm1vZHVsZSc7XG5pbXBvcnQgeyBUb2dnbGVNb2R1bGUgfSBmcm9tICcuLi90b2dnbGUvdG9nZ2xlLm1vZHVsZSc7XG5pbXBvcnQgeyBDaGVja2JveE1vZHVsZSB9IGZyb20gJy4uL2NoZWNrYm94L2NoZWNrYm94Lm1vZHVsZSc7XG5pbXBvcnQgeyBTZWxlY3RNb2R1bGUgfSBmcm9tICcuLi9zZWxlY3Qvc2VsZWN0Lm1vZHVsZSc7XG5cbmltcG9ydCB7IEpzb25FZGl0b3JDb21wb25lbnQgfSBmcm9tICcuL2pzb24tZWRpdG9yL2pzb24tZWRpdG9yLmNvbXBvbmVudCc7XG5pbXBvcnQgeyBKc29uRWRpdG9yTm9kZUNvbXBvbmVudCB9IGZyb20gJy4vanNvbi1lZGl0b3IvanNvbi1lZGl0b3Itbm9kZS9qc29uLWVkaXRvci1ub2RlLmNvbXBvbmVudCc7XG5pbXBvcnQgeyBPYmplY3ROb2RlQ29tcG9uZW50IH0gZnJvbSAnLi9qc29uLWVkaXRvci9qc29uLWVkaXRvci1ub2RlL25vZGUtdHlwZXMvb2JqZWN0LW5vZGUvb2JqZWN0LW5vZGUuY29tcG9uZW50JztcbmltcG9ydCB7IEFycmF5Tm9kZUNvbXBvbmVudCB9IGZyb20gJy4vanNvbi1lZGl0b3IvanNvbi1lZGl0b3Itbm9kZS9ub2RlLXR5cGVzL2FycmF5LW5vZGUvYXJyYXktbm9kZS5jb21wb25lbnQnO1xuXG5pbXBvcnQgeyBKc29uRWRpdG9yRmxhdENvbXBvbmVudCB9IGZyb20gJy4vanNvbi1lZGl0b3ItZmxhdC9qc29uLWVkaXRvci1mbGF0LmNvbXBvbmVudCc7XG5pbXBvcnQgeyBKc29uRWRpdG9yTm9kZUZsYXRDb21wb25lbnQgfSBmcm9tICcuL2pzb24tZWRpdG9yLWZsYXQvanNvbi1lZGl0b3Itbm9kZS1mbGF0L2pzb24tZWRpdG9yLW5vZGUtZmxhdC5jb21wb25lbnQnO1xuaW1wb3J0IHsgQXJyYXlOb2RlRmxhdENvbXBvbmVudCB9IGZyb20gJy4vanNvbi1lZGl0b3ItZmxhdC9qc29uLWVkaXRvci1ub2RlLWZsYXQvbm9kZS10eXBlcy9hcnJheS1ub2RlLWZsYXQvYXJyYXktbm9kZS1mbGF0LmNvbXBvbmVudCc7XG5pbXBvcnQgeyBPYmplY3ROb2RlRmxhdENvbXBvbmVudCB9IGZyb20gJy4vanNvbi1lZGl0b3ItZmxhdC9qc29uLWVkaXRvci1ub2RlLWZsYXQvbm9kZS10eXBlcy9vYmplY3Qtbm9kZS1mbGF0L29iamVjdC1ub2RlLWZsYXQuY29tcG9uZW50JztcbmltcG9ydCB7IFByb3BlcnR5Q29uZmlnQ29tcG9uZW50IH0gZnJvbSAnLi9qc29uLWVkaXRvci1mbGF0L2pzb24tZWRpdG9yLW5vZGUtZmxhdC9ub2RlLXR5cGVzL3Byb3BlcnR5LWNvbmZpZy9wcm9wZXJ0eS1jb25maWcuY29tcG9uZW50JztcbmltcG9ydCB7IE9yZGVyYWJsZUlucHV0c0xpc3RDb21wb25lbnQgfSBmcm9tICcuL2pzb24tZWRpdG9yLWZsYXQvb3JkZXJhYmxlLWlucHV0cy1saXN0L29yZGVyYWJsZS1pbnB1dHMtbGlzdC5jb21wb25lbnQnO1xuaW1wb3J0IHsgT2JqZWN0VmFsdWVzUGlwZSB9IGZyb20gJy4vb2JqZWN0LXZhbHVlcy5waXBlJztcbmltcG9ydCB7IEpzb25FZGl0b3JOb2RlSW5mb0NvbXBvbmVudCB9IGZyb20gJy4vanNvbi1lZGl0b3ItZmxhdC9qc29uLWVkaXRvci1ub2RlLWZsYXQvbm9kZS10eXBlcy9ub2RlLWluZm8vbm9kZS1pbmZvLmNvbXBvbmVudCc7XG5cbkBOZ01vZHVsZSh7XG4gIGRlY2xhcmF0aW9uczogW1xuICAgIEpzb25FZGl0b3JDb21wb25lbnQsXG4gICAgSnNvbkVkaXRvck5vZGVDb21wb25lbnQsXG4gICAgT2JqZWN0Tm9kZUNvbXBvbmVudCxcbiAgICBBcnJheU5vZGVDb21wb25lbnQsXG4gICAgSnNvbkVkaXRvckZsYXRDb21wb25lbnQsXG4gICAgSnNvbkVkaXRvck5vZGVGbGF0Q29tcG9uZW50LFxuICAgIEpzb25FZGl0b3JOb2RlSW5mb0NvbXBvbmVudCxcbiAgICBBcnJheU5vZGVGbGF0Q29tcG9uZW50LFxuICAgIE9iamVjdE5vZGVGbGF0Q29tcG9uZW50LFxuICAgIFByb3BlcnR5Q29uZmlnQ29tcG9uZW50LFxuICAgIE9yZGVyYWJsZUlucHV0c0xpc3RDb21wb25lbnQsXG4gICAgT2JqZWN0VmFsdWVzUGlwZVxuICBdLFxuICBleHBvcnRzOiBbXG4gICAgSnNvbkVkaXRvckNvbXBvbmVudCxcbiAgICBKc29uRWRpdG9yTm9kZUNvbXBvbmVudCxcbiAgICBPYmplY3ROb2RlQ29tcG9uZW50LFxuICAgIEFycmF5Tm9kZUNvbXBvbmVudCxcbiAgICBKc29uRWRpdG9yRmxhdENvbXBvbmVudCxcbiAgICBKc29uRWRpdG9yTm9kZUZsYXRDb21wb25lbnQsXG4gICAgSnNvbkVkaXRvck5vZGVJbmZvQ29tcG9uZW50LFxuICAgIEFycmF5Tm9kZUZsYXRDb21wb25lbnQsXG4gICAgT2JqZWN0Tm9kZUZsYXRDb21wb25lbnQsXG4gICAgUHJvcGVydHlDb25maWdDb21wb25lbnRcbiAgXSxcbiAgaW1wb3J0czogW1xuICAgIENoZWNrYm94TW9kdWxlLFxuICAgIENvbW1vbk1vZHVsZSxcbiAgICBEcmFnRHJvcE1vZHVsZSxcbiAgICBGb3Jtc01vZHVsZSxcbiAgICBQaXBlc01vZHVsZSxcbiAgICBJbnB1dE1vZHVsZSxcbiAgICBCdXR0b25Nb2R1bGUsXG4gICAgQ29kZUVkaXRvck1vZHVsZSxcbiAgICBUb29sdGlwTW9kdWxlLFxuICAgIERyb3Bkb3duTW9kdWxlLFxuICAgIEljb25Nb2R1bGUsXG4gICAgVG9nZ2xlTW9kdWxlLFxuICAgIFNlbGVjdE1vZHVsZSxcbiAgICBUYWJzTW9kdWxlXG4gIF1cbn0pXG5leHBvcnQgY2xhc3MgSnNvbkVkaXRvck1vZHVsZSB7fVxuIl19

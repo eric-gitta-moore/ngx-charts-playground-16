@@ -1,0 +1,7 @@
+export var PlusMenuPosition;
+(function (PlusMenuPosition) {
+    PlusMenuPosition["Right"] = "right";
+    PlusMenuPosition["Bottom"] = "bottom";
+    PlusMenuPosition["Top"] = "top";
+})(PlusMenuPosition || (PlusMenuPosition = {}));
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicGx1cy1tZW51LXBvc2l0aW9uLmVudW0uanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9jb21wb25lbnRzL3BsdXMtbWVudS9wbHVzLW1lbnUtcG9zaXRpb24uZW51bS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxNQUFNLENBQU4sSUFBWSxnQkFJWDtBQUpELFdBQVksZ0JBQWdCO0lBQzFCLG1DQUFlLENBQUE7SUFDZixxQ0FBaUIsQ0FBQTtJQUNqQiwrQkFBVyxDQUFBO0FBQ2IsQ0FBQyxFQUpXLGdCQUFnQixLQUFoQixnQkFBZ0IsUUFJM0IiLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgZW51bSBQbHVzTWVudVBvc2l0aW9uIHtcbiAgUmlnaHQgPSAncmlnaHQnLFxuICBCb3R0b20gPSAnYm90dG9tJyxcbiAgVG9wID0gJ3RvcCdcbn1cbiJdfQ==

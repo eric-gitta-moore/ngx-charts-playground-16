@@ -1,0 +1,39 @@
+import { Directive, Output, EventEmitter, ElementRef } from '@angular/core';
+import ResizeObserver from 'resize-observer-polyfill';
+export class ResizeObserverDirective {
+    constructor(_el) {
+        this._el = _el;
+        this.resize = new EventEmitter();
+    }
+    ngOnInit() {
+        this._observer = new ResizeObserver(entries => {
+            for (const entry of entries) {
+                this.onResize(entry.contentRect);
+            }
+        });
+        this._observer.observe(this._el.nativeElement);
+    }
+    ngOnDestroy() {
+        this._observer.unobserve(this._el.nativeElement);
+    }
+    onResize(e) {
+        if (this._timer) {
+            clearTimeout(this._timer);
+            this._timer = undefined;
+        }
+        this._timer = setTimeout(() => this.resize.emit(e), 100);
+    }
+}
+ResizeObserverDirective.decorators = [
+    { type: Directive, args: [{
+                exportAs: 'resizeObserver',
+                selector: '[resizeObserver]'
+            },] }
+];
+ResizeObserverDirective.ctorParameters = () => [
+    { type: ElementRef }
+];
+ResizeObserverDirective.propDecorators = {
+    resize: [{ type: Output, args: ['resizeObserver',] }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicmVzaXplLW9ic2VydmVyLmRpcmVjdGl2ZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL3N3aW1sYW5lL25neC11aS9zcmMvbGliL2RpcmVjdGl2ZXMvcmVzaXplLW9ic2VydmVyL3Jlc2l6ZS1vYnNlcnZlci5kaXJlY3RpdmUudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLFNBQVMsRUFBRSxNQUFNLEVBQUUsWUFBWSxFQUFxQixVQUFVLEVBQUUsTUFBTSxlQUFlLENBQUM7QUFDL0YsT0FBTyxjQUFjLE1BQU0sMEJBQTBCLENBQUM7QUFNdEQsTUFBTSxPQUFPLHVCQUF1QjtJQU1sQyxZQUE2QixHQUE0QjtRQUE1QixRQUFHLEdBQUgsR0FBRyxDQUF5QjtRQUwvQixXQUFNLEdBQUcsSUFBSSxZQUFZLEVBQTRCLENBQUM7SUFLcEIsQ0FBQztJQUU3RCxRQUFRO1FBQ04sSUFBSSxDQUFDLFNBQVMsR0FBRyxJQUFJLGNBQWMsQ0FBQyxPQUFPLENBQUMsRUFBRTtZQUM1QyxLQUFLLE1BQU0sS0FBSyxJQUFJLE9BQU8sRUFBRTtnQkFDM0IsSUFBSSxDQUFDLFFBQVEsQ0FBQyxLQUFLLENBQUMsV0FBVyxDQUFDLENBQUM7YUFDbEM7UUFDSCxDQUFDLENBQUMsQ0FBQztRQUVILElBQUksQ0FBQyxTQUFTLENBQUMsT0FBTyxDQUFDLElBQUksQ0FBQyxHQUFHLENBQUMsYUFBYSxDQUFDLENBQUM7SUFDakQsQ0FBQztJQUVELFdBQVc7UUFDVCxJQUFJLENBQUMsU0FBUyxDQUFDLFNBQVMsQ0FBQyxJQUFJLENBQUMsR0FBRyxDQUFDLGFBQWEsQ0FBQyxDQUFDO0lBQ25ELENBQUM7SUFFRCxRQUFRLENBQUMsQ0FBMkI7UUFDbEMsSUFBSSxJQUFJLENBQUMsTUFBTSxFQUFFO1lBQ2YsWUFBWSxDQUFDLElBQUksQ0FBQyxNQUFNLENBQUMsQ0FBQztZQUMxQixJQUFJLENBQUMsTUFBTSxHQUFHLFNBQVMsQ0FBQztTQUN6QjtRQUVELElBQUksQ0FBQyxNQUFNLEdBQUcsVUFBVSxDQUFDLEdBQUcsRUFBRSxDQUFDLElBQUksQ0FBQyxNQUFNLENBQUMsSUFBSSxDQUFDLENBQUMsQ0FBQyxFQUFFLEdBQUcsQ0FBQyxDQUFDO0lBQzNELENBQUM7OztZQWpDRixTQUFTLFNBQUM7Z0JBQ1QsUUFBUSxFQUFFLGdCQUFnQjtnQkFDMUIsUUFBUSxFQUFFLGtCQUFrQjthQUM3Qjs7O1lBTjRELFVBQVU7OztxQkFRcEUsTUFBTSxTQUFDLGdCQUFnQiIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IERpcmVjdGl2ZSwgT3V0cHV0LCBFdmVudEVtaXR0ZXIsIE9uSW5pdCwgT25EZXN0cm95LCBFbGVtZW50UmVmIH0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5pbXBvcnQgUmVzaXplT2JzZXJ2ZXIgZnJvbSAncmVzaXplLW9ic2VydmVyLXBvbHlmaWxsJztcblxuQERpcmVjdGl2ZSh7XG4gIGV4cG9ydEFzOiAncmVzaXplT2JzZXJ2ZXInLFxuICBzZWxlY3RvcjogJ1tyZXNpemVPYnNlcnZlcl0nXG59KVxuZXhwb3J0IGNsYXNzIFJlc2l6ZU9ic2VydmVyRGlyZWN0aXZlIGltcGxlbWVudHMgT25Jbml0LCBPbkRlc3Ryb3kge1xuICBAT3V0cHV0KCdyZXNpemVPYnNlcnZlcicpIHJlc2l6ZSA9IG5ldyBFdmVudEVtaXR0ZXI8UGFydGlhbDxET01SZWN0UmVhZE9ubHk+PigpO1xuXG4gIHByaXZhdGUgX29ic2VydmVyOiBSZXNpemVPYnNlcnZlcjtcbiAgcHJpdmF0ZSBfdGltZXI6IGFueTtcblxuICBjb25zdHJ1Y3Rvcihwcml2YXRlIHJlYWRvbmx5IF9lbDogRWxlbWVudFJlZjxIVE1MRWxlbWVudD4pIHt9XG5cbiAgbmdPbkluaXQoKTogdm9pZCB7XG4gICAgdGhpcy5fb2JzZXJ2ZXIgPSBuZXcgUmVzaXplT2JzZXJ2ZXIoZW50cmllcyA9PiB7XG4gICAgICBmb3IgKGNvbnN0IGVudHJ5IG9mIGVudHJpZXMpIHtcbiAgICAgICAgdGhpcy5vblJlc2l6ZShlbnRyeS5jb250ZW50UmVjdCk7XG4gICAgICB9XG4gICAgfSk7XG5cbiAgICB0aGlzLl9vYnNlcnZlci5vYnNlcnZlKHRoaXMuX2VsLm5hdGl2ZUVsZW1lbnQpO1xuICB9XG5cbiAgbmdPbkRlc3Ryb3koKTogdm9pZCB7XG4gICAgdGhpcy5fb2JzZXJ2ZXIudW5vYnNlcnZlKHRoaXMuX2VsLm5hdGl2ZUVsZW1lbnQpO1xuICB9XG5cbiAgb25SZXNpemUoZTogUGFydGlhbDxET01SZWN0UmVhZE9ubHk+KTogdm9pZCB7XG4gICAgaWYgKHRoaXMuX3RpbWVyKSB7XG4gICAgICBjbGVhclRpbWVvdXQodGhpcy5fdGltZXIpO1xuICAgICAgdGhpcy5fdGltZXIgPSB1bmRlZmluZWQ7XG4gICAgfVxuXG4gICAgdGhpcy5fdGltZXIgPSBzZXRUaW1lb3V0KCgpID0+IHRoaXMucmVzaXplLmVtaXQoZSksIDEwMCk7XG4gIH1cbn1cbiJdfQ==

@@ -1,0 +1,1 @@
+{"version":3,"file":"select-option-template.directive.d.ts","sources":["select-option-template.directive.d.ts"],"names":[],"mappings":"AAAA;;AACA;AACA;AACA;;;AACA","sourcesContent":["import { TemplateRef } from '@angular/core';\nexport declare class SelectOptionTemplateDirective {\n    readonly template: TemplateRef<any>;\n    constructor(template: TemplateRef<any>);\n}\n"]}

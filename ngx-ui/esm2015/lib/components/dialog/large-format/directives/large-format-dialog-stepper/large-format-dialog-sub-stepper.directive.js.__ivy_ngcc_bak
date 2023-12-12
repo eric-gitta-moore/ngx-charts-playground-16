@@ -1,0 +1,15 @@
+import { Directive, HostBinding } from '@angular/core';
+export class LargeFormatDialogSubStepperDirective {
+    constructor() {
+        this.hostClass = true;
+    }
+}
+LargeFormatDialogSubStepperDirective.decorators = [
+    { type: Directive, args: [{
+                selector: 'ngx-stepper[largeFormatDialogSubStepper]'
+            },] }
+];
+LargeFormatDialogSubStepperDirective.propDecorators = {
+    hostClass: [{ type: HostBinding, args: ['class.dialog-stepper--sub',] }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibGFyZ2UtZm9ybWF0LWRpYWxvZy1zdWItc3RlcHBlci5kaXJlY3RpdmUuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9jb21wb25lbnRzL2RpYWxvZy9sYXJnZS1mb3JtYXQvZGlyZWN0aXZlcy9sYXJnZS1mb3JtYXQtZGlhbG9nLXN0ZXBwZXIvbGFyZ2UtZm9ybWF0LWRpYWxvZy1zdWItc3RlcHBlci5kaXJlY3RpdmUudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLFNBQVMsRUFBRSxXQUFXLEVBQUUsTUFBTSxlQUFlLENBQUM7QUFLdkQsTUFBTSxPQUFPLG9DQUFvQztJQUhqRDtRQUk0QyxjQUFTLEdBQUcsSUFBSSxDQUFDO0lBQzdELENBQUM7OztZQUxBLFNBQVMsU0FBQztnQkFDVCxRQUFRLEVBQUUsMENBQTBDO2FBQ3JEOzs7d0JBRUUsV0FBVyxTQUFDLDJCQUEyQiIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IERpcmVjdGl2ZSwgSG9zdEJpbmRpbmcgfSBmcm9tICdAYW5ndWxhci9jb3JlJztcblxuQERpcmVjdGl2ZSh7XG4gIHNlbGVjdG9yOiAnbmd4LXN0ZXBwZXJbbGFyZ2VGb3JtYXREaWFsb2dTdWJTdGVwcGVyXSdcbn0pXG5leHBvcnQgY2xhc3MgTGFyZ2VGb3JtYXREaWFsb2dTdWJTdGVwcGVyRGlyZWN0aXZlIHtcbiAgQEhvc3RCaW5kaW5nKCdjbGFzcy5kaWFsb2ctc3RlcHBlci0tc3ViJykgaG9zdENsYXNzID0gdHJ1ZTtcbn1cbiJdfQ==

@@ -1,0 +1,1 @@
+{"version":3,"file":"large-format-dialog-sub-tabs.directive.d.ts","sources":["large-format-dialog-sub-tabs.directive.d.ts"],"names":[],"mappings":";AAAA;AACA;;;AACA","sourcesContent":["export declare class LargeFormatDialogSubTabsDirective {\n    hostClass: boolean;\n}\n"]}

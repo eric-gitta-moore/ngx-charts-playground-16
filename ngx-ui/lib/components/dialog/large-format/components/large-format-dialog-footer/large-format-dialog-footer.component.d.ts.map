@@ -1,0 +1,1 @@
+{"version":3,"file":"large-format-dialog-footer.component.d.ts","sources":["large-format-dialog-footer.component.d.ts"],"names":[],"mappings":";AAAA;AACA;AACA;AACA;;;AACA","sourcesContent":["export declare class LargeFormatDialogFooterComponent {\n    styleClass?: string;\n    get footerStyle(): string;\n    hostClass: boolean;\n}\n"]}

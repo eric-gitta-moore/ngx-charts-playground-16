@@ -1,0 +1,10 @@
+declare enum CardPlaceholderSize {
+    Small = "small",
+    Medium = "medium",
+    Large = "large"
+}
+export declare class CardPlaceholderComponent {
+    size: CardPlaceholderSize;
+    readonly CardPlaceholderSize: typeof CardPlaceholderSize;
+}
+export {};

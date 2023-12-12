@@ -1,0 +1,16 @@
+/**
+ * Creates a range for the given start/finish, not including finish
+ *
+ * @param start
+ * @param finish
+ * @return result of range
+ */
+export function getNumberRange(start, finish) {
+    const arr = [];
+    let i = start;
+    while (i < finish) {
+        arr.push(i++);
+    }
+    return arr;
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZ2V0LW51bWJlci1yYW5nZS51dGlsLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvc3dpbWxhbmUvbmd4LXVpL3NyYy9saWIvY29tcG9uZW50cy9jYWxlbmRhci91dGlscy9nZXQtbnVtYmVyLXJhbmdlL2dldC1udW1iZXItcmFuZ2UudXRpbC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTs7Ozs7O0dBTUc7QUFDSCxNQUFNLFVBQVUsY0FBYyxDQUFDLEtBQWEsRUFBRSxNQUFjO0lBQzFELE1BQU0sR0FBRyxHQUFhLEVBQUUsQ0FBQztJQUN6QixJQUFJLENBQUMsR0FBRyxLQUFLLENBQUM7SUFFZCxPQUFPLENBQUMsR0FBRyxNQUFNLEVBQUU7UUFDakIsR0FBRyxDQUFDLElBQUksQ0FBQyxDQUFDLEVBQUUsQ0FBQyxDQUFDO0tBQ2Y7SUFFRCxPQUFPLEdBQUcsQ0FBQztBQUNiLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyIvKipcbiAqIENyZWF0ZXMgYSByYW5nZSBmb3IgdGhlIGdpdmVuIHN0YXJ0L2ZpbmlzaCwgbm90IGluY2x1ZGluZyBmaW5pc2hcbiAqXG4gKiBAcGFyYW0gc3RhcnRcbiAqIEBwYXJhbSBmaW5pc2hcbiAqIEByZXR1cm4gcmVzdWx0IG9mIHJhbmdlXG4gKi9cbmV4cG9ydCBmdW5jdGlvbiBnZXROdW1iZXJSYW5nZShzdGFydDogbnVtYmVyLCBmaW5pc2g6IG51bWJlcikge1xuICBjb25zdCBhcnI6IG51bWJlcltdID0gW107XG4gIGxldCBpID0gc3RhcnQ7XG5cbiAgd2hpbGUgKGkgPCBmaW5pc2gpIHtcbiAgICBhcnIucHVzaChpKyspO1xuICB9XG5cbiAgcmV0dXJuIGFycjtcbn1cbiJdfQ==

@@ -1,0 +1,49 @@
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { InjectionService } from '../../services/injection/injection.service';
+import { InputModule } from '../input/input.module';
+import { LongPressButtonModule } from '../long-press/long-press-button.module';
+import { OverlayModule } from '../overlay/overlay.module';
+import { AlertComponent } from './alert/alert.component';
+import { DialogComponent } from './dialog.component';
+import { LargeFormatDialogFooterComponent } from './large-format/components/large-format-dialog-footer/large-format-dialog-footer.component';
+import { LargeFormatDialogHeaderActionComponent } from './large-format/components/large-format-dialog-header-action/large-format-dialog-header-action.component';
+import { LargeFormatDialogHeaderTitleComponent } from './large-format/components/large-format-dialog-header-title/large-format-dialog-header-title.component';
+import { LargeFormatDialogStepperDirective } from './large-format/directives/large-format-dialog-stepper/large-format-dialog-stepper.directive';
+import { LargeFormatDialogSubStepperDirective } from './large-format/directives/large-format-dialog-stepper/large-format-dialog-sub-stepper.directive';
+import { LargeFormatDialogSubTabsDirective } from './large-format/directives/large-format-dialog-tabs/large-format-dialog-sub-tabs.directive';
+import { LargeFormatDialogTabsDirective } from './large-format/directives/large-format-dialog-tabs/large-format-dialog-tabs.directive';
+import { LargeFormatDialogContentComponent } from './large-format/large-format-dialog-content.component';
+export class DialogModule {
+}
+DialogModule.decorators = [
+    { type: NgModule, args: [{
+                declarations: [
+                    DialogComponent,
+                    AlertComponent,
+                    LargeFormatDialogContentComponent,
+                    LargeFormatDialogHeaderTitleComponent,
+                    LargeFormatDialogHeaderActionComponent,
+                    LargeFormatDialogFooterComponent,
+                    LargeFormatDialogStepperDirective,
+                    LargeFormatDialogSubStepperDirective,
+                    LargeFormatDialogTabsDirective,
+                    LargeFormatDialogSubTabsDirective
+                ],
+                exports: [
+                    DialogComponent,
+                    AlertComponent,
+                    LargeFormatDialogContentComponent,
+                    LargeFormatDialogFooterComponent,
+                    LargeFormatDialogStepperDirective,
+                    LargeFormatDialogSubStepperDirective,
+                    LargeFormatDialogTabsDirective,
+                    LargeFormatDialogSubTabsDirective
+                ],
+                providers: [InjectionService],
+                imports: [CommonModule, OverlayModule, InputModule, FormsModule, LongPressButtonModule],
+                entryComponents: [DialogComponent, AlertComponent]
+            },] }
+];
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZGlhbG9nLm1vZHVsZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL3N3aW1sYW5lL25neC11aS9zcmMvbGliL2NvbXBvbmVudHMvZGlhbG9nL2RpYWxvZy5tb2R1bGUudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLFlBQVksRUFBRSxNQUFNLGlCQUFpQixDQUFDO0FBQy9DLE9BQU8sRUFBRSxRQUFRLEVBQUUsTUFBTSxlQUFlLENBQUM7QUFDekMsT0FBTyxFQUFFLFdBQVcsRUFBRSxNQUFNLGdCQUFnQixDQUFDO0FBRTdDLE9BQU8sRUFBRSxnQkFBZ0IsRUFBRSxNQUFNLDRDQUE0QyxDQUFDO0FBQzlFLE9BQU8sRUFBRSxXQUFXLEVBQUUsTUFBTSx1QkFBdUIsQ0FBQztBQUNwRCxPQUFPLEVBQUUscUJBQXFCLEVBQUUsTUFBTSx3Q0FBd0MsQ0FBQztBQUMvRSxPQUFPLEVBQUUsYUFBYSxFQUFFLE1BQU0sMkJBQTJCLENBQUM7QUFFMUQsT0FBTyxFQUFFLGNBQWMsRUFBRSxNQUFNLHlCQUF5QixDQUFDO0FBQ3pELE9BQU8sRUFBRSxlQUFlLEVBQUUsTUFBTSxvQkFBb0IsQ0FBQztBQUNyRCxPQUFPLEVBQUUsZ0NBQWdDLEVBQUUsTUFBTSwyRkFBMkYsQ0FBQztBQUM3SSxPQUFPLEVBQUUsc0NBQXNDLEVBQUUsTUFBTSx5R0FBeUcsQ0FBQztBQUNqSyxPQUFPLEVBQUUscUNBQXFDLEVBQUUsTUFBTSx1R0FBdUcsQ0FBQztBQUM5SixPQUFPLEVBQUUsaUNBQWlDLEVBQUUsTUFBTSw2RkFBNkYsQ0FBQztBQUNoSixPQUFPLEVBQUUsb0NBQW9DLEVBQUUsTUFBTSxpR0FBaUcsQ0FBQztBQUN2SixPQUFPLEVBQUUsaUNBQWlDLEVBQUUsTUFBTSwyRkFBMkYsQ0FBQztBQUM5SSxPQUFPLEVBQUUsOEJBQThCLEVBQUUsTUFBTSx1RkFBdUYsQ0FBQztBQUN2SSxPQUFPLEVBQUUsaUNBQWlDLEVBQUUsTUFBTSxzREFBc0QsQ0FBQztBQTZCekcsTUFBTSxPQUFPLFlBQVk7OztZQTNCeEIsUUFBUSxTQUFDO2dCQUNSLFlBQVksRUFBRTtvQkFDWixlQUFlO29CQUNmLGNBQWM7b0JBQ2QsaUNBQWlDO29CQUNqQyxxQ0FBcUM7b0JBQ3JDLHNDQUFzQztvQkFDdEMsZ0NBQWdDO29CQUNoQyxpQ0FBaUM7b0JBQ2pDLG9DQUFvQztvQkFDcEMsOEJBQThCO29CQUM5QixpQ0FBaUM7aUJBQ2xDO2dCQUNELE9BQU8sRUFBRTtvQkFDUCxlQUFlO29CQUNmLGNBQWM7b0JBQ2QsaUNBQWlDO29CQUNqQyxnQ0FBZ0M7b0JBQ2hDLGlDQUFpQztvQkFDakMsb0NBQW9DO29CQUNwQyw4QkFBOEI7b0JBQzlCLGlDQUFpQztpQkFDbEM7Z0JBQ0QsU0FBUyxFQUFFLENBQUMsZ0JBQWdCLENBQUM7Z0JBQzdCLE9BQU8sRUFBRSxDQUFDLFlBQVksRUFBRSxhQUFhLEVBQUUsV0FBVyxFQUFFLFdBQVcsRUFBRSxxQkFBcUIsQ0FBQztnQkFDdkYsZUFBZSxFQUFFLENBQUMsZUFBZSxFQUFFLGNBQWMsQ0FBQzthQUNuRCIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IENvbW1vbk1vZHVsZSB9IGZyb20gJ0Bhbmd1bGFyL2NvbW1vbic7XG5pbXBvcnQgeyBOZ01vZHVsZSB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHsgRm9ybXNNb2R1bGUgfSBmcm9tICdAYW5ndWxhci9mb3Jtcyc7XG5cbmltcG9ydCB7IEluamVjdGlvblNlcnZpY2UgfSBmcm9tICcuLi8uLi9zZXJ2aWNlcy9pbmplY3Rpb24vaW5qZWN0aW9uLnNlcnZpY2UnO1xuaW1wb3J0IHsgSW5wdXRNb2R1bGUgfSBmcm9tICcuLi9pbnB1dC9pbnB1dC5tb2R1bGUnO1xuaW1wb3J0IHsgTG9uZ1ByZXNzQnV0dG9uTW9kdWxlIH0gZnJvbSAnLi4vbG9uZy1wcmVzcy9sb25nLXByZXNzLWJ1dHRvbi5tb2R1bGUnO1xuaW1wb3J0IHsgT3ZlcmxheU1vZHVsZSB9IGZyb20gJy4uL292ZXJsYXkvb3ZlcmxheS5tb2R1bGUnO1xuXG5pbXBvcnQgeyBBbGVydENvbXBvbmVudCB9IGZyb20gJy4vYWxlcnQvYWxlcnQuY29tcG9uZW50JztcbmltcG9ydCB7IERpYWxvZ0NvbXBvbmVudCB9IGZyb20gJy4vZGlhbG9nLmNvbXBvbmVudCc7XG5pbXBvcnQgeyBMYXJnZUZvcm1hdERpYWxvZ0Zvb3RlckNvbXBvbmVudCB9IGZyb20gJy4vbGFyZ2UtZm9ybWF0L2NvbXBvbmVudHMvbGFyZ2UtZm9ybWF0LWRpYWxvZy1mb290ZXIvbGFyZ2UtZm9ybWF0LWRpYWxvZy1mb290ZXIuY29tcG9uZW50JztcbmltcG9ydCB7IExhcmdlRm9ybWF0RGlhbG9nSGVhZGVyQWN0aW9uQ29tcG9uZW50IH0gZnJvbSAnLi9sYXJnZS1mb3JtYXQvY29tcG9uZW50cy9sYXJnZS1mb3JtYXQtZGlhbG9nLWhlYWRlci1hY3Rpb24vbGFyZ2UtZm9ybWF0LWRpYWxvZy1oZWFkZXItYWN0aW9uLmNvbXBvbmVudCc7XG5pbXBvcnQgeyBMYXJnZUZvcm1hdERpYWxvZ0hlYWRlclRpdGxlQ29tcG9uZW50IH0gZnJvbSAnLi9sYXJnZS1mb3JtYXQvY29tcG9uZW50cy9sYXJnZS1mb3JtYXQtZGlhbG9nLWhlYWRlci10aXRsZS9sYXJnZS1mb3JtYXQtZGlhbG9nLWhlYWRlci10aXRsZS5jb21wb25lbnQnO1xuaW1wb3J0IHsgTGFyZ2VGb3JtYXREaWFsb2dTdGVwcGVyRGlyZWN0aXZlIH0gZnJvbSAnLi9sYXJnZS1mb3JtYXQvZGlyZWN0aXZlcy9sYXJnZS1mb3JtYXQtZGlhbG9nLXN0ZXBwZXIvbGFyZ2UtZm9ybWF0LWRpYWxvZy1zdGVwcGVyLmRpcmVjdGl2ZSc7XG5pbXBvcnQgeyBMYXJnZUZvcm1hdERpYWxvZ1N1YlN0ZXBwZXJEaXJlY3RpdmUgfSBmcm9tICcuL2xhcmdlLWZvcm1hdC9kaXJlY3RpdmVzL2xhcmdlLWZvcm1hdC1kaWFsb2ctc3RlcHBlci9sYXJnZS1mb3JtYXQtZGlhbG9nLXN1Yi1zdGVwcGVyLmRpcmVjdGl2ZSc7XG5pbXBvcnQgeyBMYXJnZUZvcm1hdERpYWxvZ1N1YlRhYnNEaXJlY3RpdmUgfSBmcm9tICcuL2xhcmdlLWZvcm1hdC9kaXJlY3RpdmVzL2xhcmdlLWZvcm1hdC1kaWFsb2ctdGFicy9sYXJnZS1mb3JtYXQtZGlhbG9nLXN1Yi10YWJzLmRpcmVjdGl2ZSc7XG5pbXBvcnQgeyBMYXJnZUZvcm1hdERpYWxvZ1RhYnNEaXJlY3RpdmUgfSBmcm9tICcuL2xhcmdlLWZvcm1hdC9kaXJlY3RpdmVzL2xhcmdlLWZvcm1hdC1kaWFsb2ctdGFicy9sYXJnZS1mb3JtYXQtZGlhbG9nLXRhYnMuZGlyZWN0aXZlJztcbmltcG9ydCB7IExhcmdlRm9ybWF0RGlhbG9nQ29udGVudENvbXBvbmVudCB9IGZyb20gJy4vbGFyZ2UtZm9ybWF0L2xhcmdlLWZvcm1hdC1kaWFsb2ctY29udGVudC5jb21wb25lbnQnO1xuXG5ATmdNb2R1bGUoe1xuICBkZWNsYXJhdGlvbnM6IFtcbiAgICBEaWFsb2dDb21wb25lbnQsXG4gICAgQWxlcnRDb21wb25lbnQsXG4gICAgTGFyZ2VGb3JtYXREaWFsb2dDb250ZW50Q29tcG9uZW50LFxuICAgIExhcmdlRm9ybWF0RGlhbG9nSGVhZGVyVGl0bGVDb21wb25lbnQsXG4gICAgTGFyZ2VGb3JtYXREaWFsb2dIZWFkZXJBY3Rpb25Db21wb25lbnQsXG4gICAgTGFyZ2VGb3JtYXREaWFsb2dGb290ZXJDb21wb25lbnQsXG4gICAgTGFyZ2VGb3JtYXREaWFsb2dTdGVwcGVyRGlyZWN0aXZlLFxuICAgIExhcmdlRm9ybWF0RGlhbG9nU3ViU3RlcHBlckRpcmVjdGl2ZSxcbiAgICBMYXJnZUZvcm1hdERpYWxvZ1RhYnNEaXJlY3RpdmUsXG4gICAgTGFyZ2VGb3JtYXREaWFsb2dTdWJUYWJzRGlyZWN0aXZlXG4gIF0sXG4gIGV4cG9ydHM6IFtcbiAgICBEaWFsb2dDb21wb25lbnQsXG4gICAgQWxlcnRDb21wb25lbnQsXG4gICAgTGFyZ2VGb3JtYXREaWFsb2dDb250ZW50Q29tcG9uZW50LFxuICAgIExhcmdlRm9ybWF0RGlhbG9nRm9vdGVyQ29tcG9uZW50LFxuICAgIExhcmdlRm9ybWF0RGlhbG9nU3RlcHBlckRpcmVjdGl2ZSxcbiAgICBMYXJnZUZvcm1hdERpYWxvZ1N1YlN0ZXBwZXJEaXJlY3RpdmUsXG4gICAgTGFyZ2VGb3JtYXREaWFsb2dUYWJzRGlyZWN0aXZlLFxuICAgIExhcmdlRm9ybWF0RGlhbG9nU3ViVGFic0RpcmVjdGl2ZVxuICBdLFxuICBwcm92aWRlcnM6IFtJbmplY3Rpb25TZXJ2aWNlXSxcbiAgaW1wb3J0czogW0NvbW1vbk1vZHVsZSwgT3ZlcmxheU1vZHVsZSwgSW5wdXRNb2R1bGUsIEZvcm1zTW9kdWxlLCBMb25nUHJlc3NCdXR0b25Nb2R1bGVdLFxuICBlbnRyeUNvbXBvbmVudHM6IFtEaWFsb2dDb21wb25lbnQsIEFsZXJ0Q29tcG9uZW50XVxufSlcbmV4cG9ydCBjbGFzcyBEaWFsb2dNb2R1bGUge31cbiJdfQ==

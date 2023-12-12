@@ -1,0 +1,11 @@
+import { Directive } from '@angular/core';
+/**
+ * Toolbar Title Directive
+ * See: https://github.com/angular/angular/issues/11251
+ */
+export class ToolbarTitleDirective {
+}
+ToolbarTitleDirective.decorators = [
+    { type: Directive, args: [{ selector: 'ngx-toolbar-title' },] }
+];
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidG9vbGJhci10aXRsZS5kaXJlY3RpdmUuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9jb21wb25lbnRzL3Rvb2xiYXIvdG9vbGJhci10aXRsZS5kaXJlY3RpdmUudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLFNBQVMsRUFBRSxNQUFNLGVBQWUsQ0FBQztBQUUxQzs7O0dBR0c7QUFHSCxNQUFNLE9BQU8scUJBQXFCOzs7WUFEakMsU0FBUyxTQUFDLEVBQUUsUUFBUSxFQUFFLG1CQUFtQixFQUFFIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgRGlyZWN0aXZlIH0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5cbi8qKlxuICogVG9vbGJhciBUaXRsZSBEaXJlY3RpdmVcbiAqIFNlZTogaHR0cHM6Ly9naXRodWIuY29tL2FuZ3VsYXIvYW5ndWxhci9pc3N1ZXMvMTEyNTFcbiAqL1xuXG5ARGlyZWN0aXZlKHsgc2VsZWN0b3I6ICduZ3gtdG9vbGJhci10aXRsZScgfSlcbmV4cG9ydCBjbGFzcyBUb29sYmFyVGl0bGVEaXJlY3RpdmUge31cbiJdfQ==

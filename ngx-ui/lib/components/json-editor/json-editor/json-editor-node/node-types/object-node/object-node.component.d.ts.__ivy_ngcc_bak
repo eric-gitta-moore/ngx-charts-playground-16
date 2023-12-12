@@ -1,0 +1,7 @@
+import { ChangeDetectorRef } from '@angular/core';
+import { ObjectNode } from '../../../../node-types/object-node.component';
+export declare class ObjectNodeComponent extends ObjectNode {
+    protected cdr: ChangeDetectorRef;
+    isDuplicated: boolean;
+    constructor(cdr: ChangeDetectorRef);
+}

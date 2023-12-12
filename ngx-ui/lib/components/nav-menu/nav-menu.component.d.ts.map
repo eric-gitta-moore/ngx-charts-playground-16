@@ -1,0 +1,1 @@
+{"version":3,"file":"nav-menu.component.d.ts","sources":["nav-menu.component.d.ts"],"names":[],"mappings":";AAAA;AACA;AACA;AACA;;;AACA","sourcesContent":["export declare class NavMenuComponent {\n    get expanded(): boolean;\n    set expanded(expanded: boolean);\n    private _expanded;\n}\n"]}

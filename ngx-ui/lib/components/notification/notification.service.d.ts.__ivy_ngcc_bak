@@ -1,0 +1,29 @@
+import { ComponentRef, Type } from '@angular/core';
+import { InjectionService } from '../../services/injection/injection.service';
+import { InjectionRegistryService } from '../../services/injection-registry/injection-registry.service';
+import { PartialBindings } from '../../services/injection-registry/partial-bindings.interface';
+import { NotificationComponent } from './notification.component';
+import { NotificationContainerComponent } from './notification-container.component';
+import { NotificationOptions } from './notification-options.interface';
+/** adding dynamic to suppress `Document` type metadata error  */
+/** @dynamic */
+export declare class NotificationService extends InjectionRegistryService<NotificationComponent> {
+    readonly injectionService: InjectionService;
+    private readonly document;
+    static readonly limit: number | boolean;
+    readonly defaults: NotificationOptions;
+    permission: NotificationPermission;
+    container?: ComponentRef<NotificationContainerComponent>;
+    type: typeof NotificationComponent;
+    get isNativeSupported(): boolean;
+    constructor(injectionService: InjectionService, document: Document);
+    create(bindings: Partial<NotificationOptions>): ComponentRef<NotificationComponent>;
+    startTimer(component: ComponentRef<NotificationComponent>): void;
+    pauseTimer(component: ComponentRef<NotificationComponent>): void;
+    requestPermissions(): void;
+    assignDefaults(options: Partial<NotificationOptions>): PartialBindings;
+    injectComponent(type: Type<NotificationContainerComponent>, options: PartialBindings): ComponentRef<any>;
+    createSubscriptions(component: ComponentRef<NotificationComponent>): any;
+    isFlooded(options: Partial<NotificationOptions>): boolean;
+    showNative(options: Partial<NotificationOptions>): any;
+}

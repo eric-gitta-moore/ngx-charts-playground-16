@@ -1,0 +1,1 @@
+{"version":3,"file":"card-avatar.component.d.ts","sources":["card-avatar.component.d.ts"],"names":[],"mappings":"AAAA;AACA;;AACA;AACA;AACA;;;AACA","sourcesContent":["import { SafeUrl } from '@angular/platform-browser';\nimport { CardStatus } from '../card-status.enum';\nexport declare class CardAvatarComponent {\n    src: string | SafeUrl;\n    status: CardStatus;\n}\n"]}

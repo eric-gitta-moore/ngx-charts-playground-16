@@ -1,0 +1,11 @@
+import { ChangeDetectorRef } from '@angular/core';
+export declare class LoadingComponent {
+    private cdr;
+    get visible(): boolean;
+    set visible(visible: boolean);
+    get progress(): number;
+    set progress(progress: number);
+    private _visible;
+    private _progress;
+    constructor(cdr: ChangeDetectorRef);
+}

@@ -1,0 +1,11 @@
+import { Directive } from '@angular/core';
+/**
+ * Toolbar Content Directive
+ * See: https://github.com/angular/angular/issues/11251
+ */
+export class ToolbarContentDirective {
+}
+ToolbarContentDirective.decorators = [
+    { type: Directive, args: [{ selector: 'ngx-toolbar-content' },] }
+];
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidG9vbGJhci1jb250ZW50LmRpcmVjdGl2ZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL3N3aW1sYW5lL25neC11aS9zcmMvbGliL2NvbXBvbmVudHMvdG9vbGJhci90b29sYmFyLWNvbnRlbnQuZGlyZWN0aXZlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBRSxTQUFTLEVBQUUsTUFBTSxlQUFlLENBQUM7QUFFMUM7OztHQUdHO0FBR0gsTUFBTSxPQUFPLHVCQUF1Qjs7O1lBRG5DLFNBQVMsU0FBQyxFQUFFLFFBQVEsRUFBRSxxQkFBcUIsRUFBRSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IERpcmVjdGl2ZSB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuXG4vKipcbiAqIFRvb2xiYXIgQ29udGVudCBEaXJlY3RpdmVcbiAqIFNlZTogaHR0cHM6Ly9naXRodWIuY29tL2FuZ3VsYXIvYW5ndWxhci9pc3N1ZXMvMTEyNTFcbiAqL1xuXG5ARGlyZWN0aXZlKHsgc2VsZWN0b3I6ICduZ3gtdG9vbGJhci1jb250ZW50JyB9KVxuZXhwb3J0IGNsYXNzIFRvb2xiYXJDb250ZW50RGlyZWN0aXZlIHt9XG4iXX0=

@@ -1,0 +1,31 @@
+import { Component, ViewEncapsulation, ContentChildren, QueryList, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { JsonEditor } from '../json-editor';
+import { SchemaValidatorService } from '../schema-validator.service';
+import { JsonEditorNodeComponent } from './json-editor-node/json-editor-node.component';
+export class JsonEditorComponent extends JsonEditor {
+    constructor(schemaValidatorService, cdr) {
+        super(schemaValidatorService, cdr);
+        this.schemaValidatorService = schemaValidatorService;
+        this.cdr = cdr;
+    }
+}
+JsonEditorComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'ngx-json-editor',
+                template: "<div class=\"ngx-json-editor\">\n  <div class=\"editor-title\">\n    <div class=\"type-icon\">\n      <ngx-icon fontIcon=\"integration\"></ngx-icon>\n    </div>\n    <div class=\"name\">\n      <div class=\"title\" *ngIf=\"label\">{{ label }}</div>\n      <div class=\"title\" *ngIf=\"!label\">{{ schema.title ? schema.title : 'Object' }}</div>\n    </div>\n  </div>\n\n  <ngx-json-editor-node\n    [(model)]=\"model\"\n    [schema]=\"schema\"\n    (modelChange)=\"modelChangedCallback($event)\"\n    [errors]=\"errors\"\n    [typeCheckOverrides]=\"typeCheckOverrides\"\n    [showKnownProperties]=\"showKnownProperties\"\n  >\n  </ngx-json-editor-node>\n</div>\n",
+                encapsulation: ViewEncapsulation.None,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                styles: [".ngx-json-editor .editor-title{border:1px solid rgba(148,198,255,.07);height:30px;display:inline-block;margin-left:20px;position:relative;background:rgba(148,198,255,.05)}.ngx-json-editor .editor-title:before{content:\" \";width:15px;height:1px;border-radius:5px;background:none;border-top:1px dashed #5a6884;position:absolute;top:50%;left:-15px}.ngx-json-editor .editor-title .type-icon{width:28px;height:28px;position:relative;background:rgba(148,198,255,.07);margin-left:0;display:inline-block}.ngx-json-editor .editor-title .type-icon ngx-icon{color:#afb7c8;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:16px;height:16px}.ngx-json-editor .editor-title .name{display:inline-block;width:170px;padding:0 5px;position:relative;transform:translateY(-50%);vertical-align:middle}.ngx-json-editor .editor-title .name .title{display:inline-block;width:100%;color:#72819f;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;position:relative;top:5px}.ngx-json-editor .ngx-dropdown-menu{white-space:nowrap;left:16px!important}.ngx-json-editor .ngx-dropdown-menu .dropdown-column{vertical-align:top;display:inline-block;min-width:150px}.ngx-json-editor .ngx-dropdown-menu .dropdown-column:nth-child(2){border-left:1px solid #505c75}.code-editor-dialog .code-editor{width:90vw;overflow:auto}.code-editor-dialog .code-editor .save-code-button{position:absolute;right:22px;top:55px}.code-editor-dialog .code-editor .CodeMirror{height:70vh}.code-editor-dialog .code-editor .mode-select{width:300px}"]
+            },] }
+];
+JsonEditorComponent.ctorParameters = () => [
+    { type: SchemaValidatorService },
+    { type: ChangeDetectorRef }
+];
+JsonEditorComponent.propDecorators = {
+    model: [{ type: Input }],
+    schema: [{ type: Input }],
+    typeCheckOverrides: [{ type: Input }],
+    nodeElms: [{ type: ContentChildren, args: [JsonEditorNodeComponent,] }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoianNvbi1lZGl0b3IuY29tcG9uZW50LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvc3dpbWxhbmUvbmd4LXVpL3NyYy9saWIvY29tcG9uZW50cy9qc29uLWVkaXRvci9qc29uLWVkaXRvci9qc29uLWVkaXRvci5jb21wb25lbnQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUNMLFNBQVMsRUFDVCxpQkFBaUIsRUFDakIsZUFBZSxFQUNmLFNBQVMsRUFDVCxLQUFLLEVBQ0wsdUJBQXVCLEVBQ3ZCLGlCQUFpQixFQUNsQixNQUFNLGVBQWUsQ0FBQztBQUN2QixPQUFPLEVBQUUsVUFBVSxFQUFFLE1BQU0sZ0JBQWdCLENBQUM7QUFDNUMsT0FBTyxFQUFFLHNCQUFzQixFQUFFLE1BQU0sNkJBQTZCLENBQUM7QUFDckUsT0FBTyxFQUFFLHVCQUF1QixFQUFFLE1BQU0sK0NBQStDLENBQUM7QUFVeEYsTUFBTSxPQUFPLG1CQUFvQixTQUFRLFVBQVU7SUFVakQsWUFBc0Isc0JBQThDLEVBQVksR0FBc0I7UUFDcEcsS0FBSyxDQUFDLHNCQUFzQixFQUFFLEdBQUcsQ0FBQyxDQUFDO1FBRGYsMkJBQXNCLEdBQXRCLHNCQUFzQixDQUF3QjtRQUFZLFFBQUcsR0FBSCxHQUFHLENBQW1CO0lBRXRHLENBQUM7OztZQW5CRixTQUFTLFNBQUM7Z0JBQ1QsUUFBUSxFQUFFLGlCQUFpQjtnQkFDM0Isa3FCQUEyQztnQkFFM0MsYUFBYSxFQUFFLGlCQUFpQixDQUFDLElBQUk7Z0JBQ3JDLGVBQWUsRUFBRSx1QkFBdUIsQ0FBQyxNQUFNOzthQUNoRDs7O1lBVlEsc0JBQXNCO1lBSDdCLGlCQUFpQjs7O29CQWVoQixLQUFLO3FCQUVMLEtBQUs7aUNBRUwsS0FBSzt1QkFFTCxlQUFlLFNBQUMsdUJBQXVCIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtcbiAgQ29tcG9uZW50LFxuICBWaWV3RW5jYXBzdWxhdGlvbixcbiAgQ29udGVudENoaWxkcmVuLFxuICBRdWVyeUxpc3QsXG4gIElucHV0LFxuICBDaGFuZ2VEZXRlY3Rpb25TdHJhdGVneSxcbiAgQ2hhbmdlRGV0ZWN0b3JSZWZcbn0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5pbXBvcnQgeyBKc29uRWRpdG9yIH0gZnJvbSAnLi4vanNvbi1lZGl0b3InO1xuaW1wb3J0IHsgU2NoZW1hVmFsaWRhdG9yU2VydmljZSB9IGZyb20gJy4uL3NjaGVtYS12YWxpZGF0b3Iuc2VydmljZSc7XG5pbXBvcnQgeyBKc29uRWRpdG9yTm9kZUNvbXBvbmVudCB9IGZyb20gJy4vanNvbi1lZGl0b3Itbm9kZS9qc29uLWVkaXRvci1ub2RlLmNvbXBvbmVudCc7XG5pbXBvcnQgeyBKU09ORWRpdG9yU2NoZW1hIH0gZnJvbSAnLi4vanNvbi1lZGl0b3IuaGVscGVyJztcblxuQENvbXBvbmVudCh7XG4gIHNlbGVjdG9yOiAnbmd4LWpzb24tZWRpdG9yJyxcbiAgdGVtcGxhdGVVcmw6ICcuL2pzb24tZWRpdG9yLmNvbXBvbmVudC5odG1sJyxcbiAgc3R5bGVVcmxzOiBbJy4vanNvbi1lZGl0b3IuY29tcG9uZW50LnNjc3MnXSxcbiAgZW5jYXBzdWxhdGlvbjogVmlld0VuY2Fwc3VsYXRpb24uTm9uZSxcbiAgY2hhbmdlRGV0ZWN0aW9uOiBDaGFuZ2VEZXRlY3Rpb25TdHJhdGVneS5PblB1c2hcbn0pXG5leHBvcnQgY2xhc3MgSnNvbkVkaXRvckNvbXBvbmVudCBleHRlbmRzIEpzb25FZGl0b3Ige1xuICBASW5wdXQoKSBtb2RlbDogYW55O1xuXG4gIEBJbnB1dCgpIHNjaGVtYTogSlNPTkVkaXRvclNjaGVtYTtcblxuICBASW5wdXQoKSB0eXBlQ2hlY2tPdmVycmlkZXM/OiBhbnk7XG5cbiAgQENvbnRlbnRDaGlsZHJlbihKc29uRWRpdG9yTm9kZUNvbXBvbmVudClcbiAgbm9kZUVsbXM6IFF1ZXJ5TGlzdDxKc29uRWRpdG9yTm9kZUNvbXBvbmVudD47XG5cbiAgY29uc3RydWN0b3IocHJvdGVjdGVkIHNjaGVtYVZhbGlkYXRvclNlcnZpY2U6IFNjaGVtYVZhbGlkYXRvclNlcnZpY2UsIHByb3RlY3RlZCBjZHI6IENoYW5nZURldGVjdG9yUmVmKSB7XG4gICAgc3VwZXIoc2NoZW1hVmFsaWRhdG9yU2VydmljZSwgY2RyKTtcbiAgfVxufVxuIl19

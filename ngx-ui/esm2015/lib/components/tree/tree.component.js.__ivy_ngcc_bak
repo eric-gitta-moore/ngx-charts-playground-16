@@ -1,0 +1,57 @@
+import { Component, Input, EventEmitter, Output, ContentChild, ViewEncapsulation, ContentChildren, TemplateRef, QueryList, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { TreeNodeComponent } from './tree-node.component';
+export class TreeComponent {
+    constructor(_cdr) {
+        this._cdr = _cdr;
+        this.icons = {
+            collapse: 'icon-tree-collapse',
+            expand: 'icon-tree-expand'
+        };
+        this.expand = new EventEmitter();
+        this.collapse = new EventEmitter();
+        this.activate = new EventEmitter();
+        this.deactivate = new EventEmitter();
+        this.selectNode = new EventEmitter();
+        this._destroy$ = new Subject();
+    }
+    get hasOneLeaf() {
+        return (this.nodes && this.nodes.length === 1) || this.nodeElms.length === 1;
+    }
+    get template() {
+        return this._templateInput || this._templateQuery;
+    }
+    ngAfterContentInit() {
+        this.nodeElms.changes.pipe(takeUntil(this._destroy$)).subscribe(() => this._cdr.markForCheck());
+    }
+    ngOnDestroy() {
+        this._destroy$.next();
+        this._destroy$.complete();
+    }
+}
+TreeComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'ngx-tree',
+                template: "<div class=\"ngx-tree\" [class.one-leaf]=\"hasOneLeaf\">\n  <ul class=\"vertical-list\">\n    <ngx-tree-node\n      *ngFor=\"let node of nodes\"\n      [node]=\"node\"\n      [disabled]=\"node.disabled\"\n      [expandable]=\"node.expandable\"\n      [expanded]=\"node.expanded\"\n      [selectable]=\"node.selectable\"\n      [icons]=\"icons\"\n      [label]=\"node.label\"\n      [model]=\"node.model\"\n      [children]=\"node.children\"\n      [template]=\"template\"\n      (expand)=\"expand.emit($event)\"\n      (collapse)=\"collapse.emit($event)\"\n      (activate)=\"activate.emit($event)\"\n      (deactivate)=\"deactivate.emit($event)\"\n      (selectNode)=\"selectNode.emit($event)\"\n    >\n    </ngx-tree-node>\n    <ng-content *ngIf=\"!nodes\"></ng-content>\n  </ul>\n  <div class=\"ngx-tree-vr\" *ngIf=\"nodes?.length || nodeElms?.length\"></div>\n</div>\n",
+                encapsulation: ViewEncapsulation.None,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                styles: [".ngx-tree{position:relative}.ngx-tree .ngx-tree-node{position:relative;padding-left:20px;line-height:25px;min-height:25px}.ngx-tree .ngx-tree-node .ngx-expander{font-size:.75rem;color:#b3b6bd;position:absolute;left:0;top:3px;z-index:1;-webkit-user-select:none;-moz-user-select:none;user-select:none}.ngx-tree .ngx-tree-node .ngx-expander:not(.disabled){cursor:pointer}.ngx-tree .ngx-tree-node .ngx-expander.icon-tree-collapse:before,.ngx-tree .ngx-tree-node .ngx-expander.icon-tree-expand:before{background:#1c2029;border-radius:50%}.ngx-tree .ngx-tree-node .ngx-node-label{color:#b3b6bd;font-size:.9rem}.ngx-tree .ngx-tree-node .ngx-tree{margin-left:5px}.ngx-tree .ngx-tree-node.selectable>.ngx-node-label:not(.disabled){cursor:pointer}.ngx-tree.one-leaf>.ngx-tree-vr:before{display:none}.ngx-tree .ngx-tree-vr{position:absolute;top:17px;bottom:12px;left:5px;border-left:1px dashed #667080;width:1px}.ngx-tree .ngx-tree-vr:after{background:#667080;bottom:-3px}.ngx-tree .ngx-tree-vr:after,.ngx-tree .ngx-tree-vr:before{content:\" \";width:5px;height:5px;border-radius:5px;position:absolute;left:-3px}.ngx-tree .ngx-tree-vr:before{background:none;border:1px solid #667080;top:-5px}"]
+            },] }
+];
+TreeComponent.ctorParameters = () => [
+    { type: ChangeDetectorRef }
+];
+TreeComponent.propDecorators = {
+    nodes: [{ type: Input }],
+    _templateInput: [{ type: Input, args: ['template',] }],
+    icons: [{ type: Input }],
+    _templateQuery: [{ type: ContentChild, args: [TemplateRef, { static: true },] }],
+    nodeElms: [{ type: ContentChildren, args: [TreeNodeComponent,] }],
+    expand: [{ type: Output }],
+    collapse: [{ type: Output }],
+    activate: [{ type: Output }],
+    deactivate: [{ type: Output }],
+    selectNode: [{ type: Output }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidHJlZS5jb21wb25lbnQuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9jb21wb25lbnRzL3RyZWUvdHJlZS5jb21wb25lbnQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUNMLFNBQVMsRUFDVCxLQUFLLEVBQ0wsWUFBWSxFQUNaLE1BQU0sRUFDTixZQUFZLEVBQ1osaUJBQWlCLEVBQ2pCLGVBQWUsRUFDZixXQUFXLEVBQ1gsU0FBUyxFQUNULHVCQUF1QixFQUN2QixpQkFBaUIsRUFHbEIsTUFBTSxlQUFlLENBQUM7QUFDdkIsT0FBTyxFQUFFLE9BQU8sRUFBRSxNQUFNLE1BQU0sQ0FBQztBQUMvQixPQUFPLEVBQUUsU0FBUyxFQUFFLE1BQU0sZ0JBQWdCLENBQUM7QUFFM0MsT0FBTyxFQUFFLGlCQUFpQixFQUFFLE1BQU0sdUJBQXVCLENBQUM7QUFVMUQsTUFBTSxPQUFPLGFBQWE7SUFpQ3hCLFlBQTZCLElBQXVCO1FBQXZCLFNBQUksR0FBSixJQUFJLENBQW1CO1FBMUIzQyxVQUFLLEdBQUc7WUFDZixRQUFRLEVBQUUsb0JBQW9CO1lBQzlCLE1BQU0sRUFBRSxrQkFBa0I7U0FDM0IsQ0FBQztRQU9RLFdBQU0sR0FBRyxJQUFJLFlBQVksRUFBRSxDQUFDO1FBQzVCLGFBQVEsR0FBRyxJQUFJLFlBQVksRUFBRSxDQUFDO1FBQzlCLGFBQVEsR0FBRyxJQUFJLFlBQVksRUFBRSxDQUFDO1FBQzlCLGVBQVUsR0FBRyxJQUFJLFlBQVksRUFBRSxDQUFDO1FBQ2hDLGVBQVUsR0FBRyxJQUFJLFlBQVksRUFBRSxDQUFDO1FBVXpCLGNBQVMsR0FBRyxJQUFJLE9BQU8sRUFBUSxDQUFDO0lBRU0sQ0FBQztJQVZ4RCxJQUFJLFVBQVU7UUFDWixPQUFPLENBQUMsSUFBSSxDQUFDLEtBQUssSUFBSSxJQUFJLENBQUMsS0FBSyxDQUFDLE1BQU0sS0FBSyxDQUFDLENBQUMsSUFBSSxJQUFJLENBQUMsUUFBUSxDQUFDLE1BQU0sS0FBSyxDQUFDLENBQUM7SUFDL0UsQ0FBQztJQUVELElBQUksUUFBUTtRQUNWLE9BQU8sSUFBSSxDQUFDLGNBQWMsSUFBSSxJQUFJLENBQUMsY0FBYyxDQUFDO0lBQ3BELENBQUM7SUFNRCxrQkFBa0I7UUFDaEIsSUFBSSxDQUFDLFFBQVEsQ0FBQyxPQUFPLENBQUMsSUFBSSxDQUFDLFNBQVMsQ0FBQyxJQUFJLENBQUMsU0FBUyxDQUFDLENBQUMsQ0FBQyxTQUFTLENBQUMsR0FBRyxFQUFFLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxZQUFZLEVBQUUsQ0FBQyxDQUFDO0lBQ2xHLENBQUM7SUFFRCxXQUFXO1FBQ1QsSUFBSSxDQUFDLFNBQVMsQ0FBQyxJQUFJLEVBQUUsQ0FBQztRQUN0QixJQUFJLENBQUMsU0FBUyxDQUFDLFFBQVEsRUFBRSxDQUFDO0lBQzVCLENBQUM7OztZQWpERixTQUFTLFNBQUM7Z0JBQ1QsUUFBUSxFQUFFLFVBQVU7Z0JBQ3BCLG8zQkFBb0M7Z0JBRXBDLGFBQWEsRUFBRSxpQkFBaUIsQ0FBQyxJQUFJO2dCQUNyQyxlQUFlLEVBQUUsdUJBQXVCLENBQUMsTUFBTTs7YUFDaEQ7OztZQWhCQyxpQkFBaUI7OztvQkFrQmhCLEtBQUs7NkJBR0wsS0FBSyxTQUFDLFVBQVU7b0JBR2hCLEtBQUs7NkJBS0wsWUFBWSxTQUFDLFdBQVcsRUFBRSxFQUFFLE1BQU0sRUFBRSxJQUFJLEVBQUU7dUJBRzFDLGVBQWUsU0FBQyxpQkFBaUI7cUJBRWpDLE1BQU07dUJBQ04sTUFBTTt1QkFDTixNQUFNO3lCQUNOLE1BQU07eUJBQ04sTUFBTSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7XG4gIENvbXBvbmVudCxcbiAgSW5wdXQsXG4gIEV2ZW50RW1pdHRlcixcbiAgT3V0cHV0LFxuICBDb250ZW50Q2hpbGQsXG4gIFZpZXdFbmNhcHN1bGF0aW9uLFxuICBDb250ZW50Q2hpbGRyZW4sXG4gIFRlbXBsYXRlUmVmLFxuICBRdWVyeUxpc3QsXG4gIENoYW5nZURldGVjdGlvblN0cmF0ZWd5LFxuICBDaGFuZ2VEZXRlY3RvclJlZixcbiAgT25EZXN0cm95LFxuICBBZnRlckNvbnRlbnRJbml0XG59IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHsgU3ViamVjdCB9IGZyb20gJ3J4anMnO1xuaW1wb3J0IHsgdGFrZVVudGlsIH0gZnJvbSAncnhqcy9vcGVyYXRvcnMnO1xuXG5pbXBvcnQgeyBUcmVlTm9kZUNvbXBvbmVudCB9IGZyb20gJy4vdHJlZS1ub2RlLmNvbXBvbmVudCc7XG5pbXBvcnQgeyBUcmVlTm9kZSB9IGZyb20gJy4vdHJlZS1ub2RlLm1vZGVsJztcblxuQENvbXBvbmVudCh7XG4gIHNlbGVjdG9yOiAnbmd4LXRyZWUnLFxuICB0ZW1wbGF0ZVVybDogJy4vdHJlZS5jb21wb25lbnQuaHRtbCcsXG4gIHN0eWxlVXJsczogWycuL3RyZWUuY29tcG9uZW50LnNjc3MnXSxcbiAgZW5jYXBzdWxhdGlvbjogVmlld0VuY2Fwc3VsYXRpb24uTm9uZSxcbiAgY2hhbmdlRGV0ZWN0aW9uOiBDaGFuZ2VEZXRlY3Rpb25TdHJhdGVneS5PblB1c2hcbn0pXG5leHBvcnQgY2xhc3MgVHJlZUNvbXBvbmVudCBpbXBsZW1lbnRzIEFmdGVyQ29udGVudEluaXQsIE9uRGVzdHJveSB7XG4gIEBJbnB1dCgpIG5vZGVzOiBUcmVlTm9kZVtdO1xuXG4gIC8vIGVzbGludC1kaXNhYmxlLW5leHQtbGluZSBAYW5ndWxhci1lc2xpbnQvbm8taW5wdXQtcmVuYW1lXG4gIEBJbnB1dCgndGVtcGxhdGUnKVxuICBfdGVtcGxhdGVJbnB1dDogVGVtcGxhdGVSZWY8YW55PjtcblxuICBASW5wdXQoKSBpY29ucyA9IHtcbiAgICBjb2xsYXBzZTogJ2ljb24tdHJlZS1jb2xsYXBzZScsXG4gICAgZXhwYW5kOiAnaWNvbi10cmVlLWV4cGFuZCdcbiAgfTtcblxuICBAQ29udGVudENoaWxkKFRlbXBsYXRlUmVmLCB7IHN0YXRpYzogdHJ1ZSB9KVxuICBfdGVtcGxhdGVRdWVyeTogVGVtcGxhdGVSZWY8YW55PjtcblxuICBAQ29udGVudENoaWxkcmVuKFRyZWVOb2RlQ29tcG9uZW50KSByZWFkb25seSBub2RlRWxtczogUXVlcnlMaXN0PFRyZWVOb2RlQ29tcG9uZW50PjtcblxuICBAT3V0cHV0KCkgZXhwYW5kID0gbmV3IEV2ZW50RW1pdHRlcigpO1xuICBAT3V0cHV0KCkgY29sbGFwc2UgPSBuZXcgRXZlbnRFbWl0dGVyKCk7XG4gIEBPdXRwdXQoKSBhY3RpdmF0ZSA9IG5ldyBFdmVudEVtaXR0ZXIoKTtcbiAgQE91dHB1dCgpIGRlYWN0aXZhdGUgPSBuZXcgRXZlbnRFbWl0dGVyKCk7XG4gIEBPdXRwdXQoKSBzZWxlY3ROb2RlID0gbmV3IEV2ZW50RW1pdHRlcigpO1xuXG4gIGdldCBoYXNPbmVMZWFmKCk6IGJvb2xlYW4ge1xuICAgIHJldHVybiAodGhpcy5ub2RlcyAmJiB0aGlzLm5vZGVzLmxlbmd0aCA9PT0gMSkgfHwgdGhpcy5ub2RlRWxtcy5sZW5ndGggPT09IDE7XG4gIH1cblxuICBnZXQgdGVtcGxhdGUoKTogVGVtcGxhdGVSZWY8YW55PiB7XG4gICAgcmV0dXJuIHRoaXMuX3RlbXBsYXRlSW5wdXQgfHwgdGhpcy5fdGVtcGxhdGVRdWVyeTtcbiAgfVxuXG4gIHByaXZhdGUgcmVhZG9ubHkgX2Rlc3Ryb3kkID0gbmV3IFN1YmplY3Q8dm9pZD4oKTtcblxuICBjb25zdHJ1Y3Rvcihwcml2YXRlIHJlYWRvbmx5IF9jZHI6IENoYW5nZURldGVjdG9yUmVmKSB7fVxuXG4gIG5nQWZ0ZXJDb250ZW50SW5pdCgpOiB2b2lkIHtcbiAgICB0aGlzLm5vZGVFbG1zLmNoYW5nZXMucGlwZSh0YWtlVW50aWwodGhpcy5fZGVzdHJveSQpKS5zdWJzY3JpYmUoKCkgPT4gdGhpcy5fY2RyLm1hcmtGb3JDaGVjaygpKTtcbiAgfVxuXG4gIG5nT25EZXN0cm95KCk6IHZvaWQge1xuICAgIHRoaXMuX2Rlc3Ryb3kkLm5leHQoKTtcbiAgICB0aGlzLl9kZXN0cm95JC5jb21wbGV0ZSgpO1xuICB9XG59XG4iXX0=

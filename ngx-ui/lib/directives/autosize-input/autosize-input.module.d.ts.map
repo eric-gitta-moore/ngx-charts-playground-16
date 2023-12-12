@@ -1,0 +1,1 @@
+{"version":3,"file":"autosize-input.module.d.ts","sources":["autosize-input.module.d.ts"],"names":[],"mappings":";;;AAAA;;;;AACA","sourcesContent":["export declare class AutoSizeInputModule {\n}\n"]}

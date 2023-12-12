@@ -1,0 +1,7 @@
+import { EventEmitter } from '@angular/core';
+export declare class DialogDrawerContentComponent {
+    drawerTitle: string;
+    dismissBtnText: string;
+    dismiss: EventEmitter<any>;
+    hostClass: boolean;
+}

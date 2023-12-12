@@ -1,0 +1,7 @@
+export var HotkeyStatus;
+(function (HotkeyStatus) {
+    HotkeyStatus["Active"] = "active";
+    HotkeyStatus["Suspended"] = "suspended";
+    HotkeyStatus["Disabled"] = "disabled";
+})(HotkeyStatus || (HotkeyStatus = {}));
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaG90a2V5LXN0YXR1cy5lbnVtLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvc3dpbWxhbmUvbmd4LXVpL3NyYy9saWIvY29tcG9uZW50cy9ob3RrZXlzL2hvdGtleS1zdGF0dXMuZW51bS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxNQUFNLENBQU4sSUFBWSxZQUlYO0FBSkQsV0FBWSxZQUFZO0lBQ3RCLGlDQUFpQixDQUFBO0lBQ2pCLHVDQUF1QixDQUFBO0lBQ3ZCLHFDQUFxQixDQUFBO0FBQ3ZCLENBQUMsRUFKVyxZQUFZLEtBQVosWUFBWSxRQUl2QiIsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBlbnVtIEhvdGtleVN0YXR1cyB7XG4gIEFjdGl2ZSA9ICdhY3RpdmUnLFxuICBTdXNwZW5kZWQgPSAnc3VzcGVuZGVkJyxcbiAgRGlzYWJsZWQgPSAnZGlzYWJsZWQnXG59XG4iXX0=

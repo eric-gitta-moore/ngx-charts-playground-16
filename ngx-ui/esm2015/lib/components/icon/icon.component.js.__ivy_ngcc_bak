@@ -1,0 +1,70 @@
+import { Component, Input, ChangeDetectionStrategy, ElementRef, ViewEncapsulation } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { IconRegistryService } from '../../services/icon-registry/icon-registry.service';
+export class IconComponent {
+    constructor(http, elementRef, iconRegisteryService) {
+        this.http = http;
+        this.elementRef = elementRef;
+        this.iconRegisteryService = iconRegisteryService;
+        this.defaultPath = 'assets/svgs';
+        this.fontSet = 'ngx';
+    }
+    set svgSrc(val) {
+        this.loadSvg(val);
+    }
+    ngOnChanges() {
+        this.update();
+    }
+    ngOnInit() {
+        this.update();
+    }
+    update() {
+        if (this.fontIcon) {
+            this.cssClasses = this.iconRegisteryService.get(this.fontIcon, this.fontSet);
+        }
+    }
+    loadSvg(val) {
+        const opts = { responseType: 'text' };
+        this.http.get(`${this.defaultPath}/${val}.svg`, opts).subscribe(
+        /* istanbul ignore next */
+        (response) => {
+            // get our element and clean it out
+            const element = this.elementRef.nativeElement;
+            element.innerHTML = '';
+            // get response and build svg element
+            const parser = new DOMParser();
+            const svg = parser.parseFromString(response, 'image/svg+xml');
+            // insert the svg result
+            // eslint-disable-next-line
+            element.innerHTML = svg.documentElement.outerHTML;
+        }, 
+        /* istanbul ignore next */
+        err => {
+            // eslint-disable-next-line no-console
+            console.error(err);
+        });
+    }
+}
+IconComponent.decorators = [
+    { type: Component, args: [{
+                exportAs: 'ngxIcon',
+                selector: 'ngx-icon',
+                template: "<ng-container [ngSwitch]=\"cssClasses?.length\">\n  <ng-content *ngSwitchCase=\"\"></ng-content>\n  <ng-content *ngSwitchCase=\"0\"></ng-content>\n  <i *ngSwitchCase=\"1\" [ngClass]=\"cssClasses[0]\"></i>\n  <span *ngSwitchDefault class=\"icon-fx-stacked\">\n    <i *ngFor=\"let cssClass of cssClasses\" [ngClass]=\"cssClass\"></i>\n  </span>\n</ng-container>\n",
+                encapsulation: ViewEncapsulation.None,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                styles: ["ngx-icon svg{fill:currentColor}.icon-fx-stacked{position:relative;display:inline-block;width:1em;height:1em;line-height:1em;vertical-align:baseline}.icon-fx-stacked .ngx-icon{position:absolute;width:100%;text-align:center}"]
+            },] }
+];
+IconComponent.ctorParameters = () => [
+    { type: HttpClient },
+    { type: ElementRef },
+    { type: IconRegistryService }
+];
+IconComponent.propDecorators = {
+    fontIcon: [{ type: Input }],
+    alt: [{ type: Input }],
+    defaultPath: [{ type: Input }],
+    fontSet: [{ type: Input }],
+    svgSrc: [{ type: Input }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaWNvbi5jb21wb25lbnQuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9jb21wb25lbnRzL2ljb24vaWNvbi5jb21wb25lbnQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUNMLFNBQVMsRUFDVCxLQUFLLEVBQ0wsdUJBQXVCLEVBQ3ZCLFVBQVUsRUFHVixpQkFBaUIsRUFDbEIsTUFBTSxlQUFlLENBQUM7QUFDdkIsT0FBTyxFQUFFLFVBQVUsRUFBRSxNQUFNLHNCQUFzQixDQUFDO0FBRWxELE9BQU8sRUFBRSxtQkFBbUIsRUFBRSxNQUFNLG9EQUFvRCxDQUFDO0FBVXpGLE1BQU0sT0FBTyxhQUFhO0lBYXhCLFlBQ1UsSUFBZ0IsRUFDaEIsVUFBc0IsRUFDdEIsb0JBQXlDO1FBRnpDLFNBQUksR0FBSixJQUFJLENBQVk7UUFDaEIsZUFBVSxHQUFWLFVBQVUsQ0FBWTtRQUN0Qix5QkFBb0IsR0FBcEIsb0JBQW9CLENBQXFCO1FBYjFDLGdCQUFXLEdBQUcsYUFBYSxDQUFDO1FBQzVCLFlBQU8sR0FBRyxLQUFLLENBQUM7SUFhdEIsQ0FBQztJQVhKLElBQ0ksTUFBTSxDQUFDLEdBQVc7UUFDcEIsSUFBSSxDQUFDLE9BQU8sQ0FBQyxHQUFHLENBQUMsQ0FBQztJQUNwQixDQUFDO0lBVUQsV0FBVztRQUNULElBQUksQ0FBQyxNQUFNLEVBQUUsQ0FBQztJQUNoQixDQUFDO0lBRUQsUUFBUTtRQUNOLElBQUksQ0FBQyxNQUFNLEVBQUUsQ0FBQztJQUNoQixDQUFDO0lBRUQsTUFBTTtRQUNKLElBQUksSUFBSSxDQUFDLFFBQVEsRUFBRTtZQUNqQixJQUFJLENBQUMsVUFBVSxHQUFHLElBQUksQ0FBQyxvQkFBb0IsQ0FBQyxHQUFHLENBQUMsSUFBSSxDQUFDLFFBQVEsRUFBRSxJQUFJLENBQUMsT0FBTyxDQUFDLENBQUM7U0FDOUU7SUFDSCxDQUFDO0lBRUQsT0FBTyxDQUFDLEdBQVc7UUFDakIsTUFBTSxJQUFJLEdBQVEsRUFBRSxZQUFZLEVBQUUsTUFBTSxFQUFFLENBQUM7UUFDM0MsSUFBSSxDQUFDLElBQUksQ0FBQyxHQUFHLENBQVMsR0FBRyxJQUFJLENBQUMsV0FBVyxJQUFJLEdBQUcsTUFBTSxFQUFFLElBQUksQ0FBQyxDQUFDLFNBQVM7UUFDckUsMEJBQTBCO1FBQzFCLENBQUMsUUFBYSxFQUFFLEVBQUU7WUFDaEIsbUNBQW1DO1lBQ25DLE1BQU0sT0FBTyxHQUFHLElBQUksQ0FBQyxVQUFVLENBQUMsYUFBYSxDQUFDO1lBQzlDLE9BQU8sQ0FBQyxTQUFTLEdBQUcsRUFBRSxDQUFDO1lBRXZCLHFDQUFxQztZQUNyQyxNQUFNLE1BQU0sR0FBRyxJQUFJLFNBQVMsRUFBRSxDQUFDO1lBQy9CLE1BQU0sR0FBRyxHQUFHLE1BQU0sQ0FBQyxlQUFlLENBQUMsUUFBUSxFQUFFLGVBQWUsQ0FBQyxDQUFDO1lBRTlELHdCQUF3QjtZQUN4QiwyQkFBMkI7WUFDM0IsT0FBTyxDQUFDLFNBQVMsR0FBRyxHQUFHLENBQUMsZUFBZSxDQUFDLFNBQVMsQ0FBQztRQUNwRCxDQUFDO1FBQ0QsMEJBQTBCO1FBQzFCLEdBQUcsQ0FBQyxFQUFFO1lBQ0osc0NBQXNDO1lBQ3RDLE9BQU8sQ0FBQyxLQUFLLENBQUMsR0FBRyxDQUFDLENBQUM7UUFDckIsQ0FBQyxDQUNGLENBQUM7SUFDSixDQUFDOzs7WUFoRUYsU0FBUyxTQUFDO2dCQUNULFFBQVEsRUFBRSxTQUFTO2dCQUNuQixRQUFRLEVBQUUsVUFBVTtnQkFDcEIscVhBQW9DO2dCQUVwQyxhQUFhLEVBQUUsaUJBQWlCLENBQUMsSUFBSTtnQkFDckMsZUFBZSxFQUFFLHVCQUF1QixDQUFDLE1BQU07O2FBQ2hEOzs7WUFYUSxVQUFVO1lBTGpCLFVBQVU7WUFPSCxtQkFBbUI7Ozt1QkFXekIsS0FBSztrQkFDTCxLQUFLOzBCQUNMLEtBQUs7c0JBQ0wsS0FBSztxQkFFTCxLQUFLIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtcbiAgQ29tcG9uZW50LFxuICBJbnB1dCxcbiAgQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3ksXG4gIEVsZW1lbnRSZWYsXG4gIE9uQ2hhbmdlcyxcbiAgT25Jbml0LFxuICBWaWV3RW5jYXBzdWxhdGlvblxufSBmcm9tICdAYW5ndWxhci9jb3JlJztcbmltcG9ydCB7IEh0dHBDbGllbnQgfSBmcm9tICdAYW5ndWxhci9jb21tb24vaHR0cCc7XG5cbmltcG9ydCB7IEljb25SZWdpc3RyeVNlcnZpY2UgfSBmcm9tICcuLi8uLi9zZXJ2aWNlcy9pY29uLXJlZ2lzdHJ5L2ljb24tcmVnaXN0cnkuc2VydmljZSc7XG5cbkBDb21wb25lbnQoe1xuICBleHBvcnRBczogJ25neEljb24nLFxuICBzZWxlY3RvcjogJ25neC1pY29uJyxcbiAgdGVtcGxhdGVVcmw6ICcuL2ljb24uY29tcG9uZW50Lmh0bWwnLFxuICBzdHlsZVVybHM6IFsnLi9pY29uLmNvbXBvbmVudC5zY3NzJ10sXG4gIGVuY2Fwc3VsYXRpb246IFZpZXdFbmNhcHN1bGF0aW9uLk5vbmUsXG4gIGNoYW5nZURldGVjdGlvbjogQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3kuT25QdXNoXG59KVxuZXhwb3J0IGNsYXNzIEljb25Db21wb25lbnQgaW1wbGVtZW50cyBPbkNoYW5nZXMsIE9uSW5pdCB7XG4gIEBJbnB1dCgpIGZvbnRJY29uOiBzdHJpbmcgfCBzdHJpbmdbXTtcbiAgQElucHV0KCkgYWx0OiBzdHJpbmc7XG4gIEBJbnB1dCgpIGRlZmF1bHRQYXRoID0gJ2Fzc2V0cy9zdmdzJztcbiAgQElucHV0KCkgZm9udFNldCA9ICduZ3gnO1xuXG4gIEBJbnB1dCgpXG4gIHNldCBzdmdTcmModmFsOiBzdHJpbmcpIHtcbiAgICB0aGlzLmxvYWRTdmcodmFsKTtcbiAgfVxuXG4gIGNzc0NsYXNzZXM6IHN0cmluZ1tdO1xuXG4gIGNvbnN0cnVjdG9yKFxuICAgIHByaXZhdGUgaHR0cDogSHR0cENsaWVudCxcbiAgICBwcml2YXRlIGVsZW1lbnRSZWY6IEVsZW1lbnRSZWYsXG4gICAgcHJpdmF0ZSBpY29uUmVnaXN0ZXJ5U2VydmljZTogSWNvblJlZ2lzdHJ5U2VydmljZVxuICApIHt9XG5cbiAgbmdPbkNoYW5nZXMoKSB7XG4gICAgdGhpcy51cGRhdGUoKTtcbiAgfVxuXG4gIG5nT25Jbml0KCkge1xuICAgIHRoaXMudXBkYXRlKCk7XG4gIH1cblxuICB1cGRhdGUoKSB7XG4gICAgaWYgKHRoaXMuZm9udEljb24pIHtcbiAgICAgIHRoaXMuY3NzQ2xhc3NlcyA9IHRoaXMuaWNvblJlZ2lzdGVyeVNlcnZpY2UuZ2V0KHRoaXMuZm9udEljb24sIHRoaXMuZm9udFNldCk7XG4gICAgfVxuICB9XG5cbiAgbG9hZFN2Zyh2YWw6IHN0cmluZyk6IHZvaWQge1xuICAgIGNvbnN0IG9wdHM6IGFueSA9IHsgcmVzcG9uc2VUeXBlOiAndGV4dCcgfTtcbiAgICB0aGlzLmh0dHAuZ2V0PHN0cmluZz4oYCR7dGhpcy5kZWZhdWx0UGF0aH0vJHt2YWx9LnN2Z2AsIG9wdHMpLnN1YnNjcmliZShcbiAgICAgIC8qIGlzdGFuYnVsIGlnbm9yZSBuZXh0ICovXG4gICAgICAocmVzcG9uc2U6IGFueSkgPT4ge1xuICAgICAgICAvLyBnZXQgb3VyIGVsZW1lbnQgYW5kIGNsZWFuIGl0IG91dFxuICAgICAgICBjb25zdCBlbGVtZW50ID0gdGhpcy5lbGVtZW50UmVmLm5hdGl2ZUVsZW1lbnQ7XG4gICAgICAgIGVsZW1lbnQuaW5uZXJIVE1MID0gJyc7XG5cbiAgICAgICAgLy8gZ2V0IHJlc3BvbnNlIGFuZCBidWlsZCBzdmcgZWxlbWVudFxuICAgICAgICBjb25zdCBwYXJzZXIgPSBuZXcgRE9NUGFyc2VyKCk7XG4gICAgICAgIGNvbnN0IHN2ZyA9IHBhcnNlci5wYXJzZUZyb21TdHJpbmcocmVzcG9uc2UsICdpbWFnZS9zdmcreG1sJyk7XG5cbiAgICAgICAgLy8gaW5zZXJ0IHRoZSBzdmcgcmVzdWx0XG4gICAgICAgIC8vIGVzbGludC1kaXNhYmxlLW5leHQtbGluZVxuICAgICAgICBlbGVtZW50LmlubmVySFRNTCA9IHN2Zy5kb2N1bWVudEVsZW1lbnQub3V0ZXJIVE1MO1xuICAgICAgfSxcbiAgICAgIC8qIGlzdGFuYnVsIGlnbm9yZSBuZXh0ICovXG4gICAgICBlcnIgPT4ge1xuICAgICAgICAvLyBlc2xpbnQtZGlzYWJsZS1uZXh0LWxpbmUgbm8tY29uc29sZVxuICAgICAgICBjb25zb2xlLmVycm9yKGVycik7XG4gICAgICB9XG4gICAgKTtcbiAgfVxufVxuIl19

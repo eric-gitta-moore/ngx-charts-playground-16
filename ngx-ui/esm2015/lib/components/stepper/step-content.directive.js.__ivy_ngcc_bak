@@ -1,0 +1,16 @@
+import { Directive, TemplateRef } from '@angular/core';
+export class StepContentDirective {
+    constructor(template) {
+        this.template = template;
+    }
+}
+StepContentDirective.decorators = [
+    { type: Directive, args: [{
+                exportAs: 'ngxStepContent',
+                selector: 'ng-template[ngxStepContent]'
+            },] }
+];
+StepContentDirective.ctorParameters = () => [
+    { type: TemplateRef }
+];
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic3RlcC1jb250ZW50LmRpcmVjdGl2ZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL3N3aW1sYW5lL25neC11aS9zcmMvbGliL2NvbXBvbmVudHMvc3RlcHBlci9zdGVwLWNvbnRlbnQuZGlyZWN0aXZlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBRSxTQUFTLEVBQUUsV0FBVyxFQUFFLE1BQU0sZUFBZSxDQUFDO0FBTXZELE1BQU0sT0FBTyxvQkFBb0I7SUFDL0IsWUFBcUIsUUFBMEI7UUFBMUIsYUFBUSxHQUFSLFFBQVEsQ0FBa0I7SUFBRyxDQUFDOzs7WUFMcEQsU0FBUyxTQUFDO2dCQUNULFFBQVEsRUFBRSxnQkFBZ0I7Z0JBQzFCLFFBQVEsRUFBRSw2QkFBNkI7YUFDeEM7OztZQUxtQixXQUFXIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgRGlyZWN0aXZlLCBUZW1wbGF0ZVJlZiB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuXG5ARGlyZWN0aXZlKHtcbiAgZXhwb3J0QXM6ICduZ3hTdGVwQ29udGVudCcsXG4gIHNlbGVjdG9yOiAnbmctdGVtcGxhdGVbbmd4U3RlcENvbnRlbnRdJ1xufSlcbmV4cG9ydCBjbGFzcyBTdGVwQ29udGVudERpcmVjdGl2ZSB7XG4gIGNvbnN0cnVjdG9yKHJlYWRvbmx5IHRlbXBsYXRlOiBUZW1wbGF0ZVJlZjxhbnk+KSB7fVxufVxuIl19

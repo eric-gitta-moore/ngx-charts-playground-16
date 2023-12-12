@@ -1,0 +1,70 @@
+import { Component, Input, EventEmitter, Output, ViewEncapsulation, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
+export class TreeNodeComponent {
+    constructor() {
+        this.icons = {
+            collapse: 'icon-tree-collapse',
+            expand: 'icon-tree-expand'
+        };
+        this.activate = new EventEmitter();
+        this.deactivate = new EventEmitter();
+        this.selectNode = new EventEmitter();
+        // backwards compatibility. Use selectNode
+        // eslint-disable-next-line @angular-eslint/no-output-native
+        this.select = this.selectNode;
+        this.expand = new EventEmitter();
+        this.collapse = new EventEmitter();
+    }
+    ngOnChanges() {
+        this.data = {
+            $implicit: this.node,
+            label: this.label,
+            children: this.children,
+            model: this.model
+        };
+    }
+    onExpandClick(event) {
+        if (this.disabled || !this.expandable)
+            return;
+        event.stopPropagation();
+        this.expanded = !this.expanded;
+        if (this.expanded) {
+            this.expand.emit(this.data);
+        }
+        else {
+            this.collapse.emit(this.data);
+        }
+    }
+    onClick() {
+        if (!this.selectable || this.disabled)
+            return;
+        this.selectNode.emit(this.data);
+    }
+}
+TreeNodeComponent.decorators = [
+    { type: Component, args: [{
+                exportAs: 'ngxTreeNode',
+                selector: 'ngx-tree-node',
+                template: "<li\n  class=\"ngx-tree-node\"\n  [class.selectable]=\"selectable\"\n  (focus)=\"activate.emit(this.data)\"\n  (blur)=\"deactivate.emit(this.data)\"\n  tabindex=\"-1\"\n>\n  <span\n    *ngIf=\"expandable\"\n    class=\"ngx-expander\"\n    (click)=\"onExpandClick($event)\"\n    [class.disabled]=\"disabled\"\n    [ngClass]=\"expanded ? icons.collapse : icons.expand\"\n  >\n  </span>\n  <span *ngIf=\"!template\" [innerHTML]=\"label\" [class.disabled]=\"disabled\" class=\"ngx-node-label\" (click)=\"onClick()\">\n  </span>\n  <ng-template *ngIf=\"template\" [ngTemplateOutlet]=\"template\" [ngTemplateOutletContext]=\"data\"> </ng-template>\n  <ng-content *ngIf=\"expanded\"></ng-content>\n  <ngx-tree\n    *ngIf=\"children?.length && expandable && expanded\"\n    class=\"ngx-sub-tree\"\n    [nodes]=\"children\"\n    [template]=\"template\"\n    [icons]=\"icons\"\n    (selectNode)=\"selectNode.emit($event)\"\n    (expand)=\"expand.emit($event)\"\n    (collapse)=\"collapse.emit($event)\"\n  >\n  </ngx-tree>\n</li>\n",
+                encapsulation: ViewEncapsulation.None,
+                changeDetection: ChangeDetectionStrategy.OnPush
+            },] }
+];
+TreeNodeComponent.propDecorators = {
+    label: [{ type: Input }],
+    model: [{ type: Input }],
+    node: [{ type: Input }],
+    children: [{ type: Input }],
+    disabled: [{ type: Input }],
+    expandable: [{ type: Input }],
+    expanded: [{ type: Input }],
+    selectable: [{ type: Input }],
+    template: [{ type: Input }],
+    icons: [{ type: Input }],
+    activate: [{ type: Output }],
+    deactivate: [{ type: Output }],
+    selectNode: [{ type: Output }],
+    select: [{ type: Output }],
+    expand: [{ type: Output }],
+    collapse: [{ type: Output }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidHJlZS1ub2RlLmNvbXBvbmVudC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL3N3aW1sYW5lL25neC11aS9zcmMvbGliL2NvbXBvbmVudHMvdHJlZS90cmVlLW5vZGUuY29tcG9uZW50LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFDTCxTQUFTLEVBQ1QsS0FBSyxFQUNMLFlBQVksRUFDWixNQUFNLEVBRU4saUJBQWlCLEVBQ2pCLFdBQVcsRUFDWCx1QkFBdUIsRUFDeEIsTUFBTSxlQUFlLENBQUM7QUFXdkIsTUFBTSxPQUFPLGlCQUFpQjtJQVA5QjtRQWlCVyxVQUFLLEdBQUc7WUFDZixRQUFRLEVBQUUsb0JBQW9CO1lBQzlCLE1BQU0sRUFBRSxrQkFBa0I7U0FDM0IsQ0FBQztRQUVRLGFBQVEsR0FBRyxJQUFJLFlBQVksRUFBRSxDQUFDO1FBQzlCLGVBQVUsR0FBRyxJQUFJLFlBQVksRUFBRSxDQUFDO1FBQ2hDLGVBQVUsR0FBRyxJQUFJLFlBQVksRUFBRSxDQUFDO1FBQzFDLDBDQUEwQztRQUMxQyw0REFBNEQ7UUFDbEQsV0FBTSxHQUFHLElBQUksQ0FBQyxVQUFVLENBQUM7UUFDekIsV0FBTSxHQUFHLElBQUksWUFBWSxFQUFFLENBQUM7UUFDNUIsYUFBUSxHQUFHLElBQUksWUFBWSxFQUFFLENBQUM7SUErQjFDLENBQUM7SUEzQkMsV0FBVztRQUNULElBQUksQ0FBQyxJQUFJLEdBQUc7WUFDVixTQUFTLEVBQUUsSUFBSSxDQUFDLElBQUk7WUFDcEIsS0FBSyxFQUFFLElBQUksQ0FBQyxLQUFLO1lBQ2pCLFFBQVEsRUFBRSxJQUFJLENBQUMsUUFBUTtZQUN2QixLQUFLLEVBQUUsSUFBSSxDQUFDLEtBQUs7U0FDbEIsQ0FBQztJQUNKLENBQUM7SUFFRCxhQUFhLENBQUMsS0FBWTtRQUN4QixJQUFJLElBQUksQ0FBQyxRQUFRLElBQUksQ0FBQyxJQUFJLENBQUMsVUFBVTtZQUFFLE9BQU87UUFFOUMsS0FBSyxDQUFDLGVBQWUsRUFBRSxDQUFDO1FBRXhCLElBQUksQ0FBQyxRQUFRLEdBQUcsQ0FBQyxJQUFJLENBQUMsUUFBUSxDQUFDO1FBRS9CLElBQUksSUFBSSxDQUFDLFFBQVEsRUFBRTtZQUNqQixJQUFJLENBQUMsTUFBTSxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFDLENBQUM7U0FDN0I7YUFBTTtZQUNMLElBQUksQ0FBQyxRQUFRLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsQ0FBQztTQUMvQjtJQUNILENBQUM7SUFFRCxPQUFPO1FBQ0wsSUFBSSxDQUFDLElBQUksQ0FBQyxVQUFVLElBQUksSUFBSSxDQUFDLFFBQVE7WUFBRSxPQUFPO1FBQzlDLElBQUksQ0FBQyxVQUFVLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsQ0FBQztJQUNsQyxDQUFDOzs7WUEzREYsU0FBUyxTQUFDO2dCQUNULFFBQVEsRUFBRSxhQUFhO2dCQUN2QixRQUFRLEVBQUUsZUFBZTtnQkFDekIseWdDQUF5QztnQkFDekMsYUFBYSxFQUFFLGlCQUFpQixDQUFDLElBQUk7Z0JBQ3JDLGVBQWUsRUFBRSx1QkFBdUIsQ0FBQyxNQUFNO2FBQ2hEOzs7b0JBRUUsS0FBSztvQkFDTCxLQUFLO21CQUNMLEtBQUs7dUJBQ0wsS0FBSzt1QkFDTCxLQUFLO3lCQUNMLEtBQUs7dUJBQ0wsS0FBSzt5QkFDTCxLQUFLO3VCQUNMLEtBQUs7b0JBQ0wsS0FBSzt1QkFLTCxNQUFNO3lCQUNOLE1BQU07eUJBQ04sTUFBTTtxQkFHTixNQUFNO3FCQUNOLE1BQU07dUJBQ04sTUFBTSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7XG4gIENvbXBvbmVudCxcbiAgSW5wdXQsXG4gIEV2ZW50RW1pdHRlcixcbiAgT3V0cHV0LFxuICBPbkNoYW5nZXMsXG4gIFZpZXdFbmNhcHN1bGF0aW9uLFxuICBUZW1wbGF0ZVJlZixcbiAgQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3lcbn0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5cbmltcG9ydCB7IFRyZWVOb2RlIH0gZnJvbSAnLi90cmVlLW5vZGUubW9kZWwnO1xuXG5AQ29tcG9uZW50KHtcbiAgZXhwb3J0QXM6ICduZ3hUcmVlTm9kZScsXG4gIHNlbGVjdG9yOiAnbmd4LXRyZWUtbm9kZScsXG4gIHRlbXBsYXRlVXJsOiAnLi90cmVlLW5vZGUuY29tcG9uZW50Lmh0bWwnLFxuICBlbmNhcHN1bGF0aW9uOiBWaWV3RW5jYXBzdWxhdGlvbi5Ob25lLFxuICBjaGFuZ2VEZXRlY3Rpb246IENoYW5nZURldGVjdGlvblN0cmF0ZWd5Lk9uUHVzaFxufSlcbmV4cG9ydCBjbGFzcyBUcmVlTm9kZUNvbXBvbmVudCBpbXBsZW1lbnRzIE9uQ2hhbmdlcyB7XG4gIEBJbnB1dCgpIGxhYmVsOiBzdHJpbmc7XG4gIEBJbnB1dCgpIG1vZGVsOiBhbnk7XG4gIEBJbnB1dCgpIG5vZGU6IFRyZWVOb2RlO1xuICBASW5wdXQoKSBjaGlsZHJlbjogYW55W107XG4gIEBJbnB1dCgpIGRpc2FibGVkOiBib29sZWFuO1xuICBASW5wdXQoKSBleHBhbmRhYmxlOiBib29sZWFuO1xuICBASW5wdXQoKSBleHBhbmRlZDogYm9vbGVhbjtcbiAgQElucHV0KCkgc2VsZWN0YWJsZTogYm9vbGVhbjtcbiAgQElucHV0KCkgdGVtcGxhdGU6IFRlbXBsYXRlUmVmPGFueT47XG4gIEBJbnB1dCgpIGljb25zID0ge1xuICAgIGNvbGxhcHNlOiAnaWNvbi10cmVlLWNvbGxhcHNlJyxcbiAgICBleHBhbmQ6ICdpY29uLXRyZWUtZXhwYW5kJ1xuICB9O1xuXG4gIEBPdXRwdXQoKSBhY3RpdmF0ZSA9IG5ldyBFdmVudEVtaXR0ZXIoKTtcbiAgQE91dHB1dCgpIGRlYWN0aXZhdGUgPSBuZXcgRXZlbnRFbWl0dGVyKCk7XG4gIEBPdXRwdXQoKSBzZWxlY3ROb2RlID0gbmV3IEV2ZW50RW1pdHRlcigpO1xuICAvLyBiYWNrd2FyZHMgY29tcGF0aWJpbGl0eS4gVXNlIHNlbGVjdE5vZGVcbiAgLy8gZXNsaW50LWRpc2FibGUtbmV4dC1saW5lIEBhbmd1bGFyLWVzbGludC9uby1vdXRwdXQtbmF0aXZlXG4gIEBPdXRwdXQoKSBzZWxlY3QgPSB0aGlzLnNlbGVjdE5vZGU7XG4gIEBPdXRwdXQoKSBleHBhbmQgPSBuZXcgRXZlbnRFbWl0dGVyKCk7XG4gIEBPdXRwdXQoKSBjb2xsYXBzZSA9IG5ldyBFdmVudEVtaXR0ZXIoKTtcblxuICBkYXRhOiBhbnk7XG5cbiAgbmdPbkNoYW5nZXMoKTogdm9pZCB7XG4gICAgdGhpcy5kYXRhID0ge1xuICAgICAgJGltcGxpY2l0OiB0aGlzLm5vZGUsXG4gICAgICBsYWJlbDogdGhpcy5sYWJlbCxcbiAgICAgIGNoaWxkcmVuOiB0aGlzLmNoaWxkcmVuLFxuICAgICAgbW9kZWw6IHRoaXMubW9kZWxcbiAgICB9O1xuICB9XG5cbiAgb25FeHBhbmRDbGljayhldmVudDogRXZlbnQpOiB2b2lkIHtcbiAgICBpZiAodGhpcy5kaXNhYmxlZCB8fCAhdGhpcy5leHBhbmRhYmxlKSByZXR1cm47XG5cbiAgICBldmVudC5zdG9wUHJvcGFnYXRpb24oKTtcblxuICAgIHRoaXMuZXhwYW5kZWQgPSAhdGhpcy5leHBhbmRlZDtcblxuICAgIGlmICh0aGlzLmV4cGFuZGVkKSB7XG4gICAgICB0aGlzLmV4cGFuZC5lbWl0KHRoaXMuZGF0YSk7XG4gICAgfSBlbHNlIHtcbiAgICAgIHRoaXMuY29sbGFwc2UuZW1pdCh0aGlzLmRhdGEpO1xuICAgIH1cbiAgfVxuXG4gIG9uQ2xpY2soKTogdm9pZCB7XG4gICAgaWYgKCF0aGlzLnNlbGVjdGFibGUgfHwgdGhpcy5kaXNhYmxlZCkgcmV0dXJuO1xuICAgIHRoaXMuc2VsZWN0Tm9kZS5lbWl0KHRoaXMuZGF0YSk7XG4gIH1cbn1cbiJdfQ==

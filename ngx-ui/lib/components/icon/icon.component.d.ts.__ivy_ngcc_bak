@@ -1,0 +1,19 @@
+import { ElementRef, OnChanges, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { IconRegistryService } from '../../services/icon-registry/icon-registry.service';
+export declare class IconComponent implements OnChanges, OnInit {
+    private http;
+    private elementRef;
+    private iconRegisteryService;
+    fontIcon: string | string[];
+    alt: string;
+    defaultPath: string;
+    fontSet: string;
+    set svgSrc(val: string);
+    cssClasses: string[];
+    constructor(http: HttpClient, elementRef: ElementRef, iconRegisteryService: IconRegistryService);
+    ngOnChanges(): void;
+    ngOnInit(): void;
+    update(): void;
+    loadSvg(val: string): void;
+}

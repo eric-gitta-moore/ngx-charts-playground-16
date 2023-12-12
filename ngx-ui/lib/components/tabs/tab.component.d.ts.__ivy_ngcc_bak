@@ -1,0 +1,22 @@
+import { TemplateRef, ElementRef, Renderer2, OnInit, ChangeDetectorRef, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { IfTabActiveDirective } from './if-tab-active.directive';
+/**
+ * TODO: Remove hidden when https://github.com/angular/angular/issues/18310 is resolved
+ */
+export declare class TabComponent implements OnInit, OnChanges {
+    private cdr;
+    private renderer;
+    private elRef;
+    title: string;
+    label: string | TemplateRef<any>;
+    active: boolean;
+    disabled: boolean;
+    inputChanges: EventEmitter<SimpleChanges>;
+    labelStringTemplate: any;
+    template: IfTabActiveDirective;
+    labelTemplate: TemplateRef<any>;
+    constructor(cdr: ChangeDetectorRef, renderer: Renderer2, elRef: ElementRef);
+    ngOnInit(): void;
+    ngOnChanges(changes: SimpleChanges): void;
+    detectChanges(): void;
+}

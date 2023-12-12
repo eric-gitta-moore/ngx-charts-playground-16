@@ -1,0 +1,50 @@
+import { EventEmitter, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ControlValueAccessor } from '@angular/forms';
+import * as ɵngcc0 from '@angular/core';
+export declare class SliderComponent implements ControlValueAccessor, OnInit {
+    private cdr;
+    id: string;
+    min: number;
+    max: number;
+    step: number;
+    orientation: string;
+    filled: boolean;
+    multiple: boolean;
+    disabled: boolean;
+    showTicks: boolean;
+    tickStep: number;
+    change: EventEmitter<any>;
+    _values: number[];
+    _percents: number[];
+    _thumbs: any[];
+    _fill: any;
+    _ticks: any[];
+    _active: any[];
+    active: boolean;
+    get value(): any;
+    set value(val: any);
+    get percent(): string;
+    get isHorizontal(): boolean;
+    get isVertical(): boolean;
+    constructor(cdr: ChangeDetectorRef);
+    ngOnInit(): void;
+    setValues(values: number[]): void;
+    setActive(index: number, active: boolean): void;
+    setValue(val: number, index: number): void;
+    getCount(): any;
+    getTicks(): any;
+    getFill(): any;
+    onMouseDown(event: any): void;
+    onMouseUp(event: any): void;
+    onChange(event: any): void;
+    writeValue(val: any): void;
+    registerOnChange(fn: any): void;
+    registerOnTouched(fn: any): void;
+    trackIndex(index: any): any;
+    onChangeCallback: (_: any) => void;
+    onTouchedCallback: (_: any) => void;
+    static ɵfac: ɵngcc0.ɵɵFactoryDeclaration<SliderComponent, never>;
+    static ɵcmp: ɵngcc0.ɵɵComponentDeclaration<SliderComponent, "ngx-slider", ["ngxSlider"], { "id": "id"; "min": "min"; "max": "max"; "step": "step"; "orientation": "orientation"; "filled": "filled"; "multiple": "multiple"; "disabled": "disabled"; "showTicks": "showTicks"; "tickStep": "tickStep"; }, { "change": "change"; }, never, never>;
+}
+
+//# sourceMappingURL=slider.component.d.ts.map

@@ -1,0 +1,56 @@
+import { Component, Input, ContentChild, ElementRef, Renderer2, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { IfTabActiveDirective } from './if-tab-active.directive';
+/**
+ * TODO: Remove hidden when https://github.com/angular/angular/issues/18310 is resolved
+ */
+export class TabComponent {
+    constructor(cdr, renderer, elRef) {
+        this.cdr = cdr;
+        this.renderer = renderer;
+        this.elRef = elRef;
+        this.title = '';
+        this.label = '';
+        this.active = false;
+        this.disabled = false;
+        this.inputChanges = new EventEmitter();
+    }
+    ngOnInit() {
+        // backwards compatibility
+        if (this.title) {
+            this.label = this.title;
+            this.renderer.removeAttribute(this.elRef.nativeElement, 'title');
+        }
+        this.labelTemplate = typeof this.label === 'string' ? this.labelStringTemplate : this.label;
+    }
+    ngOnChanges(changes) {
+        this.inputChanges.emit(changes);
+    }
+    detectChanges() {
+        this.cdr.detectChanges();
+    }
+}
+TabComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'ngx-tab',
+                template: "<div *ngIf=\"template; then template_container; else content_container\"></div>\n<ng-template #template_container>\n  <div *ngIf=\"active\">\n    <ng-container [ngTemplateOutlet]=\"template.templateRef\"></ng-container>\n  </div>\n</ng-template>\n<ng-template #content_container>\n  <div [hidden]=\"!active\">\n    <ng-content></ng-content>\n  </div>\n</ng-template>\n<ng-template #labelIsStringTmpl>{{ label }}</ng-template>\n",
+                host: {
+                    class: 'ngx-tab'
+                },
+                changeDetection: ChangeDetectionStrategy.OnPush
+            },] }
+];
+TabComponent.ctorParameters = () => [
+    { type: ChangeDetectorRef },
+    { type: Renderer2 },
+    { type: ElementRef }
+];
+TabComponent.propDecorators = {
+    title: [{ type: Input }],
+    label: [{ type: Input }],
+    active: [{ type: Input }],
+    disabled: [{ type: Input }],
+    inputChanges: [{ type: Output }],
+    labelStringTemplate: [{ type: ViewChild, args: ['labelIsStringTmpl', { static: true },] }],
+    template: [{ type: ContentChild, args: [IfTabActiveDirective,] }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidGFiLmNvbXBvbmVudC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL3N3aW1sYW5lL25neC11aS9zcmMvbGliL2NvbXBvbmVudHMvdGFicy90YWIuY29tcG9uZW50LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFDTCxTQUFTLEVBQ1QsS0FBSyxFQUVMLFlBQVksRUFDWixVQUFVLEVBQ1YsU0FBUyxFQUVULFNBQVMsRUFDVCx1QkFBdUIsRUFDdkIsaUJBQWlCLEVBQ2pCLFlBQVksRUFDWixNQUFNLEVBR1AsTUFBTSxlQUFlLENBQUM7QUFDdkIsT0FBTyxFQUFFLG9CQUFvQixFQUFFLE1BQU0sMkJBQTJCLENBQUM7QUFFakU7O0dBRUc7QUFTSCxNQUFNLE9BQU8sWUFBWTtJQVl2QixZQUFvQixHQUFzQixFQUFVLFFBQW1CLEVBQVUsS0FBaUI7UUFBOUUsUUFBRyxHQUFILEdBQUcsQ0FBbUI7UUFBVSxhQUFRLEdBQVIsUUFBUSxDQUFXO1FBQVUsVUFBSyxHQUFMLEtBQUssQ0FBWTtRQVh6RixVQUFLLEdBQUcsRUFBRSxDQUFDO1FBQ1gsVUFBSyxHQUE4QixFQUFFLENBQUM7UUFDdEMsV0FBTSxHQUFHLEtBQUssQ0FBQztRQUNmLGFBQVEsR0FBRyxLQUFLLENBQUM7UUFFaEIsaUJBQVksR0FBRyxJQUFJLFlBQVksRUFBaUIsQ0FBQztJQU0wQyxDQUFDO0lBRXRHLFFBQVE7UUFDTiwwQkFBMEI7UUFDMUIsSUFBSSxJQUFJLENBQUMsS0FBSyxFQUFFO1lBQ2QsSUFBSSxDQUFDLEtBQUssR0FBRyxJQUFJLENBQUMsS0FBSyxDQUFDO1lBQ3hCLElBQUksQ0FBQyxRQUFRLENBQUMsZUFBZSxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsYUFBYSxFQUFFLE9BQU8sQ0FBQyxDQUFDO1NBQ2xFO1FBRUQsSUFBSSxDQUFDLGFBQWEsR0FBRyxPQUFPLElBQUksQ0FBQyxLQUFLLEtBQUssUUFBUSxDQUFDLENBQUMsQ0FBQyxJQUFJLENBQUMsbUJBQW1CLENBQUMsQ0FBQyxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUM7SUFDOUYsQ0FBQztJQUVELFdBQVcsQ0FBQyxPQUFzQjtRQUNoQyxJQUFJLENBQUMsWUFBWSxDQUFDLElBQUksQ0FBQyxPQUFPLENBQUMsQ0FBQztJQUNsQyxDQUFDO0lBRUQsYUFBYTtRQUNYLElBQUksQ0FBQyxHQUFHLENBQUMsYUFBYSxFQUFFLENBQUM7SUFDM0IsQ0FBQzs7O1lBdENGLFNBQVMsU0FBQztnQkFDVCxRQUFRLEVBQUUsU0FBUztnQkFDbkIsdWJBQW1DO2dCQUNuQyxJQUFJLEVBQUU7b0JBQ0osS0FBSyxFQUFFLFNBQVM7aUJBQ2pCO2dCQUNELGVBQWUsRUFBRSx1QkFBdUIsQ0FBQyxNQUFNO2FBQ2hEOzs7WUFsQkMsaUJBQWlCO1lBSmpCLFNBQVM7WUFEVCxVQUFVOzs7b0JBeUJULEtBQUs7b0JBQ0wsS0FBSztxQkFDTCxLQUFLO3VCQUNMLEtBQUs7MkJBRUwsTUFBTTtrQ0FFTixTQUFTLFNBQUMsbUJBQW1CLEVBQUUsRUFBRSxNQUFNLEVBQUUsSUFBSSxFQUFFO3VCQUMvQyxZQUFZLFNBQUMsb0JBQW9CIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtcbiAgQ29tcG9uZW50LFxuICBJbnB1dCxcbiAgVGVtcGxhdGVSZWYsXG4gIENvbnRlbnRDaGlsZCxcbiAgRWxlbWVudFJlZixcbiAgUmVuZGVyZXIyLFxuICBPbkluaXQsXG4gIFZpZXdDaGlsZCxcbiAgQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3ksXG4gIENoYW5nZURldGVjdG9yUmVmLFxuICBFdmVudEVtaXR0ZXIsXG4gIE91dHB1dCxcbiAgU2ltcGxlQ2hhbmdlcyxcbiAgT25DaGFuZ2VzXG59IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHsgSWZUYWJBY3RpdmVEaXJlY3RpdmUgfSBmcm9tICcuL2lmLXRhYi1hY3RpdmUuZGlyZWN0aXZlJztcblxuLyoqXG4gKiBUT0RPOiBSZW1vdmUgaGlkZGVuIHdoZW4gaHR0cHM6Ly9naXRodWIuY29tL2FuZ3VsYXIvYW5ndWxhci9pc3N1ZXMvMTgzMTAgaXMgcmVzb2x2ZWRcbiAqL1xuQENvbXBvbmVudCh7XG4gIHNlbGVjdG9yOiAnbmd4LXRhYicsXG4gIHRlbXBsYXRlVXJsOiAnLi90YWIuY29tcG9uZW50Lmh0bWwnLFxuICBob3N0OiB7XG4gICAgY2xhc3M6ICduZ3gtdGFiJ1xuICB9LFxuICBjaGFuZ2VEZXRlY3Rpb246IENoYW5nZURldGVjdGlvblN0cmF0ZWd5Lk9uUHVzaFxufSlcbmV4cG9ydCBjbGFzcyBUYWJDb21wb25lbnQgaW1wbGVtZW50cyBPbkluaXQsIE9uQ2hhbmdlcyB7XG4gIEBJbnB1dCgpIHRpdGxlID0gJyc7XG4gIEBJbnB1dCgpIGxhYmVsOiBzdHJpbmcgfCBUZW1wbGF0ZVJlZjxhbnk+ID0gJyc7XG4gIEBJbnB1dCgpIGFjdGl2ZSA9IGZhbHNlO1xuICBASW5wdXQoKSBkaXNhYmxlZCA9IGZhbHNlO1xuXG4gIEBPdXRwdXQoKSBpbnB1dENoYW5nZXMgPSBuZXcgRXZlbnRFbWl0dGVyPFNpbXBsZUNoYW5nZXM+KCk7XG5cbiAgQFZpZXdDaGlsZCgnbGFiZWxJc1N0cmluZ1RtcGwnLCB7IHN0YXRpYzogdHJ1ZSB9KSBsYWJlbFN0cmluZ1RlbXBsYXRlO1xuICBAQ29udGVudENoaWxkKElmVGFiQWN0aXZlRGlyZWN0aXZlKSB0ZW1wbGF0ZTogSWZUYWJBY3RpdmVEaXJlY3RpdmU7XG4gIGxhYmVsVGVtcGxhdGU6IFRlbXBsYXRlUmVmPGFueT47XG5cbiAgY29uc3RydWN0b3IocHJpdmF0ZSBjZHI6IENoYW5nZURldGVjdG9yUmVmLCBwcml2YXRlIHJlbmRlcmVyOiBSZW5kZXJlcjIsIHByaXZhdGUgZWxSZWY6IEVsZW1lbnRSZWYpIHt9XG5cbiAgbmdPbkluaXQoKTogdm9pZCB7XG4gICAgLy8gYmFja3dhcmRzIGNvbXBhdGliaWxpdHlcbiAgICBpZiAodGhpcy50aXRsZSkge1xuICAgICAgdGhpcy5sYWJlbCA9IHRoaXMudGl0bGU7XG4gICAgICB0aGlzLnJlbmRlcmVyLnJlbW92ZUF0dHJpYnV0ZSh0aGlzLmVsUmVmLm5hdGl2ZUVsZW1lbnQsICd0aXRsZScpO1xuICAgIH1cblxuICAgIHRoaXMubGFiZWxUZW1wbGF0ZSA9IHR5cGVvZiB0aGlzLmxhYmVsID09PSAnc3RyaW5nJyA/IHRoaXMubGFiZWxTdHJpbmdUZW1wbGF0ZSA6IHRoaXMubGFiZWw7XG4gIH1cblxuICBuZ09uQ2hhbmdlcyhjaGFuZ2VzOiBTaW1wbGVDaGFuZ2VzKTogdm9pZCB7XG4gICAgdGhpcy5pbnB1dENoYW5nZXMuZW1pdChjaGFuZ2VzKTtcbiAgfVxuXG4gIGRldGVjdENoYW5nZXMoKTogdm9pZCB7XG4gICAgdGhpcy5jZHIuZGV0ZWN0Q2hhbmdlcygpO1xuICB9XG59XG4iXX0=

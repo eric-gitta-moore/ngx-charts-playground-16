@@ -1,0 +1,8 @@
+import { EventEmitter } from '@angular/core';
+export declare class LargeFormatDialogHeaderActionComponent {
+    actionTitle: string;
+    dirty: boolean;
+    dirtyActionTitle: string;
+    closeOrCancel: EventEmitter<boolean>;
+    hostClass: boolean;
+}

@@ -1,0 +1,23 @@
+import { EventEmitter, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+declare const enum State {
+    open = "open",
+    peek = "peek",
+    closed = "closed"
+}
+export declare class NagComponent implements OnDestroy, OnChanges {
+    cssClass: string;
+    state: State | keyof typeof State;
+    stateChanged: EventEmitter<string>;
+    get zIndex(): number;
+    set zIndex(val: number);
+    nagTitle: string;
+    watch: any;
+    hide: any;
+    get klass(): string;
+    bounce: number;
+    private _zIndex;
+    toggle(): void;
+    ngOnDestroy(): void;
+    ngOnChanges(changes: SimpleChanges): void;
+}
+export {};

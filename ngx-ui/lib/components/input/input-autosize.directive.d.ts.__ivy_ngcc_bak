@@ -1,0 +1,10 @@
+import { ElementRef } from '@angular/core';
+export declare class AutosizeDirective {
+    readonly element: ElementRef<HTMLInputElement | HTMLTextAreaElement>;
+    get enabled(): boolean;
+    set enabled(v: boolean);
+    private _enabled;
+    get nodeName(): "TEXTAREA" | "INPUT";
+    constructor(element: ElementRef<HTMLInputElement | HTMLTextAreaElement>);
+    onInput(): void;
+}

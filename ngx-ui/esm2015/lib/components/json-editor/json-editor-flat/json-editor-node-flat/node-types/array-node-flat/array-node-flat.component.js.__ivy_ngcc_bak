@@ -1,0 +1,95 @@
+import { Component, ViewEncapsulation, Input, ViewChild, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
+import { ArrayNode } from '../../../../node-types/array-node.component';
+import { jsonSchemaDataTypes } from '../../../../json-editor.helper';
+import { DialogService } from '../../../../../dialog/dialog.service';
+export class ArrayNodeFlatComponent extends ArrayNode {
+    constructor(dialogService) {
+        super();
+        this.dialogService = dialogService;
+        this.hideRoot = false;
+        this.isDuplicated = false;
+        this.indentationArray = [];
+    }
+    ngOnInit() {
+        if (this.schemaBuilderMode) {
+            this.dataTypes = [...jsonSchemaDataTypes, ...this.formats];
+        }
+        if (this.schemaBuilderMode && !this.model.length && this.schemaRef.items && this.schemaRef.items.type) {
+            this.model.push(this.schemaRef.items);
+        }
+        this.indentationArray = this.level > 0 ? Array(this.level).fill(this.level) : [];
+    }
+    ngOnChanges(changes) {
+        super.ngOnChanges(changes);
+        if ('level' in changes) {
+            this.indentationArray = this.level > 0 ? Array(this.level).fill(this.level) : [];
+        }
+    }
+    onPropertyConfig(item, index) {
+        this.dialogService.create({
+            template: this.propertyConfigTmpl,
+            context: {
+                property: item,
+                index,
+                schema: this.schema,
+                formats: this.formats
+            },
+            class: 'property-config-dialog'
+        });
+    }
+    updateSchema(options) {
+        this.schema.items = options.newProperty;
+        this.schemaRef.items = options.newProperty;
+        this.schemaUpdate.emit();
+    }
+    addArrayItem(dataType) {
+        if (this.schemaBuilderMode && dataType) {
+            this.addDefaultItemForSchemaBuilder(dataType);
+        }
+        else {
+            super.addArrayItem(dataType);
+        }
+    }
+    deleteArrayItem(index) {
+        if (this.schemaBuilderMode) {
+            this.removeDefaultItemForSchemaBuilder();
+        }
+        else {
+            super.deleteArrayItem(index);
+        }
+    }
+    addDefaultItemForSchemaBuilder(dataType) {
+        this.schema.items = dataType.schema;
+        this.schemaRef.items = dataType.schema;
+        this.model.push(this.schemaRef.items.type === 'array' ? [] : this.schemaRef.items);
+        this.schemaUpdate.emit();
+    }
+    removeDefaultItemForSchemaBuilder() {
+        delete this.schema.items;
+        delete this.schemaRef.items;
+        this.model = [];
+        this.schemaUpdate.emit();
+    }
+}
+ArrayNodeFlatComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'ngx-json-array-node-flat',
+                template: "<div class=\"array-node-flat\" [hidden]=\"!expanded\">\n  <div\n    class=\"array-node-content\"\n    [class.no-margin]=\"schemaBuilderMode\"\n    *ngFor=\"let value of model; let i = index; trackBy: arrayTrackBy\"\n  >\n    <ngx-json-editor-node-flat\n      [model]=\"value\"\n      (modelChange)=\"updateArrayItem(i, $event)\"\n      [schema]=\"schemaBuilderMode ? schemaRef.items : schemas[i]\"\n      [path]=\"path + '[' + i + ']'\"\n      [errors]=\"errors\"\n      [typeCheckOverrides]=\"typeCheckOverrides\"\n      [level]=\"level\"\n      [hideRoot]=\"hideRoot\"\n      [compressed]=\"compressed\"\n      [formats]=\"formats\"\n      [schemaRef]=\"schemaRef?.items || null\"\n      [schemaBuilderMode]=\"schemaBuilderMode\"\n      [arrayItem]=\"schemaBuilderMode\"\n      [arrayName]=\"(schema.title ? schema.title : schema.propertyName) + '[' + (schemaBuilderMode ? '' : i) + ']'\"\n      [indentationArray]=\"indentationArray\"\n      [showKnownProperties]=\"showKnownProperties\"\n      [isDuplicated]=\"isDuplicated\"\n    >\n      <div class=\"node-options\" node-options>\n        <button\n          *ngIf=\"schemaBuilderMode\"\n          type=\"button\"\n          class=\"node-options-btn\"\n          (click)=\"onPropertyConfig(schemaRef.items, i)\"\n        >\n          <i class=\"ngx-icon ngx-cog\"></i>\n        </button>\n        <ngx-dropdown [showCaret]=\"true\">\n          <ngx-dropdown-toggle>\n            <button type=\"button\" class=\"node-options-btn\">\n              <i class=\"ngx-icon ngx-dots-vert-round\"></i>\n            </button>\n          </ngx-dropdown-toggle>\n          <ngx-dropdown-menu class=\"ngx-dropdown-dark-outline align-right\">\n            <ul class=\"vertical-list\">\n              <li><button type=\"button\" (click)=\"deleteArrayItem(i)\">Delete</button></li>\n\n              <ng-container *ngIf=\"schemas[i]?.$meta?.type\">\n                <li *ngFor=\"let type of schemas[i]?.$meta?.type\">\n                  <button type=\"button\" (click)=\"changeItemType(i, type)\" [disabled]=\"schemas[i].currentType === type\">\n                    Change type to {{ dataTypeMap[type].name }}\n                  </button>\n                </li>\n              </ng-container>\n            </ul>\n          </ngx-dropdown-menu>\n        </ngx-dropdown>\n      </div>\n    </ngx-json-editor-node-flat>\n  </div>\n\n  <div\n    *ngIf=\"!schemaBuilderMode || !model.length\"\n    class=\"add-button\"\n    [class.compressed]=\"compressed\"\n    [class.background]=\"hideRoot ? level > -1 : level\"\n  >\n    <span class=\"json-editor--vertical-separator\" *ngFor=\"let separator of indentationArray\"></span>\n    <div class=\"indented-content\" [style.marginLeft]=\"hideRoot && level === 0 ? '20px' : '0'\">\n      <ngx-dropdown [showCaret]=\"true\">\n        <ngx-dropdown-toggle>\n          <button [disabled]=\"isDuplicated\" type=\"button\">\n            <i class=\"ngx-icon ngx-tree-expand\"></i>\n            <span>Add an item</span>\n          </button>\n        </ngx-dropdown-toggle>\n        <ngx-dropdown-menu class=\"ngx-dropdown-dark-outline\">\n          <ul class=\"vertical-list\">\n            <ng-template [ngIf]=\"!schema || !schema.items || !schema.items.type\">\n              <li *ngFor=\"let dataType of dataTypes\" (click)=\"addArrayItem(dataType)\">\n                <button type=\"button\">{{ dataType.name }}</button>\n              </li>\n            </ng-template>\n            <ng-container *ngIf=\"schema?.items?.type\">\n              <li *ngIf=\"!_array.isArray(schema.items.type)\">\n                <button type=\"button\" (click)=\"addArrayItem()\">Add</button>\n              </li>\n              <ng-container *ngIf=\"_array.isArray(schema.items.type)\">\n                <li *ngFor=\"let type of schema.items.type\">\n                  <button type=\"button\" (click)=\"addArrayItem(dataTypeMap[type])\">\n                    Add {{ dataTypeMap[type].name }}\n                  </button>\n                </li>\n              </ng-container>\n            </ng-container>\n          </ul>\n        </ngx-dropdown-menu>\n      </ngx-dropdown>\n    </div>\n  </div>\n</div>\n\n<!-- Property Config Dialog -->\n<ng-template #propertyConfigTmpl let-context=\"context\">\n  <ngx-property-config\n    [property]=\"context.property\"\n    [index]=\"context.index\"\n    [schema]=\"context.schema\"\n    [formats]=\"context.formats\"\n    [arrayItem]=\"true\"\n    (updateSchema)=\"updateSchema($event)\"\n  >\n  </ngx-property-config>\n</ng-template>\n",
+                encapsulation: ViewEncapsulation.None,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                styles: [".array-node-flat .add-button .indented-content .ngx-dropdown-menu{white-space:nowrap;margin-top:10px}.array-node-flat .add-button .indented-content .ngx-dropdown-menu .dropdown-column{vertical-align:top;display:inline-block;min-width:150px}.array-node-flat .add-button .indented-content .ngx-dropdown-menu .dropdown-column:nth-child(2){border-left:1px solid #505c75}.json-editor--vertical-separator{background-color:#3b4457;opacity:.5;border-radius:2px;width:1px;height:calc(100% - 4px);margin-right:20px}.json-editor--vertical-separator:first-child{margin-left:20px}.array-node-flat .array-node-content{display:flex;margin-bottom:5px;position:relative}.array-node-flat .array-node-content:last-child{margin-bottom:0}.array-node-flat .array-node-content ngx-json-editor-node-flat{flex:1}.array-node-flat .add-button{height:100px;position:relative;display:flex}.array-node-flat .add-button ngx-dropdown{padding-bottom:0}.array-node-flat .compressed.add-button{max-height:80px}.array-node-flat .background.add-button{background-color:rgba(49,56,71,.4);padding:7px 7px 7px 0;height:120px}.array-node-flat .add-button .indented-content{border:2px dotted rgba(59,68,87,.5);width:100%;display:flex;justify-content:center;align-items:center;color:#909cb4}.array-node-flat .add-button .indented-content button{display:flex}.array-node-flat .add-button .indented-content button i{font-size:18px}.array-node-flat .add-button .indented-content button span{font-size:14px;margin-left:10px}.array-node-flat{margin-top:5px}.array-node-flat .array-node-content.no-margin{margin-bottom:0}"]
+            },] }
+];
+ArrayNodeFlatComponent.ctorParameters = () => [
+    { type: DialogService }
+];
+ArrayNodeFlatComponent.propDecorators = {
+    propertyConfigTmpl: [{ type: ViewChild, args: ['propertyConfigTmpl', { static: false },] }],
+    level: [{ type: Input }],
+    schemaBuilderMode: [{ type: Input }],
+    formats: [{ type: Input }],
+    compressed: [{ type: Input }],
+    hideRoot: [{ type: Input }],
+    isDuplicated: [{ type: Input }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXJyYXktbm9kZS1mbGF0LmNvbXBvbmVudC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL3N3aW1sYW5lL25neC11aS9zcmMvbGliL2NvbXBvbmVudHMvanNvbi1lZGl0b3IvanNvbi1lZGl0b3ItZmxhdC9qc29uLWVkaXRvci1ub2RlLWZsYXQvbm9kZS10eXBlcy9hcnJheS1ub2RlLWZsYXQvYXJyYXktbm9kZS1mbGF0LmNvbXBvbmVudC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQ0wsU0FBUyxFQUNULGlCQUFpQixFQUNqQixLQUFLLEVBQ0wsU0FBUyxFQUNULFdBQVcsRUFFWCx1QkFBdUIsRUFHeEIsTUFBTSxlQUFlLENBQUM7QUFDdkIsT0FBTyxFQUFFLFNBQVMsRUFBRSxNQUFNLDZDQUE2QyxDQUFDO0FBQ3hFLE9BQU8sRUFBd0MsbUJBQW1CLEVBQUUsTUFBTSxnQ0FBZ0MsQ0FBQztBQUMzRyxPQUFPLEVBQUUsYUFBYSxFQUFFLE1BQU0sc0NBQXNDLENBQUM7QUFVckUsTUFBTSxPQUFPLHNCQUF1QixTQUFRLFNBQVM7SUFpQm5ELFlBQW9CLGFBQTRCO1FBQzlDLEtBQUssRUFBRSxDQUFDO1FBRFUsa0JBQWEsR0FBYixhQUFhLENBQWU7UUFOdkMsYUFBUSxHQUFHLEtBQUssQ0FBQztRQUVqQixpQkFBWSxHQUFHLEtBQUssQ0FBQztRQUU5QixxQkFBZ0IsR0FBYSxFQUFFLENBQUM7SUFJaEMsQ0FBQztJQUVELFFBQVE7UUFDTixJQUFJLElBQUksQ0FBQyxpQkFBaUIsRUFBRTtZQUMxQixJQUFJLENBQUMsU0FBUyxHQUFHLENBQUMsR0FBRyxtQkFBbUIsRUFBRSxHQUFHLElBQUksQ0FBQyxPQUFPLENBQUMsQ0FBQztTQUM1RDtRQUVELElBQUksSUFBSSxDQUFDLGlCQUFpQixJQUFJLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxNQUFNLElBQUksSUFBSSxDQUFDLFNBQVMsQ0FBQyxLQUFLLElBQUksSUFBSSxDQUFDLFNBQVMsQ0FBQyxLQUFLLENBQUMsSUFBSSxFQUFFO1lBQ3JHLElBQUksQ0FBQyxLQUFLLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxTQUFTLENBQUMsS0FBSyxDQUFDLENBQUM7U0FDdkM7UUFFRCxJQUFJLENBQUMsZ0JBQWdCLEdBQUcsSUFBSSxDQUFDLEtBQUssR0FBRyxDQUFDLENBQUMsQ0FBQyxDQUFDLEtBQUssQ0FBQyxJQUFJLENBQUMsS0FBSyxDQUFDLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsQ0FBQyxDQUFDLENBQUMsRUFBRSxDQUFDO0lBQ25GLENBQUM7SUFFRCxXQUFXLENBQUMsT0FBc0I7UUFDaEMsS0FBSyxDQUFDLFdBQVcsQ0FBQyxPQUFPLENBQUMsQ0FBQztRQUMzQixJQUFJLE9BQU8sSUFBSSxPQUFPLEVBQUU7WUFDdEIsSUFBSSxDQUFDLGdCQUFnQixHQUFHLElBQUksQ0FBQyxLQUFLLEdBQUcsQ0FBQyxDQUFDLENBQUMsQ0FBQyxLQUFLLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsS0FBSyxDQUFDLENBQUMsQ0FBQyxDQUFDLEVBQUUsQ0FBQztTQUNsRjtJQUNILENBQUM7SUFFRCxnQkFBZ0IsQ0FBQyxJQUFzQixFQUFFLEtBQWE7UUFDcEQsSUFBSSxDQUFDLGFBQWEsQ0FBQyxNQUFNLENBQUM7WUFDeEIsUUFBUSxFQUFFLElBQUksQ0FBQyxrQkFBa0I7WUFDakMsT0FBTyxFQUFFO2dCQUNQLFFBQVEsRUFBRSxJQUFJO2dCQUNkLEtBQUs7Z0JBQ0wsTUFBTSxFQUFFLElBQUksQ0FBQyxNQUFNO2dCQUNuQixPQUFPLEVBQUUsSUFBSSxDQUFDLE9BQU87YUFDdEI7WUFDRCxLQUFLLEVBQUUsd0JBQXdCO1NBQ2hDLENBQUMsQ0FBQztJQUNMLENBQUM7SUFFRCxZQUFZLENBQUMsT0FBOEI7UUFDekMsSUFBSSxDQUFDLE1BQU0sQ0FBQyxLQUFLLEdBQUcsT0FBTyxDQUFDLFdBQVcsQ0FBQztRQUN4QyxJQUFJLENBQUMsU0FBUyxDQUFDLEtBQUssR0FBRyxPQUFPLENBQUMsV0FBVyxDQUFDO1FBQzNDLElBQUksQ0FBQyxZQUFZLENBQUMsSUFBSSxFQUFFLENBQUM7SUFDM0IsQ0FBQztJQUVELFlBQVksQ0FBQyxRQUE2QjtRQUN4QyxJQUFJLElBQUksQ0FBQyxpQkFBaUIsSUFBSSxRQUFRLEVBQUU7WUFDdEMsSUFBSSxDQUFDLDhCQUE4QixDQUFDLFFBQVEsQ0FBQyxDQUFDO1NBQy9DO2FBQU07WUFDTCxLQUFLLENBQUMsWUFBWSxDQUFDLFFBQVEsQ0FBQyxDQUFDO1NBQzlCO0lBQ0gsQ0FBQztJQUVELGVBQWUsQ0FBQyxLQUFhO1FBQzNCLElBQUksSUFBSSxDQUFDLGlCQUFpQixFQUFFO1lBQzFCLElBQUksQ0FBQyxpQ0FBaUMsRUFBRSxDQUFDO1NBQzFDO2FBQU07WUFDTCxLQUFLLENBQUMsZUFBZSxDQUFDLEtBQUssQ0FBQyxDQUFDO1NBQzlCO0lBQ0gsQ0FBQztJQUVELDhCQUE4QixDQUFDLFFBQTRCO1FBQ3pELElBQUksQ0FBQyxNQUFNLENBQUMsS0FBSyxHQUFHLFFBQVEsQ0FBQyxNQUE2QixDQUFDO1FBQzNELElBQUksQ0FBQyxTQUFTLENBQUMsS0FBSyxHQUFHLFFBQVEsQ0FBQyxNQUE2QixDQUFDO1FBRTlELElBQUksQ0FBQyxLQUFLLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxTQUFTLENBQUMsS0FBSyxDQUFDLElBQUksS0FBSyxPQUFPLENBQUMsQ0FBQyxDQUFDLEVBQUUsQ0FBQyxDQUFDLENBQUMsSUFBSSxDQUFDLFNBQVMsQ0FBQyxLQUFLLENBQUMsQ0FBQztRQUVuRixJQUFJLENBQUMsWUFBWSxDQUFDLElBQUksRUFBRSxDQUFDO0lBQzNCLENBQUM7SUFFTyxpQ0FBaUM7UUFDdkMsT0FBTyxJQUFJLENBQUMsTUFBTSxDQUFDLEtBQUssQ0FBQztRQUN6QixPQUFPLElBQUksQ0FBQyxTQUFTLENBQUMsS0FBSyxDQUFDO1FBRTVCLElBQUksQ0FBQyxLQUFLLEdBQUcsRUFBRSxDQUFDO1FBRWhCLElBQUksQ0FBQyxZQUFZLENBQUMsSUFBSSxFQUFFLENBQUM7SUFDM0IsQ0FBQzs7O1lBbEdGLFNBQVMsU0FBQztnQkFDVCxRQUFRLEVBQUUsMEJBQTBCO2dCQUNwQyxtOElBQStDO2dCQUUvQyxhQUFhLEVBQUUsaUJBQWlCLENBQUMsSUFBSTtnQkFDckMsZUFBZSxFQUFFLHVCQUF1QixDQUFDLE1BQU07O2FBQ2hEOzs7WUFUUSxhQUFhOzs7aUNBV25CLFNBQVMsU0FBQyxvQkFBb0IsRUFBRSxFQUFFLE1BQU0sRUFBRSxLQUFLLEVBQUU7b0JBRWpELEtBQUs7Z0NBRUwsS0FBSztzQkFFTCxLQUFLO3lCQUVMLEtBQUs7dUJBRUwsS0FBSzsyQkFFTCxLQUFLIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtcbiAgQ29tcG9uZW50LFxuICBWaWV3RW5jYXBzdWxhdGlvbixcbiAgSW5wdXQsXG4gIFZpZXdDaGlsZCxcbiAgVGVtcGxhdGVSZWYsXG4gIE9uSW5pdCxcbiAgQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3ksXG4gIFNpbXBsZUNoYW5nZXMsXG4gIE9uQ2hhbmdlc1xufSBmcm9tICdAYW5ndWxhci9jb3JlJztcbmltcG9ydCB7IEFycmF5Tm9kZSB9IGZyb20gJy4uLy4uLy4uLy4uL25vZGUtdHlwZXMvYXJyYXktbm9kZS5jb21wb25lbnQnO1xuaW1wb3J0IHsgSlNPTkVkaXRvclNjaGVtYSwgSnNvblNjaGVtYURhdGFUeXBlLCBqc29uU2NoZW1hRGF0YVR5cGVzIH0gZnJvbSAnLi4vLi4vLi4vLi4vanNvbi1lZGl0b3IuaGVscGVyJztcbmltcG9ydCB7IERpYWxvZ1NlcnZpY2UgfSBmcm9tICcuLi8uLi8uLi8uLi8uLi9kaWFsb2cvZGlhbG9nLnNlcnZpY2UnO1xuaW1wb3J0IHsgUHJvcGVydHlDb25maWdPcHRpb25zLCBQcm9wZXJ0eUNvbmZpZ0NvbXBvbmVudCB9IGZyb20gJy4uL3Byb3BlcnR5LWNvbmZpZy9wcm9wZXJ0eS1jb25maWcuY29tcG9uZW50JztcblxuQENvbXBvbmVudCh7XG4gIHNlbGVjdG9yOiAnbmd4LWpzb24tYXJyYXktbm9kZS1mbGF0JyxcbiAgdGVtcGxhdGVVcmw6ICcuL2FycmF5LW5vZGUtZmxhdC5jb21wb25lbnQuaHRtbCcsXG4gIHN0eWxlVXJsczogWycuL2FycmF5LW5vZGUtZmxhdC5jb21wb25lbnQuc2NzcyddLFxuICBlbmNhcHN1bGF0aW9uOiBWaWV3RW5jYXBzdWxhdGlvbi5Ob25lLFxuICBjaGFuZ2VEZXRlY3Rpb246IENoYW5nZURldGVjdGlvblN0cmF0ZWd5Lk9uUHVzaFxufSlcbmV4cG9ydCBjbGFzcyBBcnJheU5vZGVGbGF0Q29tcG9uZW50IGV4dGVuZHMgQXJyYXlOb2RlIGltcGxlbWVudHMgT25Jbml0LCBPbkNoYW5nZXMge1xuICBAVmlld0NoaWxkKCdwcm9wZXJ0eUNvbmZpZ1RtcGwnLCB7IHN0YXRpYzogZmFsc2UgfSkgcHJvcGVydHlDb25maWdUbXBsOiBUZW1wbGF0ZVJlZjxQcm9wZXJ0eUNvbmZpZ0NvbXBvbmVudD47XG5cbiAgQElucHV0KCkgbGV2ZWw6IG51bWJlcjtcblxuICBASW5wdXQoKSBzY2hlbWFCdWlsZGVyTW9kZTogYm9vbGVhbjtcblxuICBASW5wdXQoKSBmb3JtYXRzOiBKc29uU2NoZW1hRGF0YVR5cGVbXTtcblxuICBASW5wdXQoKSBjb21wcmVzc2VkOiBib29sZWFuO1xuXG4gIEBJbnB1dCgpIGhpZGVSb290ID0gZmFsc2U7XG5cbiAgQElucHV0KCkgaXNEdXBsaWNhdGVkID0gZmFsc2U7XG5cbiAgaW5kZW50YXRpb25BcnJheTogbnVtYmVyW10gPSBbXTtcblxuICBjb25zdHJ1Y3Rvcihwcml2YXRlIGRpYWxvZ1NlcnZpY2U6IERpYWxvZ1NlcnZpY2UpIHtcbiAgICBzdXBlcigpO1xuICB9XG5cbiAgbmdPbkluaXQoKSB7XG4gICAgaWYgKHRoaXMuc2NoZW1hQnVpbGRlck1vZGUpIHtcbiAgICAgIHRoaXMuZGF0YVR5cGVzID0gWy4uLmpzb25TY2hlbWFEYXRhVHlwZXMsIC4uLnRoaXMuZm9ybWF0c107XG4gICAgfVxuXG4gICAgaWYgKHRoaXMuc2NoZW1hQnVpbGRlck1vZGUgJiYgIXRoaXMubW9kZWwubGVuZ3RoICYmIHRoaXMuc2NoZW1hUmVmLml0ZW1zICYmIHRoaXMuc2NoZW1hUmVmLml0ZW1zLnR5cGUpIHtcbiAgICAgIHRoaXMubW9kZWwucHVzaCh0aGlzLnNjaGVtYVJlZi5pdGVtcyk7XG4gICAgfVxuXG4gICAgdGhpcy5pbmRlbnRhdGlvbkFycmF5ID0gdGhpcy5sZXZlbCA+IDAgPyBBcnJheSh0aGlzLmxldmVsKS5maWxsKHRoaXMubGV2ZWwpIDogW107XG4gIH1cblxuICBuZ09uQ2hhbmdlcyhjaGFuZ2VzOiBTaW1wbGVDaGFuZ2VzKSB7XG4gICAgc3VwZXIubmdPbkNoYW5nZXMoY2hhbmdlcyk7XG4gICAgaWYgKCdsZXZlbCcgaW4gY2hhbmdlcykge1xuICAgICAgdGhpcy5pbmRlbnRhdGlvbkFycmF5ID0gdGhpcy5sZXZlbCA+IDAgPyBBcnJheSh0aGlzLmxldmVsKS5maWxsKHRoaXMubGV2ZWwpIDogW107XG4gICAgfVxuICB9XG5cbiAgb25Qcm9wZXJ0eUNvbmZpZyhpdGVtOiBKU09ORWRpdG9yU2NoZW1hLCBpbmRleDogbnVtYmVyKTogdm9pZCB7XG4gICAgdGhpcy5kaWFsb2dTZXJ2aWNlLmNyZWF0ZSh7XG4gICAgICB0ZW1wbGF0ZTogdGhpcy5wcm9wZXJ0eUNvbmZpZ1RtcGwsXG4gICAgICBjb250ZXh0OiB7XG4gICAgICAgIHByb3BlcnR5OiBpdGVtLFxuICAgICAgICBpbmRleCxcbiAgICAgICAgc2NoZW1hOiB0aGlzLnNjaGVtYSxcbiAgICAgICAgZm9ybWF0czogdGhpcy5mb3JtYXRzXG4gICAgICB9LFxuICAgICAgY2xhc3M6ICdwcm9wZXJ0eS1jb25maWctZGlhbG9nJ1xuICAgIH0pO1xuICB9XG5cbiAgdXBkYXRlU2NoZW1hKG9wdGlvbnM6IFByb3BlcnR5Q29uZmlnT3B0aW9ucyk6IHZvaWQge1xuICAgIHRoaXMuc2NoZW1hLml0ZW1zID0gb3B0aW9ucy5uZXdQcm9wZXJ0eTtcbiAgICB0aGlzLnNjaGVtYVJlZi5pdGVtcyA9IG9wdGlvbnMubmV3UHJvcGVydHk7XG4gICAgdGhpcy5zY2hlbWFVcGRhdGUuZW1pdCgpO1xuICB9XG5cbiAgYWRkQXJyYXlJdGVtKGRhdGFUeXBlPzogSnNvblNjaGVtYURhdGFUeXBlKSB7XG4gICAgaWYgKHRoaXMuc2NoZW1hQnVpbGRlck1vZGUgJiYgZGF0YVR5cGUpIHtcbiAgICAgIHRoaXMuYWRkRGVmYXVsdEl0ZW1Gb3JTY2hlbWFCdWlsZGVyKGRhdGFUeXBlKTtcbiAgICB9IGVsc2Uge1xuICAgICAgc3VwZXIuYWRkQXJyYXlJdGVtKGRhdGFUeXBlKTtcbiAgICB9XG4gIH1cblxuICBkZWxldGVBcnJheUl0ZW0oaW5kZXg6IG51bWJlcik6IHZvaWQge1xuICAgIGlmICh0aGlzLnNjaGVtYUJ1aWxkZXJNb2RlKSB7XG4gICAgICB0aGlzLnJlbW92ZURlZmF1bHRJdGVtRm9yU2NoZW1hQnVpbGRlcigpO1xuICAgIH0gZWxzZSB7XG4gICAgICBzdXBlci5kZWxldGVBcnJheUl0ZW0oaW5kZXgpO1xuICAgIH1cbiAgfVxuXG4gIGFkZERlZmF1bHRJdGVtRm9yU2NoZW1hQnVpbGRlcihkYXRhVHlwZTogSnNvblNjaGVtYURhdGFUeXBlKTogdm9pZCB7XG4gICAgdGhpcy5zY2hlbWEuaXRlbXMgPSBkYXRhVHlwZS5zY2hlbWEgYXMgUmVjb3JkPHN0cmluZywgYW55PjtcbiAgICB0aGlzLnNjaGVtYVJlZi5pdGVtcyA9IGRhdGFUeXBlLnNjaGVtYSBhcyBSZWNvcmQ8c3RyaW5nLCBhbnk+O1xuXG4gICAgdGhpcy5tb2RlbC5wdXNoKHRoaXMuc2NoZW1hUmVmLml0ZW1zLnR5cGUgPT09ICdhcnJheScgPyBbXSA6IHRoaXMuc2NoZW1hUmVmLml0ZW1zKTtcblxuICAgIHRoaXMuc2NoZW1hVXBkYXRlLmVtaXQoKTtcbiAgfVxuXG4gIHByaXZhdGUgcmVtb3ZlRGVmYXVsdEl0ZW1Gb3JTY2hlbWFCdWlsZGVyKCk6IHZvaWQge1xuICAgIGRlbGV0ZSB0aGlzLnNjaGVtYS5pdGVtcztcbiAgICBkZWxldGUgdGhpcy5zY2hlbWFSZWYuaXRlbXM7XG5cbiAgICB0aGlzLm1vZGVsID0gW107XG5cbiAgICB0aGlzLnNjaGVtYVVwZGF0ZS5lbWl0KCk7XG4gIH1cbn1cbiJdfQ==

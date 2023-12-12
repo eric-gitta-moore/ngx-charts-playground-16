@@ -1,0 +1,103 @@
+import { Component, Input, Output, EventEmitter, ViewEncapsulation, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { trigger, state, style, animate, transition } from '@angular/animations';
+import { coerceBooleanProperty, coerceNumberProperty } from '@angular/cdk/coercion';
+import { LongPressButtonState } from './long-press-button-state.enum';
+export class LongPressButtonComponent {
+    constructor(cdr) {
+        this.cdr = cdr;
+        this.state = LongPressButtonState.Active;
+        this.icon = 'mouse-hold';
+        this.longPress = new EventEmitter();
+        this.LongPressButtonState = LongPressButtonState;
+        this.pressed = false;
+        this._duration = 3000;
+        this._disabled = false;
+    }
+    get duration() {
+        return this._duration;
+    }
+    set duration(duration) {
+        this._duration = coerceNumberProperty(duration);
+    }
+    get disabled() {
+        return this._disabled;
+    }
+    set disabled(disabled) {
+        this._disabled = coerceBooleanProperty(disabled);
+    }
+    ngOnInit() {
+        this.updateState();
+    }
+    ngOnChanges() {
+        this.updateState();
+    }
+    updateState() {
+        if (!this.state) {
+            this.state = LongPressButtonState.Active;
+        }
+        if (this.state === LongPressButtonState.Submitted) {
+            this.disabled = true;
+            clearTimeout(this._lastTimeout);
+            this._lastTimeout = setTimeout(() => {
+                this.state = LongPressButtonState.Active;
+                this.disabled = false;
+                this.updateState();
+            }, 3000);
+        }
+        this.cdr.markForCheck();
+    }
+    onLongPressStart() {
+        if (!this.disabled) {
+            this.pressed = true;
+        }
+    }
+    onLongPressFinish(e) {
+        if (!this.disabled) {
+            this.pressed = false;
+            this.state = LongPressButtonState.Submitted;
+            this.longPress.emit(e);
+            this.updateState();
+        }
+    }
+    onLongPressCancel() {
+        this.pressed = false;
+    }
+}
+LongPressButtonComponent.decorators = [
+    { type: Component, args: [{
+                exportAs: 'ngxLongPressButton',
+                selector: 'ngx-long-press-button',
+                template: "<div\n  long-press\n  [duration]=\"duration\"\n  [disabled]=\"disabled\"\n  (longPressStart)=\"onLongPressStart()\"\n  (longPressFinish)=\"onLongPressFinish($event)\"\n  (longPressCancel)=\"onLongPressCancel()\"\n  >\n  <span class=\"inner-background\"></span>\n  <svg viewBox=\"-170 -170 340 340\">\n    <g transform=\"rotate(-90)\">\n      <circle\n        class=\"loading-circle\"\n        *ngIf=\"state !== LongPressButtonState.Submitted\"\n        r=\"160\"\n        [@circleAnimation]=\"{ value: pressed ? 'active' : 'inactive', params: { duration: duration } }\"\n      />\n      <circle class=\"full-circle\" *ngIf=\"state === LongPressButtonState.Submitted\" r=\"160\" />\n    </g>\n  </svg>\n  <button [disabled]=\"disabled\">\n    <ngx-icon *ngIf=\"state === LongPressButtonState.Active\" class=\"icon\" [fontIcon]=\"icon\"></ngx-icon>\n    <ngx-icon *ngIf=\"state === LongPressButtonState.Submitted\" class=\"icon\" fontIcon=\"check\"></ngx-icon>\n  </button>\n</div>\n",
+                host: {
+                    class: 'ngx-long-press',
+                    '[class.disabled-button]': 'disabled',
+                    '[class.active]': 'state === LongPressButtonState.Active',
+                    '[class.submitted]': 'state === LongPressButtonState.Submitted'
+                },
+                animations: [
+                    trigger('circleAnimation', [
+                        state('active', style({
+                            strokeDasharray: '1000 1000'
+                        })),
+                        state('inactive', style({
+                            strokeDasharray: '0 1000'
+                        })),
+                        transition('inactive => active', animate('{{ duration }}ms ease-out'), { params: { duration: 1000 } })
+                    ])
+                ],
+                encapsulation: ViewEncapsulation.None,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                styles: [".ngx-long-press{border-radius:50%;border:3px solid #12141a;padding:0;width:60px;height:60px;overflow:hidden;display:inline-block;text-align:center;position:relative;cursor:pointer}.ngx-long-press button{padding:0;position:absolute;top:50%;left:50%}.ngx-long-press .inner-background{border-radius:50%;background:#12141a;width:46px;height:46px;position:absolute;top:4px;left:4px}.ngx-long-press .ngx-icon{font-size:23px;height:60px;vertical-align:middle;line-height:60px;position:absolute;left:50%;transform:translate(-50%,-50%)}.ngx-long-press .ngx-icon :before{line-height:60px}.ngx-long-press svg{width:100%;height:100%}.ngx-long-press circle{fill:none;stroke:#0dee72;stroke-width:16}.ngx-long-press circle.loading-circle{stroke-dashoffset:0;stroke-dasharray:122 1000}"]
+            },] }
+];
+LongPressButtonComponent.ctorParameters = () => [
+    { type: ChangeDetectorRef }
+];
+LongPressButtonComponent.propDecorators = {
+    state: [{ type: Input }],
+    icon: [{ type: Input }],
+    duration: [{ type: Input }],
+    disabled: [{ type: Input }],
+    longPress: [{ type: Output }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibG9uZy1wcmVzcy1idXR0b24uY29tcG9uZW50LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvc3dpbWxhbmUvbmd4LXVpL3NyYy9saWIvY29tcG9uZW50cy9sb25nLXByZXNzL2xvbmctcHJlc3MtYnV0dG9uLmNvbXBvbmVudC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQ0wsU0FBUyxFQUNULEtBQUssRUFDTCxNQUFNLEVBQ04sWUFBWSxFQUNaLGlCQUFpQixFQUdqQix1QkFBdUIsRUFDdkIsaUJBQWlCLEVBQ2xCLE1BQU0sZUFBZSxDQUFDO0FBQ3ZCLE9BQU8sRUFBRSxPQUFPLEVBQUUsS0FBSyxFQUFFLEtBQUssRUFBRSxPQUFPLEVBQUUsVUFBVSxFQUFFLE1BQU0scUJBQXFCLENBQUM7QUFDakYsT0FBTyxFQUFFLHFCQUFxQixFQUFFLG9CQUFvQixFQUFFLE1BQU0sdUJBQXVCLENBQUM7QUFFcEYsT0FBTyxFQUFFLG9CQUFvQixFQUFFLE1BQU0sZ0NBQWdDLENBQUM7QUFpQ3RFLE1BQU0sT0FBTyx3QkFBd0I7SUE2Qm5DLFlBQTZCLEdBQXNCO1FBQXRCLFFBQUcsR0FBSCxHQUFHLENBQW1CO1FBNUIxQyxVQUFLLEdBQUcsb0JBQW9CLENBQUMsTUFBTSxDQUFDO1FBQ3BDLFNBQUksR0FBRyxZQUFZLENBQUM7UUFrQm5CLGNBQVMsR0FBMEIsSUFBSSxZQUFZLEVBQVcsQ0FBQztRQUVoRSx5QkFBb0IsR0FBRyxvQkFBb0IsQ0FBQztRQUNyRCxZQUFPLEdBQUcsS0FBSyxDQUFDO1FBR1IsY0FBUyxHQUFHLElBQUksQ0FBQztRQUNqQixjQUFTLEdBQUcsS0FBSyxDQUFDO0lBRTRCLENBQUM7SUF6QnZELElBQ0ksUUFBUTtRQUNWLE9BQU8sSUFBSSxDQUFDLFNBQVMsQ0FBQztJQUN4QixDQUFDO0lBQ0QsSUFBSSxRQUFRLENBQUMsUUFBZ0I7UUFDM0IsSUFBSSxDQUFDLFNBQVMsR0FBRyxvQkFBb0IsQ0FBQyxRQUFRLENBQUMsQ0FBQztJQUNsRCxDQUFDO0lBRUQsSUFDSSxRQUFRO1FBQ1YsT0FBTyxJQUFJLENBQUMsU0FBUyxDQUFDO0lBQ3hCLENBQUM7SUFDRCxJQUFJLFFBQVEsQ0FBQyxRQUFpQjtRQUM1QixJQUFJLENBQUMsU0FBUyxHQUFHLHFCQUFxQixDQUFDLFFBQVEsQ0FBQyxDQUFDO0lBQ25ELENBQUM7SUFhRCxRQUFRO1FBQ04sSUFBSSxDQUFDLFdBQVcsRUFBRSxDQUFDO0lBQ3JCLENBQUM7SUFFRCxXQUFXO1FBQ1QsSUFBSSxDQUFDLFdBQVcsRUFBRSxDQUFDO0lBQ3JCLENBQUM7SUFFRCxXQUFXO1FBQ1QsSUFBSSxDQUFDLElBQUksQ0FBQyxLQUFLLEVBQUU7WUFDZixJQUFJLENBQUMsS0FBSyxHQUFHLG9CQUFvQixDQUFDLE1BQU0sQ0FBQztTQUMxQztRQUVELElBQUksSUFBSSxDQUFDLEtBQUssS0FBSyxvQkFBb0IsQ0FBQyxTQUFTLEVBQUU7WUFDakQsSUFBSSxDQUFDLFFBQVEsR0FBRyxJQUFJLENBQUM7WUFDckIsWUFBWSxDQUFDLElBQUksQ0FBQyxZQUFZLENBQUMsQ0FBQztZQUVoQyxJQUFJLENBQUMsWUFBWSxHQUFHLFVBQVUsQ0FBQyxHQUFHLEVBQUU7Z0JBQ2xDLElBQUksQ0FBQyxLQUFLLEdBQUcsb0JBQW9CLENBQUMsTUFBTSxDQUFDO2dCQUN6QyxJQUFJLENBQUMsUUFBUSxHQUFHLEtBQUssQ0FBQztnQkFDdEIsSUFBSSxDQUFDLFdBQVcsRUFBRSxDQUFDO1lBQ3JCLENBQUMsRUFBRSxJQUFJLENBQUMsQ0FBQztTQUNWO1FBRUQsSUFBSSxDQUFDLEdBQUcsQ0FBQyxZQUFZLEVBQUUsQ0FBQztJQUMxQixDQUFDO0lBRUQsZ0JBQWdCO1FBQ2QsSUFBSSxDQUFDLElBQUksQ0FBQyxRQUFRLEVBQUU7WUFDbEIsSUFBSSxDQUFDLE9BQU8sR0FBRyxJQUFJLENBQUM7U0FDckI7SUFDSCxDQUFDO0lBRUQsaUJBQWlCLENBQUMsQ0FBVTtRQUMxQixJQUFJLENBQUMsSUFBSSxDQUFDLFFBQVEsRUFBRTtZQUNsQixJQUFJLENBQUMsT0FBTyxHQUFHLEtBQUssQ0FBQztZQUNyQixJQUFJLENBQUMsS0FBSyxHQUFHLG9CQUFvQixDQUFDLFNBQVMsQ0FBQztZQUM1QyxJQUFJLENBQUMsU0FBUyxDQUFDLElBQUksQ0FBQyxDQUFDLENBQUMsQ0FBQztZQUN2QixJQUFJLENBQUMsV0FBVyxFQUFFLENBQUM7U0FDcEI7SUFDSCxDQUFDO0lBRUQsaUJBQWlCO1FBQ2YsSUFBSSxDQUFDLE9BQU8sR0FBRyxLQUFLLENBQUM7SUFDdkIsQ0FBQzs7O1lBMUdGLFNBQVMsU0FBQztnQkFDVCxRQUFRLEVBQUUsb0JBQW9CO2dCQUM5QixRQUFRLEVBQUUsdUJBQXVCO2dCQUNqQyxpK0JBQWlEO2dCQUVqRCxJQUFJLEVBQUU7b0JBQ0osS0FBSyxFQUFFLGdCQUFnQjtvQkFDdkIseUJBQXlCLEVBQUUsVUFBVTtvQkFDckMsZ0JBQWdCLEVBQUUsdUNBQXVDO29CQUN6RCxtQkFBbUIsRUFBRSwwQ0FBMEM7aUJBQ2hFO2dCQUNELFVBQVUsRUFBRTtvQkFDVixPQUFPLENBQUMsaUJBQWlCLEVBQUU7d0JBQ3pCLEtBQUssQ0FDSCxRQUFRLEVBQ1IsS0FBSyxDQUFDOzRCQUNKLGVBQWUsRUFBRSxXQUFXO3lCQUM3QixDQUFDLENBQ0g7d0JBQ0QsS0FBSyxDQUNILFVBQVUsRUFDVixLQUFLLENBQUM7NEJBQ0osZUFBZSxFQUFFLFFBQVE7eUJBQzFCLENBQUMsQ0FDSDt3QkFDRCxVQUFVLENBQUMsb0JBQW9CLEVBQUUsT0FBTyxDQUFDLDJCQUEyQixDQUFDLEVBQUUsRUFBRSxNQUFNLEVBQUUsRUFBRSxRQUFRLEVBQUUsSUFBSSxFQUFFLEVBQUUsQ0FBQztxQkFDdkcsQ0FBQztpQkFDSDtnQkFDRCxhQUFhLEVBQUUsaUJBQWlCLENBQUMsSUFBSTtnQkFDckMsZUFBZSxFQUFFLHVCQUF1QixDQUFDLE1BQU07O2FBQ2hEOzs7WUFyQ0MsaUJBQWlCOzs7b0JBdUNoQixLQUFLO21CQUNMLEtBQUs7dUJBRUwsS0FBSzt1QkFRTCxLQUFLO3dCQVFMLE1BQU0iLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQge1xuICBDb21wb25lbnQsXG4gIElucHV0LFxuICBPdXRwdXQsXG4gIEV2ZW50RW1pdHRlcixcbiAgVmlld0VuY2Fwc3VsYXRpb24sXG4gIE9uSW5pdCxcbiAgT25DaGFuZ2VzLFxuICBDaGFuZ2VEZXRlY3Rpb25TdHJhdGVneSxcbiAgQ2hhbmdlRGV0ZWN0b3JSZWZcbn0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5pbXBvcnQgeyB0cmlnZ2VyLCBzdGF0ZSwgc3R5bGUsIGFuaW1hdGUsIHRyYW5zaXRpb24gfSBmcm9tICdAYW5ndWxhci9hbmltYXRpb25zJztcbmltcG9ydCB7IGNvZXJjZUJvb2xlYW5Qcm9wZXJ0eSwgY29lcmNlTnVtYmVyUHJvcGVydHkgfSBmcm9tICdAYW5ndWxhci9jZGsvY29lcmNpb24nO1xuXG5pbXBvcnQgeyBMb25nUHJlc3NCdXR0b25TdGF0ZSB9IGZyb20gJy4vbG9uZy1wcmVzcy1idXR0b24tc3RhdGUuZW51bSc7XG5cbkBDb21wb25lbnQoe1xuICBleHBvcnRBczogJ25neExvbmdQcmVzc0J1dHRvbicsXG4gIHNlbGVjdG9yOiAnbmd4LWxvbmctcHJlc3MtYnV0dG9uJyxcbiAgdGVtcGxhdGVVcmw6ICcuL2xvbmctcHJlc3MtYnV0dG9uLmNvbXBvbmVudC5odG1sJyxcbiAgc3R5bGVVcmxzOiBbJy4vbG9uZy1wcmVzcy1idXR0b24uY29tcG9uZW50LnNjc3MnXSxcbiAgaG9zdDoge1xuICAgIGNsYXNzOiAnbmd4LWxvbmctcHJlc3MnLFxuICAgICdbY2xhc3MuZGlzYWJsZWQtYnV0dG9uXSc6ICdkaXNhYmxlZCcsXG4gICAgJ1tjbGFzcy5hY3RpdmVdJzogJ3N0YXRlID09PSBMb25nUHJlc3NCdXR0b25TdGF0ZS5BY3RpdmUnLFxuICAgICdbY2xhc3Muc3VibWl0dGVkXSc6ICdzdGF0ZSA9PT0gTG9uZ1ByZXNzQnV0dG9uU3RhdGUuU3VibWl0dGVkJ1xuICB9LFxuICBhbmltYXRpb25zOiBbXG4gICAgdHJpZ2dlcignY2lyY2xlQW5pbWF0aW9uJywgW1xuICAgICAgc3RhdGUoXG4gICAgICAgICdhY3RpdmUnLFxuICAgICAgICBzdHlsZSh7XG4gICAgICAgICAgc3Ryb2tlRGFzaGFycmF5OiAnMTAwMCAxMDAwJ1xuICAgICAgICB9KVxuICAgICAgKSxcbiAgICAgIHN0YXRlKFxuICAgICAgICAnaW5hY3RpdmUnLFxuICAgICAgICBzdHlsZSh7XG4gICAgICAgICAgc3Ryb2tlRGFzaGFycmF5OiAnMCAxMDAwJ1xuICAgICAgICB9KVxuICAgICAgKSxcbiAgICAgIHRyYW5zaXRpb24oJ2luYWN0aXZlID0+IGFjdGl2ZScsIGFuaW1hdGUoJ3t7IGR1cmF0aW9uIH19bXMgZWFzZS1vdXQnKSwgeyBwYXJhbXM6IHsgZHVyYXRpb246IDEwMDAgfSB9KVxuICAgIF0pXG4gIF0sXG4gIGVuY2Fwc3VsYXRpb246IFZpZXdFbmNhcHN1bGF0aW9uLk5vbmUsXG4gIGNoYW5nZURldGVjdGlvbjogQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3kuT25QdXNoXG59KVxuZXhwb3J0IGNsYXNzIExvbmdQcmVzc0J1dHRvbkNvbXBvbmVudCBpbXBsZW1lbnRzIE9uSW5pdCwgT25DaGFuZ2VzIHtcbiAgQElucHV0KCkgc3RhdGUgPSBMb25nUHJlc3NCdXR0b25TdGF0ZS5BY3RpdmU7XG4gIEBJbnB1dCgpIGljb24gPSAnbW91c2UtaG9sZCc7XG5cbiAgQElucHV0KClcbiAgZ2V0IGR1cmF0aW9uKCkge1xuICAgIHJldHVybiB0aGlzLl9kdXJhdGlvbjtcbiAgfVxuICBzZXQgZHVyYXRpb24oZHVyYXRpb246IG51bWJlcikge1xuICAgIHRoaXMuX2R1cmF0aW9uID0gY29lcmNlTnVtYmVyUHJvcGVydHkoZHVyYXRpb24pO1xuICB9XG5cbiAgQElucHV0KClcbiAgZ2V0IGRpc2FibGVkKCkge1xuICAgIHJldHVybiB0aGlzLl9kaXNhYmxlZDtcbiAgfVxuICBzZXQgZGlzYWJsZWQoZGlzYWJsZWQ6IGJvb2xlYW4pIHtcbiAgICB0aGlzLl9kaXNhYmxlZCA9IGNvZXJjZUJvb2xlYW5Qcm9wZXJ0eShkaXNhYmxlZCk7XG4gIH1cblxuICBAT3V0cHV0KCkgbG9uZ1ByZXNzOiBFdmVudEVtaXR0ZXI8Ym9vbGVhbj4gPSBuZXcgRXZlbnRFbWl0dGVyPGJvb2xlYW4+KCk7XG5cbiAgcmVhZG9ubHkgTG9uZ1ByZXNzQnV0dG9uU3RhdGUgPSBMb25nUHJlc3NCdXR0b25TdGF0ZTtcbiAgcHJlc3NlZCA9IGZhbHNlO1xuXG4gIHByaXZhdGUgX2xhc3RUaW1lb3V0OiBhbnk7XG4gIHByaXZhdGUgX2R1cmF0aW9uID0gMzAwMDtcbiAgcHJpdmF0ZSBfZGlzYWJsZWQgPSBmYWxzZTtcblxuICBjb25zdHJ1Y3Rvcihwcml2YXRlIHJlYWRvbmx5IGNkcjogQ2hhbmdlRGV0ZWN0b3JSZWYpIHt9XG5cbiAgbmdPbkluaXQoKTogdm9pZCB7XG4gICAgdGhpcy51cGRhdGVTdGF0ZSgpO1xuICB9XG5cbiAgbmdPbkNoYW5nZXMoKTogdm9pZCB7XG4gICAgdGhpcy51cGRhdGVTdGF0ZSgpO1xuICB9XG5cbiAgdXBkYXRlU3RhdGUoKSB7XG4gICAgaWYgKCF0aGlzLnN0YXRlKSB7XG4gICAgICB0aGlzLnN0YXRlID0gTG9uZ1ByZXNzQnV0dG9uU3RhdGUuQWN0aXZlO1xuICAgIH1cblxuICAgIGlmICh0aGlzLnN0YXRlID09PSBMb25nUHJlc3NCdXR0b25TdGF0ZS5TdWJtaXR0ZWQpIHtcbiAgICAgIHRoaXMuZGlzYWJsZWQgPSB0cnVlO1xuICAgICAgY2xlYXJUaW1lb3V0KHRoaXMuX2xhc3RUaW1lb3V0KTtcblxuICAgICAgdGhpcy5fbGFzdFRpbWVvdXQgPSBzZXRUaW1lb3V0KCgpID0+IHtcbiAgICAgICAgdGhpcy5zdGF0ZSA9IExvbmdQcmVzc0J1dHRvblN0YXRlLkFjdGl2ZTtcbiAgICAgICAgdGhpcy5kaXNhYmxlZCA9IGZhbHNlO1xuICAgICAgICB0aGlzLnVwZGF0ZVN0YXRlKCk7XG4gICAgICB9LCAzMDAwKTtcbiAgICB9XG5cbiAgICB0aGlzLmNkci5tYXJrRm9yQ2hlY2soKTtcbiAgfVxuXG4gIG9uTG9uZ1ByZXNzU3RhcnQoKTogdm9pZCB7XG4gICAgaWYgKCF0aGlzLmRpc2FibGVkKSB7XG4gICAgICB0aGlzLnByZXNzZWQgPSB0cnVlO1xuICAgIH1cbiAgfVxuXG4gIG9uTG9uZ1ByZXNzRmluaXNoKGU6IGJvb2xlYW4pOiB2b2lkIHtcbiAgICBpZiAoIXRoaXMuZGlzYWJsZWQpIHtcbiAgICAgIHRoaXMucHJlc3NlZCA9IGZhbHNlO1xuICAgICAgdGhpcy5zdGF0ZSA9IExvbmdQcmVzc0J1dHRvblN0YXRlLlN1Ym1pdHRlZDtcbiAgICAgIHRoaXMubG9uZ1ByZXNzLmVtaXQoZSk7XG4gICAgICB0aGlzLnVwZGF0ZVN0YXRlKCk7XG4gICAgfVxuICB9XG5cbiAgb25Mb25nUHJlc3NDYW5jZWwoKTogdm9pZCB7XG4gICAgdGhpcy5wcmVzc2VkID0gZmFsc2U7XG4gIH1cbn1cbiJdfQ==

@@ -1,0 +1,13 @@
+import { Pipe } from '@angular/core';
+import { jsonToTree } from './json-to-tree.util';
+export class JSONTreePipe {
+    transform(input) {
+        return [jsonToTree(input)];
+    }
+}
+JSONTreePipe.decorators = [
+    { type: Pipe, args: [{
+                name: 'jsonTree'
+            },] }
+];
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoianNvbi10cmVlLnBpcGUuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9waXBlcy9qc29uLXRyZWUvanNvbi10cmVlLnBpcGUudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLElBQUksRUFBaUIsTUFBTSxlQUFlLENBQUM7QUFFcEQsT0FBTyxFQUFFLFVBQVUsRUFBRSxNQUFNLHFCQUFxQixDQUFDO0FBS2pELE1BQU0sT0FBTyxZQUFZO0lBQ3ZCLFNBQVMsQ0FBQyxLQUFjO1FBQ3RCLE9BQU8sQ0FBQyxVQUFVLENBQUMsS0FBSyxDQUFDLENBQUMsQ0FBQztJQUM3QixDQUFDOzs7WUFORixJQUFJLFNBQUM7Z0JBQ0osSUFBSSxFQUFFLFVBQVU7YUFDakIiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBQaXBlLCBQaXBlVHJhbnNmb3JtIH0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5cbmltcG9ydCB7IGpzb25Ub1RyZWUgfSBmcm9tICcuL2pzb24tdG8tdHJlZS51dGlsJztcblxuQFBpcGUoe1xuICBuYW1lOiAnanNvblRyZWUnXG59KVxuZXhwb3J0IGNsYXNzIEpTT05UcmVlUGlwZSBpbXBsZW1lbnRzIFBpcGVUcmFuc2Zvcm0ge1xuICB0cmFuc2Zvcm0oaW5wdXQ6IHVua25vd24pOiBhbnlbXSB7XG4gICAgcmV0dXJuIFtqc29uVG9UcmVlKGlucHV0KV07XG4gIH1cbn1cbiJdfQ==

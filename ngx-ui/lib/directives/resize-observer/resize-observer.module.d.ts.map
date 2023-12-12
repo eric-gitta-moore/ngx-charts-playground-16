@@ -1,0 +1,1 @@
+{"version":3,"file":"resize-observer.module.d.ts","sources":["resize-observer.module.d.ts"],"names":[],"mappings":";;;AAAA;;;;AACA","sourcesContent":["export declare class ResizeObserverModule {\n}\n"]}

@@ -1,0 +1,6 @@
+import { SafeUrl } from '@angular/platform-browser';
+import { CardStatus } from '../card-status.enum';
+export declare class CardAvatarComponent {
+    src: string | SafeUrl;
+    status: CardStatus;
+}

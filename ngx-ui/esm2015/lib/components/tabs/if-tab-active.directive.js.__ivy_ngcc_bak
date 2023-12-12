@@ -1,0 +1,15 @@
+import { Directive, TemplateRef } from '@angular/core';
+export class IfTabActiveDirective {
+    constructor(templateRef) {
+        this.templateRef = templateRef;
+    }
+}
+IfTabActiveDirective.decorators = [
+    { type: Directive, args: [{
+                selector: '[ngxIfTabActive]'
+            },] }
+];
+IfTabActiveDirective.ctorParameters = () => [
+    { type: TemplateRef }
+];
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaWYtdGFiLWFjdGl2ZS5kaXJlY3RpdmUuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9jb21wb25lbnRzL3RhYnMvaWYtdGFiLWFjdGl2ZS5kaXJlY3RpdmUudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLFNBQVMsRUFBRSxXQUFXLEVBQUUsTUFBTSxlQUFlLENBQUM7QUFLdkQsTUFBTSxPQUFPLG9CQUFvQjtJQUMvQixZQUFtQixXQUE2QjtRQUE3QixnQkFBVyxHQUFYLFdBQVcsQ0FBa0I7SUFBRyxDQUFDOzs7WUFKckQsU0FBUyxTQUFDO2dCQUNULFFBQVEsRUFBRSxrQkFBa0I7YUFDN0I7OztZQUptQixXQUFXIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgRGlyZWN0aXZlLCBUZW1wbGF0ZVJlZiB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuXG5ARGlyZWN0aXZlKHtcbiAgc2VsZWN0b3I6ICdbbmd4SWZUYWJBY3RpdmVdJ1xufSlcbmV4cG9ydCBjbGFzcyBJZlRhYkFjdGl2ZURpcmVjdGl2ZSB7XG4gIGNvbnN0cnVjdG9yKHB1YmxpYyB0ZW1wbGF0ZVJlZjogVGVtcGxhdGVSZWY8YW55Pikge31cbn1cbiJdfQ==

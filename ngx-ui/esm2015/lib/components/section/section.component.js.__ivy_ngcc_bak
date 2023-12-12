@@ -1,0 +1,47 @@
+import { Component, Input, ContentChild, Output, EventEmitter, ViewEncapsulation, ChangeDetectionStrategy, HostBinding } from '@angular/core';
+import { SectionHeaderComponent } from './section-header.component';
+import { SectionApperance } from './section-appearance.enum';
+import { TogglePosition } from './section-toggle-position.enum';
+export class SectionComponent {
+    constructor() {
+        this.sectionCollapsed = false;
+        this.sectionCollapsible = true;
+        this.headerToggle = false;
+        this.padding = '1.8em';
+        this.appearance = SectionApperance.Legacy;
+        this.togglePosition = TogglePosition.Left;
+        this.toggle = new EventEmitter();
+        this.TogglePosition = TogglePosition;
+    }
+    get outline() {
+        return this.appearance === SectionApperance.Outline;
+    }
+    onSectionClicked() {
+        this.sectionCollapsed = !this.sectionCollapsed;
+        this.toggle.emit(this.sectionCollapsed);
+    }
+}
+SectionComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'ngx-section',
+                exportAs: 'ngxSection',
+                template: "<section>\n  <header\n    *ngIf=\"headerComp || sectionTitle\"\n    [class.ngx-section-collapsible]=\"sectionCollapsible\"\n    [class.section-collapsed]=\"sectionCollapsed\"\n    [class.toggle-right]=\"togglePosition === TogglePosition.Right\"\n    [class.header-toggle]=\"headerToggle\"\n    class=\"ngx-section-header\"\n    (click)=\"headerToggle && sectionCollapsible && onSectionClicked()\"\n  >\n    <button\n      *ngIf=\"sectionCollapsible && togglePosition !== TogglePosition.None\"\n      class=\"ngx-section-toggle\"\n      type=\"button\"\n      title=\"Toggle Content Visibility\"\n      (click)=\"sectionCollapsible && onSectionClicked()\"\n    >\n      <ngx-icon \n        [fontIcon]=\"sectionCollapsed ? 'chevron-bold-right' : 'chevron-bold-down'\">\n      </ngx-icon>\n    </button>\n    <ng-content select=\"ngx-section-header\"></ng-content>\n    <h1 *ngIf=\"sectionTitle\" [innerHTML]=\"sectionTitle\"></h1>\n  </header>\n  <div class=\"ngx-section-content\" [style.padding]=\"padding\" *ngIf=\"!sectionCollapsed\">\n    <ng-content></ng-content>\n  </div>\n</section>\n",
+                host: { class: 'ngx-section' },
+                encapsulation: ViewEncapsulation.None,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                styles: [".ngx-section{display:block;margin-bottom:2em;background:#171a21}.ngx-section .ngx-section-header{background:#212631;display:block;width:auto;height:40px;line-height:40px;padding:0 10px;color:#cdd2dd;position:relative}.ngx-section .ngx-section-header .ngx-section-toggle{font-size:8px;vertical-align:top;display:inline-block;line-height:40px;position:absolute;background:none;border:none;box-shadow:none;padding:0;left:15px}.ngx-section .ngx-section-header a{color:#cdd2dd}.ngx-section .ngx-section-header h1{font-size:1.1em;font-weight:600;line-height:40px;padding:0;margin:0}.ngx-section .ngx-section-header.ngx-section-collapsible{padding:0 20px 0 35px}.ngx-section .ngx-section-header.ngx-section-collapsible.header-toggle{cursor:pointer}.ngx-section .ngx-section-header.toggle-right.ngx-section-collapsible{padding:0 20px 0 15px}.ngx-section .ngx-section-header.toggle-right .ngx-section-toggle{left:calc(100% - 30px)}.ngx-section.shadow>section{box-shadow:0 1px 8px 0 rgba(0,0,0,.2),0 3px 4px 0 rgba(0,0,0,.14),0 3px 3px -2px rgba(0,0,0,.12)}.ngx-section.outline .ngx-section-content,.ngx-section.outline .ngx-section-header{background:none;border:1px solid #455066}.ngx-section.outline .ngx-section-header{border-radius:2px 2px 0 0}.ngx-section.outline .ngx-section-header.section-collapsed{border-radius:2px}.ngx-section.outline .ngx-section-content{border-top:0;border-radius:0 0 2px 2px}"]
+            },] }
+];
+SectionComponent.propDecorators = {
+    outline: [{ type: HostBinding, args: ['class.outline',] }],
+    sectionCollapsed: [{ type: Input }],
+    sectionCollapsible: [{ type: Input }],
+    headerToggle: [{ type: Input }],
+    sectionTitle: [{ type: Input }],
+    padding: [{ type: Input }],
+    appearance: [{ type: Input }],
+    togglePosition: [{ type: Input }],
+    toggle: [{ type: Output }],
+    headerComp: [{ type: ContentChild, args: [SectionHeaderComponent,] }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2VjdGlvbi5jb21wb25lbnQuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9jb21wb25lbnRzL3NlY3Rpb24vc2VjdGlvbi5jb21wb25lbnQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUNMLFNBQVMsRUFDVCxLQUFLLEVBQ0wsWUFBWSxFQUNaLE1BQU0sRUFDTixZQUFZLEVBQ1osaUJBQWlCLEVBQ2pCLHVCQUF1QixFQUN2QixXQUFXLEVBQ1osTUFBTSxlQUFlLENBQUM7QUFFdkIsT0FBTyxFQUFFLHNCQUFzQixFQUFFLE1BQU0sNEJBQTRCLENBQUM7QUFDcEUsT0FBTyxFQUFFLGdCQUFnQixFQUFFLE1BQU0sMkJBQTJCLENBQUM7QUFDN0QsT0FBTyxFQUFFLGNBQWMsRUFBRSxNQUFNLGdDQUFnQyxDQUFDO0FBV2hFLE1BQU0sT0FBTyxnQkFBZ0I7SUFUN0I7UUFlVyxxQkFBZ0IsR0FBRyxLQUFLLENBQUM7UUFDekIsdUJBQWtCLEdBQUcsSUFBSSxDQUFDO1FBQzFCLGlCQUFZLEdBQUcsS0FBSyxDQUFDO1FBRXJCLFlBQU8sR0FBUSxPQUFPLENBQUM7UUFDdkIsZUFBVSxHQUFxQixnQkFBZ0IsQ0FBQyxNQUFNLENBQUM7UUFDdkQsbUJBQWMsR0FBbUIsY0FBYyxDQUFDLElBQUksQ0FBQztRQUVwRCxXQUFNLEdBQUcsSUFBSSxZQUFZLEVBQUUsQ0FBQztRQUk3QixtQkFBYyxHQUFHLGNBQWMsQ0FBQztJQU0zQyxDQUFDO0lBdkJDLElBQ0ksT0FBTztRQUNULE9BQU8sSUFBSSxDQUFDLFVBQVUsS0FBSyxnQkFBZ0IsQ0FBQyxPQUFPLENBQUM7SUFDdEQsQ0FBQztJQWdCRCxnQkFBZ0I7UUFDZCxJQUFJLENBQUMsZ0JBQWdCLEdBQUcsQ0FBQyxJQUFJLENBQUMsZ0JBQWdCLENBQUM7UUFDL0MsSUFBSSxDQUFDLE1BQU0sQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFDLGdCQUFnQixDQUFDLENBQUM7SUFDMUMsQ0FBQzs7O1lBaENGLFNBQVMsU0FBQztnQkFDVCxRQUFRLEVBQUUsYUFBYTtnQkFDdkIsUUFBUSxFQUFFLFlBQVk7Z0JBQ3RCLCtrQ0FBdUM7Z0JBQ3ZDLElBQUksRUFBRSxFQUFFLEtBQUssRUFBRSxhQUFhLEVBQUU7Z0JBQzlCLGFBQWEsRUFBRSxpQkFBaUIsQ0FBQyxJQUFJO2dCQUNyQyxlQUFlLEVBQUUsdUJBQXVCLENBQUMsTUFBTTs7YUFFaEQ7OztzQkFFRSxXQUFXLFNBQUMsZUFBZTsrQkFLM0IsS0FBSztpQ0FDTCxLQUFLOzJCQUNMLEtBQUs7MkJBQ0wsS0FBSztzQkFDTCxLQUFLO3lCQUNMLEtBQUs7NkJBQ0wsS0FBSztxQkFFTCxNQUFNO3lCQUVOLFlBQVksU0FBQyxzQkFBc0IiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQge1xuICBDb21wb25lbnQsXG4gIElucHV0LFxuICBDb250ZW50Q2hpbGQsXG4gIE91dHB1dCxcbiAgRXZlbnRFbWl0dGVyLFxuICBWaWV3RW5jYXBzdWxhdGlvbixcbiAgQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3ksXG4gIEhvc3RCaW5kaW5nXG59IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuXG5pbXBvcnQgeyBTZWN0aW9uSGVhZGVyQ29tcG9uZW50IH0gZnJvbSAnLi9zZWN0aW9uLWhlYWRlci5jb21wb25lbnQnO1xuaW1wb3J0IHsgU2VjdGlvbkFwcGVyYW5jZSB9IGZyb20gJy4vc2VjdGlvbi1hcHBlYXJhbmNlLmVudW0nO1xuaW1wb3J0IHsgVG9nZ2xlUG9zaXRpb24gfSBmcm9tICcuL3NlY3Rpb24tdG9nZ2xlLXBvc2l0aW9uLmVudW0nO1xuXG5AQ29tcG9uZW50KHtcbiAgc2VsZWN0b3I6ICduZ3gtc2VjdGlvbicsXG4gIGV4cG9ydEFzOiAnbmd4U2VjdGlvbicsXG4gIHRlbXBsYXRlVXJsOiAnLi9zZWN0aW9uLmNvbXBvbmVudC5odG1sJyxcbiAgaG9zdDogeyBjbGFzczogJ25neC1zZWN0aW9uJyB9LFxuICBlbmNhcHN1bGF0aW9uOiBWaWV3RW5jYXBzdWxhdGlvbi5Ob25lLFxuICBjaGFuZ2VEZXRlY3Rpb246IENoYW5nZURldGVjdGlvblN0cmF0ZWd5Lk9uUHVzaCxcbiAgc3R5bGVVcmxzOiBbJy4vc2VjdGlvbi5jb21wb25lbnQuc2NzcyddXG59KVxuZXhwb3J0IGNsYXNzIFNlY3Rpb25Db21wb25lbnQge1xuICBASG9zdEJpbmRpbmcoJ2NsYXNzLm91dGxpbmUnKVxuICBnZXQgb3V0bGluZSgpIHtcbiAgICByZXR1cm4gdGhpcy5hcHBlYXJhbmNlID09PSBTZWN0aW9uQXBwZXJhbmNlLk91dGxpbmU7XG4gIH1cblxuICBASW5wdXQoKSBzZWN0aW9uQ29sbGFwc2VkID0gZmFsc2U7XG4gIEBJbnB1dCgpIHNlY3Rpb25Db2xsYXBzaWJsZSA9IHRydWU7XG4gIEBJbnB1dCgpIGhlYWRlclRvZ2dsZSA9IGZhbHNlO1xuICBASW5wdXQoKSBzZWN0aW9uVGl0bGU6IHN0cmluZztcbiAgQElucHV0KCkgcGFkZGluZzogYW55ID0gJzEuOGVtJztcbiAgQElucHV0KCkgYXBwZWFyYW5jZTogU2VjdGlvbkFwcGVyYW5jZSA9IFNlY3Rpb25BcHBlcmFuY2UuTGVnYWN5O1xuICBASW5wdXQoKSB0b2dnbGVQb3NpdGlvbjogVG9nZ2xlUG9zaXRpb24gPSBUb2dnbGVQb3NpdGlvbi5MZWZ0O1xuXG4gIEBPdXRwdXQoKSB0b2dnbGUgPSBuZXcgRXZlbnRFbWl0dGVyKCk7XG5cbiAgQENvbnRlbnRDaGlsZChTZWN0aW9uSGVhZGVyQ29tcG9uZW50KSBoZWFkZXJDb21wOiBTZWN0aW9uSGVhZGVyQ29tcG9uZW50O1xuXG4gIHJlYWRvbmx5IFRvZ2dsZVBvc2l0aW9uID0gVG9nZ2xlUG9zaXRpb247XG5cbiAgb25TZWN0aW9uQ2xpY2tlZCgpOiB2b2lkIHtcbiAgICB0aGlzLnNlY3Rpb25Db2xsYXBzZWQgPSAhdGhpcy5zZWN0aW9uQ29sbGFwc2VkO1xuICAgIHRoaXMudG9nZ2xlLmVtaXQodGhpcy5zZWN0aW9uQ29sbGFwc2VkKTtcbiAgfVxufVxuIl19

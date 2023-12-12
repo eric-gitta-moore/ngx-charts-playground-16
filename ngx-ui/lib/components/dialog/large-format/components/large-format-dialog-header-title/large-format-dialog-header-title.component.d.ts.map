@@ -1,0 +1,1 @@
+{"version":3,"file":"large-format-dialog-header-title.component.d.ts","sources":["large-format-dialog-header-title.component.d.ts"],"names":[],"mappings":";AAAA;AACA;AACA;AACA;;;AACA","sourcesContent":["export declare class LargeFormatDialogHeaderTitleComponent {\n    dialogTitle: string;\n    dialogSubtitle?: string;\n    hostClass: boolean;\n}\n"]}

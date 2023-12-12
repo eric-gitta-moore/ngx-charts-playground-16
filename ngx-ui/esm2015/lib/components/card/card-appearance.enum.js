@@ -1,0 +1,6 @@
+export var CardAppearance;
+(function (CardAppearance) {
+    CardAppearance["Normal"] = "normal";
+    CardAppearance["Flat"] = "flat";
+})(CardAppearance || (CardAppearance = {}));
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2FyZC1hcHBlYXJhbmNlLmVudW0uanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9jb21wb25lbnRzL2NhcmQvY2FyZC1hcHBlYXJhbmNlLmVudW0udHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsTUFBTSxDQUFOLElBQVksY0FHWDtBQUhELFdBQVksY0FBYztJQUN4QixtQ0FBaUIsQ0FBQTtJQUNqQiwrQkFBYSxDQUFBO0FBQ2YsQ0FBQyxFQUhXLGNBQWMsS0FBZCxjQUFjLFFBR3pCIiwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IGVudW0gQ2FyZEFwcGVhcmFuY2Uge1xuICBOb3JtYWwgPSAnbm9ybWFsJyxcbiAgRmxhdCA9ICdmbGF0J1xufVxuIl19

@@ -1,0 +1,112 @@
+import { Component, EventEmitter, Input, Output, ViewEncapsulation, forwardRef, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { coerceBooleanProperty, coerceNumberProperty } from '@angular/cdk/coercion';
+const RADIO_VALUE_ACCESSOR = {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => RadioButtonComponent),
+    multi: true
+};
+let nextId = 0;
+export class RadioButtonComponent {
+    constructor(cdr) {
+        this.cdr = cdr;
+        this.UNIQUE_ID = `ngx-radio-${++nextId}`;
+        this.id = this.UNIQUE_ID;
+        this.name = this.UNIQUE_ID;
+        this.change = new EventEmitter();
+        this.blur = new EventEmitter();
+        this.focus = new EventEmitter();
+        this.groupDisabled = false;
+        this._checked = false;
+        this._value = false;
+        this._disabled = false;
+        this._tabindex = 0;
+    }
+    get tabindex() {
+        return this._tabindex;
+    }
+    set tabindex(tabindex) {
+        this._tabindex = coerceNumberProperty(tabindex);
+    }
+    get checked() {
+        return this._checked;
+    }
+    set checked(checked) {
+        checked = coerceBooleanProperty(checked);
+        if (this._checked !== checked) {
+            this._checked = checked;
+            this.onChangeCallback(this._value);
+        }
+        this.cdr.markForCheck();
+    }
+    get value() {
+        return this._value;
+    }
+    set value(value) {
+        if (this._value !== value) {
+            this._value = value;
+            this.onChangeCallback(this._value);
+        }
+    }
+    get disabled() {
+        return this._disabled || this.groupDisabled;
+    }
+    set disabled(disabled) {
+        this._disabled = coerceBooleanProperty(disabled);
+    }
+    _onInputChange(event) {
+        event.stopPropagation();
+        this.checked = true;
+    }
+    writeValue(value) {
+        this.value = value;
+    }
+    onFocus(e) {
+        this.focus.emit(e);
+        this.onTouchedCallback();
+    }
+    registerOnChange(fn) {
+        this.onChangeCallback = fn;
+    }
+    registerOnTouched(fn) {
+        this.onTouchedCallback = fn;
+    }
+    onChangeCallback(value) {
+        if (this.checked) {
+            this.change.emit(value);
+        }
+    }
+    onTouchedCallback() {
+        // placeholder
+    }
+}
+RadioButtonComponent.decorators = [
+    { type: Component, args: [{
+                exportAs: 'ngxRadiobutton',
+                selector: 'ngx-radiobutton',
+                template: "<label class=\"radio-label\">\n  <input\n    type=\"radio\"\n    class=\"radio-input\"\n    [id]=\"id\"\n    [checked]=\"checked\"\n    [disabled]=\"disabled\"\n    [name]=\"name\"\n    [tabIndex]=\"tabindex\"\n    (focus)=\"onFocus($event)\"\n    (blur)=\"blur.emit($event)\"\n    (change)=\"_onInputChange($event)\"\n  />\n  <span class=\"checkmark\"></span>\n  <div class=\"radio-label--content\">\n    <ng-content></ng-content>\n  </div>\n</label>\n",
+                host: {
+                    class: 'ngx-radiobutton',
+                    '[class.disabled]': 'disabled'
+                },
+                providers: [RADIO_VALUE_ACCESSOR],
+                encapsulation: ViewEncapsulation.None,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                styles: [".ngx-radiobutton{display:block}.ngx-radiobutton .radio-label{display:block;position:relative;padding-left:1.5em;margin:0 .8rem 0 0;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;user-select:none}.ngx-radiobutton .radio-label--content{color:#cdd2dd}.ngx-radiobutton .radio-label input{position:absolute;opacity:0}.ngx-radiobutton .checkmark{position:absolute;top:.25em;left:0;height:1em;width:1em;background-color:transparent;border-radius:50%;border:1px solid #6f809e;opacity:1;transition:background-color .3s ease,opacity .3s ease}.ngx-radiobutton .radio-label:hover input~.checkmark{background-color:#2196f3;border:1px solid #2196f3;opacity:.3}.ngx-radiobutton .radio-label .checkmark:after,.ngx-radiobutton .radio-label:hover .checkmark:after{content:\"\";position:absolute;display:block;opacity:0;top:0;left:0;width:.25em;height:.25em;transform:translate3d(.32em,.32em,0);border-radius:50%;background:#fff;box-shadow:0 1px 0 rgba(0,0,0,.25);transition:opacity .5s ease}.ngx-radiobutton.disabled .radio-input:after,.ngx-radiobutton.disabled .radio-input:before,.ngx-radiobutton.disabled .radio-label{cursor:not-allowed}.ngx-radiobutton.disabled .radio-label:hover input~.checkmark{background-color:transparent;border:1px solid #6f809e;opacity:1}.ngx-radiobutton.disabled .radio-label:hover .checkmark:after{opacity:0}.ngx-radiobutton.disabled .radio-label input:checked~.checkmark,.ngx-radiobutton .radio-label input:checked~.checkmark{background-color:#2196f3;border:1px solid #2196f3;opacity:1}.ngx-radiobutton.disabled .radio-label input:checked~.checkmark:after,.ngx-radiobutton .radio-label:hover .checkmark:after,.ngx-radiobutton .radio-label input:checked~.checkmark:after{opacity:1}"]
+            },] }
+];
+RadioButtonComponent.ctorParameters = () => [
+    { type: ChangeDetectorRef }
+];
+RadioButtonComponent.propDecorators = {
+    id: [{ type: Input }],
+    name: [{ type: Input }],
+    tabindex: [{ type: Input }],
+    checked: [{ type: Input }],
+    value: [{ type: Input }],
+    disabled: [{ type: Input }],
+    change: [{ type: Output }],
+    blur: [{ type: Output }],
+    focus: [{ type: Output }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicmFkaW9idXR0b24uY29tcG9uZW50LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvc3dpbWxhbmUvbmd4LXVpL3NyYy9saWIvY29tcG9uZW50cy9yYWRpb2J1dHRvbi9yYWRpb2J1dHRvbi5jb21wb25lbnQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUNMLFNBQVMsRUFDVCxZQUFZLEVBQ1osS0FBSyxFQUNMLE1BQU0sRUFDTixpQkFBaUIsRUFDakIsVUFBVSxFQUNWLHVCQUF1QixFQUN2QixpQkFBaUIsRUFDbEIsTUFBTSxlQUFlLENBQUM7QUFDdkIsT0FBTyxFQUF3QixpQkFBaUIsRUFBRSxNQUFNLGdCQUFnQixDQUFDO0FBQ3pFLE9BQU8sRUFBRSxxQkFBcUIsRUFBRSxvQkFBb0IsRUFBRSxNQUFNLHVCQUF1QixDQUFDO0FBRXBGLE1BQU0sb0JBQW9CLEdBQUc7SUFDM0IsT0FBTyxFQUFFLGlCQUFpQjtJQUMxQixXQUFXLEVBQUUsVUFBVSxDQUFDLEdBQUcsRUFBRSxDQUFDLG9CQUFvQixDQUFDO0lBQ25ELEtBQUssRUFBRSxJQUFJO0NBQ1osQ0FBQztBQUVGLElBQUksTUFBTSxHQUFHLENBQUMsQ0FBQztBQWVmLE1BQU0sT0FBTyxvQkFBb0I7SUEyRC9CLFlBQTZCLEdBQXNCO1FBQXRCLFFBQUcsR0FBSCxHQUFHLENBQW1CO1FBMUQxQyxjQUFTLEdBQUcsYUFBYSxFQUFFLE1BQU0sRUFBRSxDQUFDO1FBRXBDLE9BQUUsR0FBVyxJQUFJLENBQUMsU0FBUyxDQUFDO1FBQzVCLFNBQUksR0FBVyxJQUFJLENBQUMsU0FBUyxDQUFDO1FBNEM3QixXQUFNLEdBQUcsSUFBSSxZQUFZLEVBQVcsQ0FBQztRQUNyQyxTQUFJLEdBQUcsSUFBSSxZQUFZLEVBQVMsQ0FBQztRQUNqQyxVQUFLLEdBQUcsSUFBSSxZQUFZLEVBQWMsQ0FBQztRQUUxQyxrQkFBYSxHQUFHLEtBQUssQ0FB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aEQ7OztZQXpCQyxpQkFBaUI7OztpQkE2QmhCLEtBQUs7bUJBQ0wsS0FBSzt1QkFFTCxLQUFLO3NCQVFMLEtBQUs7b0JBZUwsS0FBSzt1QkFXTCxLQUFLO3FCQVFMLE1BQU07bUJBQ04sTUFBTTtvQkFDTixNQUFNIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtcbiAgQ29tcG9uZW50LFxuICBFdmVudEVtaXR0ZXIsXG4gIElucHV0LFxuICBPdXRwdXQsXG4gIFZpZXdFbmNhcHN1bGF0aW9uLFxuICBmb3J3YXJkUmVmLFxuICBDaGFuZ2VEZXRlY3Rpb25TdHJhdGVneSxcbiAgQ2hhbmdlRGV0ZWN0b3JSZWZcbn0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5pbXBvcnQgeyBDb250cm9sVmFsdWVBY2Nlc3NvciwgTkdfVkFMVUVfQUNDRVNTT1IgfSBmcm9tICdAYW5ndWxhci9mb3Jtcyc7XG5pbXBvcnQgeyBjb2VyY2VCb29sZWFuUHJvcGVydHksIGNvZXJjZU51bWJlclByb3BlcnR5IH0gZnJvbSAnQGFuZ3VsYXIvY2RrL2NvZXJjaW9uJztcblxuY29uc3QgUkFESU9fVkFMVUVfQUNDRVNTT1IgPSB7XG4gIHByb3ZpZGU6IE5HX1ZBTFVFX0FDQ0VTU09SLFxuICB1c2VFeGlzdGluZzogZm9yd2FyZFJlZigoKSA9PiBSYWRpb0J1dHRvbkNvbXBvbmVudCksXG4gIG11bHRpOiB0cnVlXG59O1xuXG5sZXQgbmV4dElkID0gMDtcblxuQENvbXBvbmVudCh7XG4gIGV4cG9ydEFzOiAnbmd4UmFkaW9idXR0b24nLFxuICBzZWxlY3RvcjogJ25neC1yYWRpb2J1dHRvbicsXG4gIHRlbXBsYXRlVXJsOiAnLi9yYWRpb2J1dHRvbi5jb21wb25lbnQuaHRtbCcsXG4gIHN0eWxlVXJsczogWycuL3JhZGlvYnV0dG9uLmNvbXBvbmVudC5zY3NzJ10sXG4gIGhvc3Q6IHtcbiAgICBjbGFzczogJ25neC1yYWRpb2J1dHRvbicsXG4gICAgJ1tjbGFzcy5kaXNhYmxlZF0nOiAnZGlzYWJsZWQnXG4gIH0sXG4gIHByb3ZpZGVyczogW1JBRElPX1ZBTFVFX0FDQ0VTU09SXSxcbiAgZW5jYXBzdWxhdGlvbjogVmlld0VuY2Fwc3VsYXRpb24uTm9uZSxcbiAgY2hhbmdlRGV0ZWN0aW9uOiBDaGFuZ2VEZXRlY3Rpb25TdHJhdGVneS5PblB1c2hcbn0pXG5leHBvcnQgY2xhc3MgUmFkaW9CdXR0b25Db21wb25lbnQgaW1wbGVtZW50cyBDb250cm9sVmFsdWVBY2Nlc3NvciB7XG4gIHJlYWRvbmx5IFVOSVFVRV9JRCA9IGBuZ3gtcmFkaW8tJHsrK25leHRJZH1gO1xuXG4gIEBJbnB1dCgpIGlkOiBzdHJpbmcgPSB0aGlzLlVOSVFVRV9JRDtcbiAgQElucHV0KCkgbmFtZTogc3RyaW5nID0gdGhpcy5VTklRVUVfSUQ7XG5cbiAgQElucHV0KClcbiAgZ2V0IHRhYmluZGV4KCkge1xuICAgIHJldHVybiB0aGlzLl90YWJpbmRleDtcbiAgfVxuICBzZXQgdGFiaW5kZXgodGFiaW5kZXg6IG51bWJlcikge1xuICAgIHRoaXMuX3RhYmluZGV4ID0gY29lcmNlTnVtYmVyUHJvcGVydHkodGFiaW5kZXgpO1xuICB9XG5cbiAgQElucHV0KClcbiAgZ2V0IGNoZWNrZWQoKSB7XG4gICAgcmV0dXJuIHRoaXMuX2NoZWNrZWQ7XG4gIH1cbiAgc2V0IGNoZWNrZWQoY2hlY2tlZDogYm9vbGVhbikge1xuICAgIGNoZWNrZWQgPSBjb2VyY2VCb29sZWFuUHJvcGVydHkoY2hlY2tlZCk7XG5cbiAgICBpZiAodGhpcy5fY2hlY2tlZCAhPT0gY2hlY2tlZCkge1xuICAgICAgdGhpcy5fY2hlY2tlZCA9IGNoZWNrZWQ7XG4gICAgICB0aGlzLm9uQ2hhbmdlQ2FsbGJhY2sodGhpcy5fdmFsdWUpO1xuICAgIH1cblxuICAgIHRoaXMuY2RyLm1hcmtGb3JDaGVjaygpO1xuICB9XG5cbiAgQElucHV0KClcbiAgZ2V0IHZhbHVlKCkge1xuICAgIHJldHVybiB0aGlzLl92YWx1ZTtcbiAgfVxuICBzZXQgdmFsdWUodmFsdWU6IGJvb2xlYW4pIHtcbiAgICBpZiAodGhpcy5fdmFsdWUgIT09IHZhbHVlKSB7XG4gICAgICB0aGlzLl92YWx1ZSA9IHZhbHVlO1xuICAgICAgdGhpcy5vbkNoYW5nZUNhbGxiYWNrKHRoaXMuX3ZhbHVlKTtcbiAgICB9XG4gIH1cblxuICBASW5wdXQoKVxuICBnZXQgZGlzYWJsZWQoKSB7XG4gICAgcmV0dXJuIHRoaXMuX2Rpc2FibGVkIHx8IHRoaXMuZ3JvdXBEaXNhYmxlZDtcbiAgfVxuICBzZXQgZGlzYWJsZWQoZGlzYWJsZWQ6IGJvb2xlYW4pIHtcbiAgICB0aGlzLl9kaXNhYmxlZCA9IGNvZXJjZUJvb2xlYW5Qcm9wZXJ0eShkaXNhYmxlZCk7XG4gIH1cblxuICBAT3V0cHV0KCkgY2hhbmdlID0gbmV3IEV2ZW50RW1pdHRlcjxib29sZWFuPigpO1xuICBAT3V0cHV0KCkgYmx1ciA9IG5ldyBFdmVudEVtaXR0ZXI8RXZlbnQ+KCk7XG4gIEBPdXRwdXQoKSBmb2N1cyA9IG5ldyBFdmVudEVtaXR0ZXI8Rm9jdXNFdmVudD4oKTtcblxuICBwdWJsaWMgZ3JvdXBEaXNhYmxlZCA9IGZhbHNlO1xuXG4gIHByaXZhdGUgX2NoZWNrZWQgPSBmYWxzZTtcbiAgcHJpdmF0ZSBfdmFsdWUgPSBmYWxzZTtcbiAgcHJpdmF0ZSBfZGlzYWJsZWQgPSBmYWxzZTtcbiAgcHJpdmF0ZSBfdGFiaW5kZXggPSAwO1xuXG4gIGNvbnN0cnVjdG9yKHByaXZhdGUgcmVhZG9ubHkgY2RyOiBDaGFuZ2VEZXRlY3RvclJlZikge31cblxuICBfb25JbnB1dENoYW5nZShldmVudDogRXZlbnQpIHtcbiAgICBldmVudC5zdG9wUHJvcGFnYXRpb24oKTtcbiAgICB0aGlzLmNoZWNrZWQgPSB0cnVlO1xuICB9XG5cbiAgd3JpdGVWYWx1ZSh2YWx1ZTogYW55KTogdm9pZCB7XG4gICAgdGhpcy52YWx1ZSA9IHZhbHVlO1xuICB9XG5cbiAgb25Gb2N1cyhlOiBGb2N1c0V2ZW50KSB7XG4gICAgdGhpcy5mb2N1cy5lbWl0KGUpO1xuICAgIHRoaXMub25Ub3VjaGVkQ2FsbGJhY2soKTtcbiAgfVxuXG4gIHJlZ2lzdGVyT25DaGFuZ2UoZm46IGFueSk6IHZvaWQge1xuICAgIHRoaXMub25DaGFuZ2VDYWxsYmFjayA9IGZuO1xuICB9XG5cbiAgcmVnaXN0ZXJPblRvdWNoZWQoZm46IGFueSk6IHZvaWQge1xuICAgIHRoaXMub25Ub3VjaGVkQ2FsbGJhY2sgPSBmbjtcbiAgfVxuXG4gIHByaXZhdGUgb25DaGFuZ2VDYWxsYmFjayh2YWx1ZTogYm9vbGVhbikge1xuICAgIGlmICh0aGlzLmNoZWNrZWQpIHtcbiAgICAgIHRoaXMuY2hhbmdlLmVtaXQodmFsdWUpO1xuICAgIH1cbiAgfVxuXG4gIHByaXZhdGUgb25Ub3VjaGVkQ2FsbGJhY2soKSB7XG4gICAgLy8gcGxhY2Vob2xkZXJcbiAgfVxufVxuIl19

@@ -1,0 +1,12 @@
+import { EventEmitter, OnChanges, OnDestroy } from '@angular/core';
+import { TipStatus } from './tip-status.enum';
+export declare class TipComponent implements OnChanges, OnDestroy {
+    status: TipStatus;
+    isCloseable: boolean;
+    icon: string;
+    close: EventEmitter<any>;
+    readonly TipStatus: typeof TipStatus;
+    ngOnChanges(): void;
+    ngOnDestroy(): void;
+    onClose(): void;
+}

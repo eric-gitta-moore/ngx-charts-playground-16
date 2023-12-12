@@ -1,0 +1,16 @@
+import { OnInit } from '@angular/core';
+import { JsonEditorNode } from '../../json-editor-node';
+import { DialogService } from '../../../dialog/dialog.service';
+import { JSONEditorSchema } from '../../json-editor.helper';
+export declare class JsonEditorNodeComponent extends JsonEditorNode implements OnInit {
+    dialogMngr: DialogService;
+    model: any;
+    schema: JSONEditorSchema;
+    typeCheckOverrides?: any;
+    errors: any[];
+    showKnownProperties: boolean;
+    isDuplicated: boolean;
+    placeholder: string;
+    constructor(dialogMngr: DialogService);
+    ngOnInit(): void;
+}

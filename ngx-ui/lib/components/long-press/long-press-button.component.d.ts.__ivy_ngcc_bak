@@ -1,0 +1,24 @@
+import { EventEmitter, OnInit, OnChanges, ChangeDetectorRef } from '@angular/core';
+import { LongPressButtonState } from './long-press-button-state.enum';
+export declare class LongPressButtonComponent implements OnInit, OnChanges {
+    private readonly cdr;
+    state: LongPressButtonState;
+    icon: string;
+    get duration(): number;
+    set duration(duration: number);
+    get disabled(): boolean;
+    set disabled(disabled: boolean);
+    longPress: EventEmitter<boolean>;
+    readonly LongPressButtonState: typeof LongPressButtonState;
+    pressed: boolean;
+    private _lastTimeout;
+    private _duration;
+    private _disabled;
+    constructor(cdr: ChangeDetectorRef);
+    ngOnInit(): void;
+    ngOnChanges(): void;
+    updateState(): void;
+    onLongPressStart(): void;
+    onLongPressFinish(e: boolean): void;
+    onLongPressCancel(): void;
+}

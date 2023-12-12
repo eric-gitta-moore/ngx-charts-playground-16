@@ -1,0 +1,1 @@
+{"version":3,"file":"nag.module.d.ts","sources":["nag.module.d.ts"],"names":[],"mappings":";;;;;AAAA;;;;AACA","sourcesContent":["export declare class NagModule {\n}\n"]}

@@ -1,0 +1,7 @@
+export var DateTimeType;
+(function (DateTimeType) {
+    DateTimeType["date"] = "date";
+    DateTimeType["time"] = "time";
+    DateTimeType["datetime"] = "datetime";
+})(DateTimeType || (DateTimeType = {}));
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZGF0ZS10aW1lLXR5cGUuZW51bS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL3N3aW1sYW5lL25neC11aS9zcmMvbGliL2NvbXBvbmVudHMvZGF0ZS10aW1lL2RhdGUtdGltZS10eXBlLmVudW0udHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsTUFBTSxDQUFOLElBQVksWUFJWDtBQUpELFdBQVksWUFBWTtJQUN0Qiw2QkFBYSxDQUFBO0lBQ2IsNkJBQWEsQ0FBQTtJQUNiLHFDQUFxQixDQUFBO0FBQ3ZCLENBQUMsRUFKVyxZQUFZLEtBQVosWUFBWSxRQUl2QiIsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBlbnVtIERhdGVUaW1lVHlwZSB7XG4gIGRhdGUgPSAnZGF0ZScsXG4gIHRpbWUgPSAndGltZScsXG4gIGRhdGV0aW1lID0gJ2RhdGV0aW1lJ1xufVxuIl19

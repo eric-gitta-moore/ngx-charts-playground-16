@@ -1,0 +1,36 @@
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output, ViewEncapsulation } from '@angular/core';
+export class LargeFormatDialogHeaderActionComponent {
+    constructor() {
+        this.actionTitle = 'Close';
+        this.dirty = false;
+        this.dirtyActionTitle = 'Cancel';
+        this.closeOrCancel = new EventEmitter();
+        this.hostClass = true;
+    }
+}
+LargeFormatDialogHeaderActionComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'ngx-large-format-dialog-header-action',
+                template: `
+    <button
+      type="button"
+      class="ngx-large-format-dialog-header-action__button btn btn-link"
+      (click)="closeOrCancel.emit(dirty)"
+    >
+      <i class="ngx-icon ngx-x"></i>
+      {{ dirty ? dirtyActionTitle : actionTitle }}
+    </button>
+  `,
+                encapsulation: ViewEncapsulation.None,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                styles: [".ngx-large-format-dialog-header-action{flex:0 0 20%;max-width:50%;display:flex;align-items:center;justify-content:flex-end}.ngx-large-format-dialog-header-action__button{color:#72819f;font-size:.8125rem;line-height:1rem;padding-right:0}.ngx-large-format-dialog-header-action__button i.ngx-icon{font-size:.625rem;margin-right:.5rem}.ngx-large-format-dialog-header-action__button:hover{color:#fff}"]
+            },] }
+];
+LargeFormatDialogHeaderActionComponent.propDecorators = {
+    actionTitle: [{ type: Input }],
+    dirty: [{ type: Input }],
+    dirtyActionTitle: [{ type: Input }],
+    closeOrCancel: [{ type: Output }],
+    hostClass: [{ type: HostBinding, args: ['class.ngx-large-format-dialog-header-action',] }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibGFyZ2UtZm9ybWF0LWRpYWxvZy1oZWFkZXItYWN0aW9uLmNvbXBvbmVudC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL3N3aW1sYW5lL25neC11aS9zcmMvbGliL2NvbXBvbmVudHMvZGlhbG9nL2xhcmdlLWZvcm1hdC9jb21wb25lbnRzL2xhcmdlLWZvcm1hdC1kaWFsb2ctaGVhZGVyLWFjdGlvbi9sYXJnZS1mb3JtYXQtZGlhbG9nLWhlYWRlci1hY3Rpb24uY29tcG9uZW50LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFDTCx1QkFBdUIsRUFDdkIsU0FBUyxFQUNULFlBQVksRUFDWixXQUFXLEVBQ1gsS0FBSyxFQUNMLE1BQU0sRUFDTixpQkFBaUIsRUFDbEIsTUFBTSxlQUFlLENBQUM7QUFrQnZCLE1BQU0sT0FBTyxzQ0FBc0M7SUFoQm5EO1FBaUJXLGdCQUFXLEdBQUcsT0FBTyxDQUFDO1FBQ3RCLFVBQUssR0FBRyxLQUFLLENBQUM7UUFDZCxxQkFBZ0IsR0FBRyxRQUFRLENBQUM7UUFFM0Isa0JBQWEsR0FBRyxJQUFJLFlBQVksRUFBVyxDQUFDO1FBRU0sY0FBUyxHQUFHLElBQUksQ0FBQztJQUMvRSxDQUFDOzs7WUF4QkEsU0FBUyxTQUFDO2dCQUNULFFBQVEsRUFBRSx1Q0FBdUM7Z0JBQ2pELFFBQVEsRUFBRTs7Ozs7Ozs7O0dBU1Q7Z0JBRUQsYUFBYSxFQUFFLGlCQUFpQixDQUFDLElBQUk7Z0JBQ3JDLGVBQWUsRUFBRSx1QkFBdUIsQ0FBQyxNQUFNOzthQUNoRDs7OzBCQUVFLEtBQUs7b0JBQ0wsS0FBSzsrQkFDTCxLQUFLOzRCQUVMLE1BQU07d0JBRU4sV0FBVyxTQUFDLDZDQUE2QyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7XG4gIENoYW5nZURldGVjdGlvblN0cmF0ZWd5LFxuICBDb21wb25lbnQsXG4gIEV2ZW50RW1pdHRlcixcbiAgSG9zdEJpbmRpbmcsXG4gIElucHV0LFxuICBPdXRwdXQsXG4gIFZpZXdFbmNhcHN1bGF0aW9uXG59IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuXG5AQ29tcG9uZW50KHtcbiAgc2VsZWN0b3I6ICduZ3gtbGFyZ2UtZm9ybWF0LWRpYWxvZy1oZWFkZXItYWN0aW9uJyxcbiAgdGVtcGxhdGU6IGBcbiAgICA8YnV0dG9uXG4gICAgICB0eXBlPVwiYnV0dG9uXCJcbiAgICAgIGNsYXNzPVwibmd4LWxhcmdlLWZvcm1hdC1kaWFsb2ctaGVhZGVyLWFjdGlvbl9fYnV0dG9uIGJ0biBidG4tbGlua1wiXG4gICAgICAoY2xpY2spPVwiY2xvc2VPckNhbmNlbC5lbWl0KGRpcnR5KVwiXG4gICAgPlxuICAgICAgPGkgY2xhc3M9XCJuZ3gtaWNvbiBuZ3gteFwiPjwvaT5cbiAgICAgIHt7IGRpcnR5ID8gZGlydHlBY3Rpb25UaXRsZSA6IGFjdGlvblRpdGxlIH19XG4gICAgPC9idXR0b24+XG4gIGAsXG4gIHN0eWxlVXJsczogWycuL2xhcmdlLWZvcm1hdC1kaWFsb2ctaGVhZGVyLWFjdGlvbi5jb21wb25lbnQuc2NzcyddLFxuICBlbmNhcHN1bGF0aW9uOiBWaWV3RW5jYXBzdWxhdGlvbi5Ob25lLFxuICBjaGFuZ2VEZXRlY3Rpb246IENoYW5nZURldGVjdGlvblN0cmF0ZWd5Lk9uUHVzaFxufSlcbmV4cG9ydCBjbGFzcyBMYXJnZUZvcm1hdERpYWxvZ0hlYWRlckFjdGlvbkNvbXBvbmVudCB7XG4gIEBJbnB1dCgpIGFjdGlvblRpdGxlID0gJ0Nsb3NlJztcbiAgQElucHV0KCkgZGlydHkgPSBmYWxzZTtcbiAgQElucHV0KCkgZGlydHlBY3Rpb25UaXRsZSA9ICdDYW5jZWwnO1xuXG4gIEBPdXRwdXQoKSBjbG9zZU9yQ2FuY2VsID0gbmV3IEV2ZW50RW1pdHRlcjxib29sZWFuPigpO1xuXG4gIEBIb3N0QmluZGluZygnY2xhc3Mubmd4LWxhcmdlLWZvcm1hdC1kaWFsb2ctaGVhZGVyLWFjdGlvbicpIGhvc3RDbGFzcyA9IHRydWU7XG59XG4iXX0=

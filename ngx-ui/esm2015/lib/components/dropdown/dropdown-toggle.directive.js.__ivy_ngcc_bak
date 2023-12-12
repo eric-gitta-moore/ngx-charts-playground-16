@@ -1,0 +1,57 @@
+import { Directive, Input, ElementRef, HostListener, EventEmitter, Output } from '@angular/core';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+export class DropdownToggleDirective {
+    constructor(el) {
+        this.el = el;
+        this.showEvent = "click" /* Click */;
+        this.toggle = new EventEmitter();
+        this._disabled = false;
+        this.element = this.el.nativeElement;
+    }
+    get disabled() {
+        return this._disabled;
+    }
+    set disabled(disabled) {
+        this._disabled = coerceBooleanProperty(disabled);
+    }
+    onClick(event) {
+        if (this.showEvent === "click" /* Click */ && !this.disabled) {
+            event.preventDefault();
+            this.toggle.emit(event);
+        }
+    }
+    onContextmenu(event) {
+        if (this.showEvent === "contextmenu" /* Contextmenu */ && !this.disabled) {
+            event.preventDefault();
+            this.toggle.emit(event);
+        }
+    }
+    onDblclick(event) {
+        if (this.showEvent === "dblclick" /* Dblclick */ && !this.disabled) {
+            event.preventDefault();
+            this.toggle.emit(event);
+        }
+    }
+}
+DropdownToggleDirective.decorators = [
+    { type: Directive, args: [{
+                exportAs: 'ngxDropdownToggle',
+                selector: 'ngx-dropdown-toggle',
+                host: {
+                    class: 'ngx-dropdown-toggle',
+                    '[class.disabled]': 'disabled'
+                }
+            },] }
+];
+DropdownToggleDirective.ctorParameters = () => [
+    { type: ElementRef }
+];
+DropdownToggleDirective.propDecorators = {
+    showEvent: [{ type: Input }],
+    disabled: [{ type: Input }],
+    toggle: [{ type: Output }],
+    onClick: [{ type: HostListener, args: ['click', ['$event'],] }],
+    onContextmenu: [{ type: HostListener, args: ['contextmenu', ['$event'],] }],
+    onDblclick: [{ type: HostListener, args: ['dblclick', ['$event'],] }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZHJvcGRvd24tdG9nZ2xlLmRpcmVjdGl2ZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL3N3aW1sYW5lL25neC11aS9zcmMvbGliL2NvbXBvbmVudHMvZHJvcGRvd24vZHJvcGRvd24tdG9nZ2xlLmRpcmVjdGl2ZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQUUsU0FBUyxFQUFFLEtBQUssRUFBRSxVQUFVLEVBQUUsWUFBWSxFQUFFLFlBQVksRUFBRSxNQUFNLEVBQUUsTUFBTSxlQUFlLENBQUM7QUFDakcsT0FBTyxFQUFFLHFCQUFxQixFQUFFLE1BQU0sdUJBQXVCLENBQUM7QUFZOUQsTUFBTSxPQUFPLHVCQUF1QjtJQWdCbEMsWUFBNkIsRUFBMkI7UUFBM0IsT0FBRSxHQUFGLEVBQUUsQ0FBeUI7UUFmL0MsY0FBUyx1QkFBOEM7UUFVdEQsV0FBTSxHQUFHLElBQUksWUFBWSxFQUFTLENBQUM7UUFHckMsY0FBUyxHQUFHLEtBQUssQ0FBQztRQUd4QixJQUFJLENBQUMsT0FBTyxHQUFHLElBQUksQ0FBQyxFQUFFLENBQUMsYUFBYSxDQUFDO0lBQ3ZDLENBQUM7SUFmRCxJQUNJLFFBQVE7UUFDVixPQUFPLElBQUksQ0FBQyxTQUFTLENBQUM7SUFDeEIsQ0FBQztJQUNELElBQUksUUFBUSxDQUFDLFFBQWlCO1FBQzVCLElBQUksQ0FBQyxTQUFTLEdBQUcscUJBQXFCLENBQUMsUUFBUSxDQUFDLENBQUM7SUFDbkQsQ0FBQztJQVlELE9BQU8sQ0FBQyxLQUFZO1FBQ2xCLElBQUksSUFBSSxDQUFDLFNBQVMsd0JBQTRCLElBQUksQ0FBQyxJQUFJLENBQUMsUUFBUSxFQUFFO1lBQ2hFLEtBQUssQ0FBQyxjQUFjLEVBQUUsQ0FBQztZQUN2QixJQUFJLENBQUMsTUFBTSxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsQ0FBQztTQUN6QjtJQUNILENBQUM7SUFHRCxhQUFhLENBQUMsS0FBWTtRQUN4QixJQUFJLElBQUksQ0FBQyxTQUFTLG9DQUFrQyxJQUFJLENBQUMsSUFBSSxDQUFDLFFBQVEsRUFBRTtZQUN0RSxLQUFLLENBQUMsY0FBYyxFQUFFLENBQUM7WUFDdkIsSUFBSSxDQUFDLE1BQU0sQ0FBQyxJQUFJLENBQUMsS0FBSyxDQUFDLENBQUM7U0FDekI7SUFDSCxDQUFDO0lBR0QsVUFBVSxDQUFDLEtBQVk7UUFDckIsSUFBSSxJQUFJLENBQUMsU0FBUyw4QkFBK0IsSUFBSSxDQUFDLElBQUksQ0FBQyxRQUFRLEVBQUU7WUFDbkUsS0FBSyxDQUFDLGNBQWMsRUFBRSxDQUFDO1lBQ3ZCLElBQUksQ0FBQyxNQUFNLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxDQUFDO1NBQ3pCO0lBQ0gsQ0FBQzs7O1lBbERGLFNBQVMsU0FBQztnQkFDVCxRQUFRLEVBQUUsbUJBQW1CO2dCQUM3QixRQUFRLEVBQUUscUJBQXFCO2dCQUMvQixJQUFJLEVBQUU7b0JBQ0osS0FBSyxFQUFFLHFCQUFxQjtvQkFDNUIsa0JBQWtCLEVBQUUsVUFBVTtpQkFDL0I7YUFDRjs7O1lBWjBCLFVBQVU7Ozt3QkFjbEMsS0FBSzt1QkFFTCxLQUFLO3FCQVFMLE1BQU07c0JBU04sWUFBWSxTQUFDLE9BQU8sRUFBRSxDQUFDLFFBQVEsQ0FBQzs0QkFRaEMsWUFBWSxTQUFDLGFBQWEsRUFBRSxDQUFDLFFBQVEsQ0FBQzt5QkFRdEMsWUFBWSxTQUFDLFVBQVUsRUFBRSxDQUFDLFFBQVEsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IERpcmVjdGl2ZSwgSW5wdXQsIEVsZW1lbnRSZWYsIEhvc3RMaXN0ZW5lciwgRXZlbnRFbWl0dGVyLCBPdXRwdXQgfSBmcm9tICdAYW5ndWxhci9jb3JlJztcbmltcG9ydCB7IGNvZXJjZUJvb2xlYW5Qcm9wZXJ0eSB9IGZyb20gJ0Bhbmd1bGFyL2Nkay9jb2VyY2lvbic7XG5cbmltcG9ydCB7IERyb3Bkb3duU2hvd1R5cGVzIH0gZnJvbSAnLi9kcm9wZG93bi5zaG93LXR5cGVzLmVudW0nO1xuXG5ARGlyZWN0aXZlKHtcbiAgZXhwb3J0QXM6ICduZ3hEcm9wZG93blRvZ2dsZScsXG4gIHNlbGVjdG9yOiAnbmd4LWRyb3Bkb3duLXRvZ2dsZScsXG4gIGhvc3Q6IHtcbiAgICBjbGFzczogJ25neC1kcm9wZG93bi10b2dnbGUnLFxuICAgICdbY2xhc3MuZGlzYWJsZWRdJzogJ2Rpc2FibGVkJ1xuICB9XG59KVxuZXhwb3J0IGNsYXNzIERyb3Bkb3duVG9nZ2xlRGlyZWN0aXZlIHtcbiAgQElucHV0KCkgc2hvd0V2ZW50OiBEcm9wZG93blNob3dUeXBlcyA9IERyb3Bkb3duU2hvd1R5cGVzLkNsaWNrO1xuXG4gIEBJbnB1dCgpXG4gIGdldCBkaXNhYmxlZCgpOiBib29sZWFuIHtcbiAgICByZXR1cm4gdGhpcy5fZGlzYWJsZWQ7XG4gIH1cbiAgc2V0IGRpc2FibGVkKGRpc2FibGVkOiBib29sZWFuKSB7XG4gICAgdGhpcy5fZGlzYWJsZWQgPSBjb2VyY2VCb29sZWFuUHJvcGVydHkoZGlzYWJsZWQpO1xuICB9XG5cbiAgQE91dHB1dCgpIHRvZ2dsZSA9IG5ldyBFdmVudEVtaXR0ZXI8RXZlbnQ+KCk7XG5cbiAgcmVhZG9ubHkgZWxlbWVudDogSFRNTEVsZW1lbnQ7XG4gIHByaXZhdGUgX2Rpc2FibGVkID0gZmFsc2U7XG5cbiAgY29uc3RydWN0b3IocHJpdmF0ZSByZWFkb25seSBlbDogRWxlbWVudFJlZjxIVE1MRWxlbWVudD4pIHtcbiAgICB0aGlzLmVsZW1lbnQgPSB0aGlzLmVsLm5hdGl2ZUVsZW1lbnQ7XG4gIH1cblxuICBASG9zdExpc3RlbmVyKCdjbGljaycsIFsnJGV2ZW50J10pXG4gIG9uQ2xpY2soZXZlbnQ6IEV2ZW50KTogdm9pZCB7XG4gICAgaWYgKHRoaXMuc2hvd0V2ZW50ID09PSBEcm9wZG93blNob3dUeXBlcy5DbGljayAmJiAhdGhpcy5kaXNhYmxlZCkge1xuICAgICAgZXZlbnQucHJldmVudERlZmF1bHQoKTtcbiAgICAgIHRoaXMudG9nZ2xlLmVtaXQoZXZlbnQpO1xuICAgIH1cbiAgfVxuXG4gIEBIb3N0TGlzdGVuZXIoJ2NvbnRleHRtZW51JywgWyckZXZlbnQnXSlcbiAgb25Db250ZXh0bWVudShldmVudDogRXZlbnQpOiB2b2lkIHtcbiAgICBpZiAodGhpcy5zaG93RXZlbnQgPT09IERyb3Bkb3duU2hvd1R5cGVzLkNvbnRleHRtZW51ICYmICF0aGlzLmRpc2FibGVkKSB7XG4gICAgICBldmVudC5wcmV2ZW50RGVmYXVsdCgpO1xuICAgICAgdGhpcy50b2dnbGUuZW1pdChldmVudCk7XG4gICAgfVxuICB9XG5cbiAgQEhvc3RMaXN0ZW5lcignZGJsY2xpY2snLCBbJyRldmVudCddKVxuICBvbkRibGNsaWNrKGV2ZW50OiBFdmVudCk6IHZvaWQge1xuICAgIGlmICh0aGlzLnNob3dFdmVudCA9PT0gRHJvcGRvd25TaG93VHlwZXMuRGJsY2xpY2sgJiYgIXRoaXMuZGlzYWJsZWQpIHtcbiAgICAgIGV2ZW50LnByZXZlbnREZWZhdWx0KCk7XG4gICAgICB0aGlzLnRvZ2dsZS5lbWl0KGV2ZW50KTtcbiAgICB9XG4gIH1cbn1cbiJdfQ==

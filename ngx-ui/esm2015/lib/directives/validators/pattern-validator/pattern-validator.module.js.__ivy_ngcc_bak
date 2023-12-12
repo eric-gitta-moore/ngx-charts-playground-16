@@ -1,0 +1,13 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { PatternValidatorDirective } from './pattern-validator.directive';
+export class PatternValidatorModule {
+}
+PatternValidatorModule.decorators = [
+    { type: NgModule, args: [{
+                declarations: [PatternValidatorDirective],
+                exports: [PatternValidatorDirective],
+                imports: [CommonModule]
+            },] }
+];
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicGF0dGVybi12YWxpZGF0b3IubW9kdWxlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvc3dpbWxhbmUvbmd4LXVpL3NyYy9saWIvZGlyZWN0aXZlcy92YWxpZGF0b3JzL3BhdHRlcm4tdmFsaWRhdG9yL3BhdHRlcm4tdmFsaWRhdG9yLm1vZHVsZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQUUsUUFBUSxFQUFFLE1BQU0sZUFBZSxDQUFDO0FBQ3pDLE9BQU8sRUFBRSxZQUFZLEVBQUUsTUFBTSxpQkFBaUIsQ0FBQztBQUUvQyxPQUFPLEVBQUUseUJBQXlCLEVBQUUsTUFBTSwrQkFBK0IsQ0FBQztBQU8xRSxNQUFNLE9BQU8sc0JBQXNCOzs7WUFMbEMsUUFBUSxTQUFDO2dCQUNSLFlBQVksRUFBRSxDQUFDLHlCQUF5QixDQUFDO2dCQUN6QyxPQUFPLEVBQUUsQ0FBQyx5QkFBeUIsQ0FBQztnQkFDcEMsT0FBTyxFQUFFLENBQUMsWUFBWSxDQUFDO2FBQ3hCIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgTmdNb2R1bGUgfSBmcm9tICdAYW5ndWxhci9jb3JlJztcbmltcG9ydCB7IENvbW1vbk1vZHVsZSB9IGZyb20gJ0Bhbmd1bGFyL2NvbW1vbic7XG5cbmltcG9ydCB7IFBhdHRlcm5WYWxpZGF0b3JEaXJlY3RpdmUgfSBmcm9tICcuL3BhdHRlcm4tdmFsaWRhdG9yLmRpcmVjdGl2ZSc7XG5cbkBOZ01vZHVsZSh7XG4gIGRlY2xhcmF0aW9uczogW1BhdHRlcm5WYWxpZGF0b3JEaXJlY3RpdmVdLFxuICBleHBvcnRzOiBbUGF0dGVyblZhbGlkYXRvckRpcmVjdGl2ZV0sXG4gIGltcG9ydHM6IFtDb21tb25Nb2R1bGVdXG59KVxuZXhwb3J0IGNsYXNzIFBhdHRlcm5WYWxpZGF0b3JNb2R1bGUge31cbiJdfQ==

@@ -1,0 +1,59 @@
+import { Component, Input, Output, EventEmitter, ViewChild, ViewEncapsulation, Renderer2, ElementRef, ChangeDetectionStrategy } from '@angular/core';
+import { ToolbarTitleDirective } from './toolbar-title.directive';
+import { ToolbarContentDirective } from './toolbar-content.directive';
+export class ToolbarComponent {
+    constructor(renderer, elRef) {
+        this.renderer = renderer;
+        this.elRef = elRef;
+        this.menu = [];
+        this.menuClick = new EventEmitter();
+    }
+    get toolbarItems() {
+        return this.menu.filter(m => {
+            return !m.dropdown;
+        });
+    }
+    get dropdownItems() {
+        return this.menu.filter(m => {
+            return m.dropdown;
+        });
+    }
+    onMenuClicked(item, $event) {
+        if (item.click) {
+            item.click($event);
+        }
+    }
+    ngOnInit() {
+        // backwards compatibility
+        if (this.title) {
+            this.mainTitle = this.title;
+            this.renderer.removeAttribute(this.elRef.nativeElement, 'title');
+        }
+    }
+}
+ToolbarComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'ngx-toolbar',
+                template: "<header class=\"flex-container\">\n  <div class=\"ngx-toolbar-title-col\">\n    <ng-content *ngIf=\"!mainTitle\" select=\"ngx-toolbar-title\"></ng-content>\n    <h2 class=\"ngx-toolbar-title\" *ngIf=\"mainTitle\">\n      {{ mainTitle }}\n      <small *ngIf=\"subtitle\">{{ subtitle }}</small>\n    </h2>\n  </div>\n  <div class=\"ngx-toolbar-content-col\">\n    <ng-content *ngIf=\"!menu.length\" select=\"ngx-toolbar-content\"></ng-content>\n    <ul class=\"horizontal-list ngx-toolbar-menu\" *ngIf=\"menu.length\">\n      <li *ngFor=\"let item of toolbarItems\">\n        <button type=\"button\" [disabled]=\"item.disabled\" (click)=\"onMenuClicked(item, $event)\">\n          {{ item.label }}\n        </button>\n      </li>\n      <li *ngIf=\"dropdownItems.length\">\n        <ngx-dropdown>\n          <ngx-dropdown-toggle>\n            <button type=\"button\">\n              ...\n            </button>\n          </ngx-dropdown-toggle>\n          <ngx-dropdown-menu class=\"align-right\">\n            <ul class=\"vertical-list\">\n              <li *ngFor=\"let item of dropdownItems\">\n                <button type=\"button\" (click)=\"onMenuClicked(item, $event)\">\n                  {{ item.label }}\n                </button>\n              </li>\n            </ul>\n          </ngx-dropdown-menu>\n        </ngx-dropdown>\n      </li>\n    </ul>\n  </div>\n</header>\n",
+                encapsulation: ViewEncapsulation.None,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                host: {
+                    class: 'ngx-toolbar'
+                },
+                styles: [".ngx-toolbar{display:block;height:50px;line-height:50px;color:#a0aabe;background:#1c2029;width:100%;font-size:.8rem;padding:0 20px!important}.ngx-toolbar .flex-container{flex-direction:row;box-sizing:border-box;display:flex}.ngx-toolbar .flex-container>*{flex:1 1 0%;box-sizing:border-box}.ngx-toolbar a{color:#a0aabe}.ngx-toolbar .ngx-toolbar-title-col{overflow:hidden}.ngx-toolbar .ngx-toolbar-title{margin:0;font-weight:500;text-overflow:ellipsis;overflow:hidden;width:100%;white-space:nowrap}.ngx-toolbar .ngx-toolbar-title small{color:#5a6884;font-size:.9rem;line-height:50px;vertical-align:top}.ngx-toolbar .ngx-toolbar-menu button{color:#a0aabe}.ngx-toolbar .ngx-toolbar-content-col{text-align:right}.ngx-toolbar.page-toolbar{box-shadow:0 1px 5px 0 rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.12)}"]
+            },] }
+];
+ToolbarComponent.ctorParameters = () => [
+    { type: Renderer2 },
+    { type: ElementRef }
+];
+ToolbarComponent.propDecorators = {
+    title: [{ type: Input }],
+    mainTitle: [{ type: Input }],
+    subtitle: [{ type: Input }],
+    menu: [{ type: Input }],
+    menuClick: [{ type: Output }],
+    toolbarTitle: [{ type: ViewChild, args: [ToolbarTitleDirective,] }],
+    toolbarContent: [{ type: ViewChild, args: [ToolbarContentDirective,] }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidG9vbGJhci5jb21wb25lbnQuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9jb21wb25lbnRzL3Rvb2xiYXIvdG9vbGJhci5jb21wb25lbnQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUNMLFNBQVMsRUFDVCxLQUFLLEVBQ0wsTUFBTSxFQUNOLFlBQVksRUFDWixTQUFTLEVBQ1QsaUJBQWlCLEVBQ2pCLFNBQVMsRUFDVCxVQUFVLEVBQ1YsdUJBQXVCLEVBRXhCLE1BQU0sZUFBZSxDQUFDO0FBRXZCLE9BQU8sRUFBRSxxQkFBcUIsRUFBRSxNQUFNLDJCQUEyQixDQUFDO0FBQ2xFLE9BQU8sRUFBRSx1QkFBdUIsRUFBRSxNQUFNLDZCQUE2QixDQUFDO0FBYXRFLE1BQU0sT0FBTyxnQkFBZ0I7SUF1QjNCLFlBQW9CLFFBQW1CLEVBQVUsS0FBaUI7UUFBOUMsYUFBUSxHQUFSLFFBQVEsQ0FBVztRQUFVLFVBQUssR0FBTCxLQUFLLENBQVk7UUFuQnpELFNBQUksR0FBc0IsRUFBRSxDQUFDO1FBRTVCLGNBQVMsR0FBRyxJQUFJLFlBQVksRUFBRSxDQUFDO0lBaUI0QixDQUFDO0lBWnRFLElBQUksWUFBWTtRQUNkLE9BQU8sSUFBSSxDQUFDLElBQUksQ0FBQyxNQUFNLENBQUMsQ0FBQyxDQUFDLEVBQUU7WUFDMUIsT0FBTyxDQUFDLENBQUMsQ0FBQyxRQUFRLENBQUM7UUFDckIsQ0FBQyxDQUFDLENBQUM7SUFDTCxDQUFDO0lBRUQsSUFBSSxhQUFhO1FBQ2YsT0FBTyxJQUFJLENBQUMsSUFBSSxDQUFDLE1BQU0sQ0FBQyxDQUFDLENBQUMsRUFBRTtZQUMxQixPQUFPLENBQUMsQ0FBQyxRQUFRLENBQUM7UUFDcEIsQ0FBQyxDQUFDLENBQUM7SUFDTCxDQUFDO0lBSUQsYUFBYSxDQUFDLElBQXFCLEVBQUUsTUFBYTtRQUNoRCxJQUFJLElBQUksQ0FBQyxLQUFLLEVBQUU7WUFDZCxJQUFJLENBQUMsS0FBSyxDQUFDLE1BQU0sQ0FBQyxDQUFDO1NBQ3BCO0lBQ0gsQ0FBQztJQUVELFFBQVE7UUFDTiwwQkFBMEI7UUFDMUIsSUFBSSxJQUFJLENBQUMsS0FBSyxFQUFFO1lBQ2QsSUFBSSxDQUFDLFNBQVMsR0FBRyxJQUFJLENBQUMsS0FBSyxDQUFDO1lBQzVCLElBQUksQ0FBQyxRQUFRLENBQUMsZUFBZSxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsYUFBYSxFQUFFLE9BQU8sQ0FBQyxDQUFDO1NBQ2xFO0lBQ0gsQ0FBQzs7O1lBL0NGLFNBQVMsU0FBQztnQkFDVCxRQUFRLEVBQUUsYUFBYTtnQkFDdkIsazNDQUF1QztnQkFDdkMsYUFBYSxFQUFFLGlCQUFpQixDQUFDLElBQUk7Z0JBQ3JDLGVBQWUsRUFBRSx1QkFBdUIsQ0FBQyxNQUFNO2dCQUUvQyxJQUFJLEVBQUU7b0JBQ0osS0FBSyxFQUFFLGFBQWE7aUJBQ3JCOzthQUNGOzs7WUFuQkMsU0FBUztZQUNULFVBQVU7OztvQkFvQlQsS0FBSzt3QkFDTCxLQUFLO3VCQUNMLEtBQUs7bUJBQ0wsS0FBSzt3QkFFTCxNQUFNOzJCQUVOLFNBQVMsU0FBQyxxQkFBcUI7NkJBQy9CLFNBQVMsU0FBQyx1QkFBdUIiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQge1xuICBDb21wb25lbnQsXG4gIElucHV0LFxuICBPdXRwdXQsXG4gIEV2ZW50RW1pdHRlcixcbiAgVmlld0NoaWxkLFxuICBWaWV3RW5jYXBzdWxhdGlvbixcbiAgUmVuZGVyZXIyLFxuICBFbGVtZW50UmVmLFxuICBDaGFuZ2VEZXRlY3Rpb25TdHJhdGVneSxcbiAgT25Jbml0XG59IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuXG5pbXBvcnQgeyBUb29sYmFyVGl0bGVEaXJlY3RpdmUgfSBmcm9tICcuL3Rvb2xiYXItdGl0bGUuZGlyZWN0aXZlJztcbmltcG9ydCB7IFRvb2xiYXJDb250ZW50RGlyZWN0aXZlIH0gZnJvbSAnLi90b29sYmFyLWNvbnRlbnQuZGlyZWN0aXZlJztcbmltcG9ydCB7IFRvb2xiYXJNZW51SXRlbSB9IGZyb20gJy4vdG9vbGJhci1tZW51LWl0ZW0uaW50ZXJmYWNlJztcblxuQENvbXBvbmVudCh7XG4gIHNlbGVjdG9yOiAnbmd4LXRvb2xiYXInLFxuICB0ZW1wbGF0ZVVybDogJy4vdG9vbGJhci5jb21wb25lbnQuaHRtbCcsXG4gIGVuY2Fwc3VsYXRpb246IFZpZXdFbmNhcHN1bGF0aW9uLk5vbmUsXG4gIGNoYW5nZURldGVjdGlvbjogQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3kuT25QdXNoLFxuICBzdHlsZVVybHM6IFsnLi90b29sYmFyLmNvbXBvbmVudC5zY3NzJ10sXG4gIGhvc3Q6IHtcbiAgICBjbGFzczogJ25neC10b29sYmFyJ1xuICB9XG59KVxuZXhwb3J0IGNsYXNzIFRvb2xiYXJDb21wb25lbnQgaW1wbGVtZW50cyBPbkluaXQge1xuICBASW5wdXQoKSB0aXRsZTogc3RyaW5nO1xuICBASW5wdXQoKSBtYWluVGl0bGU6IHN0cmluZztcbiAgQElucHV0KCkgc3VidGl0bGU6IHN0cmluZztcbiAgQElucHV0KCkgbWVudTogVG9vbGJhck1lbnVJdGVtW10gPSBbXTtcblxuICBAT3V0cHV0KCkgbWVudUNsaWNrID0gbmV3IEV2ZW50RW1pdHRlcigpO1xuXG4gIEBWaWV3Q2hpbGQoVG9vbGJhclRpdGxlRGlyZWN0aXZlKSB0b29sYmFyVGl0bGU6IFRvb2xiYXJUaXRsZURpcmVjdGl2ZTtcbiAgQFZpZXdDaGlsZChUb29sYmFyQ29udGVudERpcmVjdGl2ZSkgdG9vbGJhckNvbnRlbnQ6IFRvb2xiYXJDb250ZW50RGlyZWN0aXZlO1xuXG4gIGdldCB0b29sYmFySXRlbXMoKTogVG9vbGJhck1lbnVJdGVtW10ge1xuICAgIHJldHVybiB0aGlzLm1lbnUuZmlsdGVyKG0gPT4ge1xuICAgICAgcmV0dXJuICFtLmRyb3Bkb3duO1xuICAgIH0pO1xuICB9XG5cbiAgZ2V0IGRyb3Bkb3duSXRlbXMoKTogVG9vbGJhck1lbnVJdGVtW10ge1xuICAgIHJldHVybiB0aGlzLm1lbnUuZmlsdGVyKG0gPT4ge1xuICAgICAgcmV0dXJuIG0uZHJvcGRvd247XG4gICAgfSk7XG4gIH1cblxuICBjb25zdHJ1Y3Rvcihwcml2YXRlIHJlbmRlcmVyOiBSZW5kZXJlcjIsIHByaXZhdGUgZWxSZWY6IEVsZW1lbnRSZWYpIHt9XG5cbiAgb25NZW51Q2xpY2tlZChpdGVtOiBUb29sYmFyTWVudUl0ZW0sICRldmVudDogRXZlbnQpOiB2b2lkIHtcbiAgICBpZiAoaXRlbS5jbGljaykge1xuICAgICAgaXRlbS5jbGljaygkZXZlbnQpO1xuICAgIH1cbiAgfVxuXG4gIG5nT25Jbml0KCk6IHZvaWQge1xuICAgIC8vIGJhY2t3YXJkcyBjb21wYXRpYmlsaXR5XG4gICAgaWYgKHRoaXMudGl0bGUpIHtcbiAgICAgIHRoaXMubWFpblRpdGxlID0gdGhpcy50aXRsZTtcbiAgICAgIHRoaXMucmVuZGVyZXIucmVtb3ZlQXR0cmlidXRlKHRoaXMuZWxSZWYubmF0aXZlRWxlbWVudCwgJ3RpdGxlJyk7XG4gICAgfVxuICB9XG59XG4iXX0=

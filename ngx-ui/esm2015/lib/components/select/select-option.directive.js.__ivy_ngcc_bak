@@ -1,0 +1,46 @@
+import { Directive, Input, TemplateRef, ContentChild } from '@angular/core';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { SelectOptionTemplateDirective } from './select-option-template.directive';
+import { SelectOptionInputTemplateDirective } from './select-option-input-template.directive';
+export class SelectOptionDirective {
+    constructor() {
+        this.name = '';
+        this._disabled = false;
+        this._hidden = false;
+    }
+    get disabled() {
+        return this._disabled;
+    }
+    set disabled(disabled) {
+        this._disabled = coerceBooleanProperty(disabled);
+    }
+    get hidden() {
+        return this._hidden;
+    }
+    set hidden(hidden) {
+        this._hidden = coerceBooleanProperty(hidden);
+    }
+    get optionTemplate() {
+        return this._optionTemplateInput || this._optionTemplateQuery;
+    }
+    get inputTemplate() {
+        return this._inputTemplateInput || this._inputTemplateQuery;
+    }
+}
+SelectOptionDirective.decorators = [
+    { type: Directive, args: [{
+                exportAs: 'ngxSelectOption',
+                selector: 'ngx-select-option'
+            },] }
+];
+SelectOptionDirective.propDecorators = {
+    name: [{ type: Input }],
+    value: [{ type: Input }],
+    disabled: [{ type: Input }],
+    hidden: [{ type: Input }],
+    _optionTemplateInput: [{ type: Input, args: ['optionTemplate',] }],
+    _optionTemplateQuery: [{ type: ContentChild, args: [SelectOptionTemplateDirective, { read: TemplateRef, static: true },] }],
+    _inputTemplateInput: [{ type: Input, args: ['inputTemplate',] }],
+    _inputTemplateQuery: [{ type: ContentChild, args: [SelectOptionInputTemplateDirective, { read: TemplateRef, static: true },] }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2VsZWN0LW9wdGlvbi5kaXJlY3RpdmUuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9jb21wb25lbnRzL3NlbGVjdC9zZWxlY3Qtb3B0aW9uLmRpcmVjdGl2ZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQUUsU0FBUyxFQUFFLEtBQUssRUFBRSxXQUFXLEVBQUUsWUFBWSxFQUFFLE1BQU0sZUFBZSxDQUFDO0FBQzVFLE9BQU8sRUFBRSxxQkFBcUIsRUFBRSxNQUFNLHVCQUF1QixDQUFDO0FBRTlELE9BQU8sRUFBRSw2QkFBNkIsRUFBRSxNQUFNLG9DQUFvQyxDQUFDO0FBQ25GLE9BQU8sRUFBRSxrQ0FBa0MsRUFBRSxNQUFNLDBDQUEwQyxDQUFDO0FBTzlGLE1BQU0sT0FBTyxxQkFBcUI7SUFKbEM7UUFLVyxTQUFJLEdBQUcsRUFBRSxDQUFDO1FBeUNYLGNBQVMsR0FBRyxLQUFLLENBQUM7UUFDbEIsWUFBTyxHQUFHLEtBQUssQ0FBQztJQUMxQixDQUFDO0lBeENDLElBQ0ksUUFBUTtRQUNWLE9BQU8sSUFBSSxDQUFDLFNBQVMsQ0FBQztJQUN4QixDQUFDO0lBQ0QsSUFBSSxRQUFRLENBQUMsUUFBUTtRQUNuQixJQUFJLENBQUMsU0FBUyxHQUFHLHFCQUFxQixDQUFDLFFBQVEsQ0FBQyxDQUFDO0lBQ25ELENBQUM7SUFFRCxJQUNJLE1BQU07UUFDUixPQUFPLElBQUksQ0FBQyxPQUFPLENBQUM7SUFDdEIsQ0FBQztJQUNELElBQUksTUFBTSxDQUFDLE1BQU07UUFDZixJQUFJLENBQUMsT0FBTyxHQUFHLHFCQUFxQixDQUFDLE1BQU0sQ0FBQyxDQUFDO0lBQy9DLENBQUM7SUFTRCxJQUFJLGNBQWM7UUFDaEIsT0FBTyxJQUFJLENBQUMsb0JBQW9CLElBQUksSUFBSSxDQUFDLG9CQUFvQixDQUFDO0lBQ2hFLENBQUM7SUFTRCxJQUFJLGFBQWE7UUFDZixPQUFPLElBQUksQ0FBQyxtQkFBbUIsSUFBSSxJQUFJLENBQUMsbUJBQW1CLENBQUM7SUFDOUQsQ0FBQzs7O1lBNUNGLFNBQVMsU0FBQztnQkFDVCxRQUFRLEVBQUUsaUJBQWlCO2dCQUMzQixRQUFRLEVBQUUsbUJBQW1CO2FBQzlCOzs7bUJBRUUsS0FBSztvQkFDTCxLQUFLO3VCQUVMLEtBQUs7cUJBUUwsS0FBSzttQ0FTTCxLQUFLLFNBQUMsZ0JBQWdCO21DQUd0QixZQUFZLFNBQUMsNkJBQTZCLEVBQUUsRUFBRSxJQUFJLEVBQUUsV0FBVyxFQUFFLE1BQU0sRUFBRSxJQUFJLEVBQUU7a0NBUS9FLEtBQUssU0FBQyxlQUFlO2tDQUdyQixZQUFZLFNBQUMsa0NBQWtDLEVBQUUsRUFBRSxJQUFJLEVBQUUsV0FBVyxFQUFFLE1BQU0sRUFBRSxJQUFJLEVBQUUiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBEaXJlY3RpdmUsIElucHV0LCBUZW1wbGF0ZVJlZiwgQ29udGVudENoaWxkIH0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5pbXBvcnQgeyBjb2VyY2VCb29sZWFuUHJvcGVydHkgfSBmcm9tICdAYW5ndWxhci9jZGsvY29lcmNpb24nO1xuXG5pbXBvcnQgeyBTZWxlY3RPcHRpb25UZW1wbGF0ZURpcmVjdGl2ZSB9IGZyb20gJy4vc2VsZWN0LW9wdGlvbi10ZW1wbGF0ZS5kaXJlY3RpdmUnO1xuaW1wb3J0IHsgU2VsZWN0T3B0aW9uSW5wdXRUZW1wbGF0ZURpcmVjdGl2ZSB9IGZyb20gJy4vc2VsZWN0LW9wdGlvbi1pbnB1dC10ZW1wbGF0ZS5kaXJlY3RpdmUnO1xuaW1wb3J0IHsgU2VsZWN0RHJvcGRvd25PcHRpb24gfSBmcm9tICcuL3NlbGVjdC1kcm9wZG93bi1vcHRpb24uaW50ZXJmYWNlJztcblxuQERpcmVjdGl2ZSh7XG4gIGV4cG9ydEFzOiAnbmd4U2VsZWN0T3B0aW9uJyxcbiAgc2VsZWN0b3I6ICduZ3gtc2VsZWN0LW9wdGlvbidcbn0pXG5leHBvcnQgY2xhc3MgU2VsZWN0T3B0aW9uRGlyZWN0aXZlIGltcGxlbWVudHMgU2VsZWN0RHJvcGRvd25PcHRpb24ge1xuICBASW5wdXQoKSBuYW1lID0gJyc7XG4gIEBJbnB1dCgpIHZhbHVlOiBhbnk7XG5cbiAgQElucHV0KClcbiAgZ2V0IGRpc2FibGVkKCkge1xuICAgIHJldHVybiB0aGlzLl9kaXNhYmxlZDtcbiAgfVxuICBzZXQgZGlzYWJsZWQoZGlzYWJsZWQpIHtcbiAgICB0aGlzLl9kaXNhYmxlZCA9IGNvZXJjZUJvb2xlYW5Qcm9wZXJ0eShkaXNhYmxlZCk7XG4gIH1cblxuICBASW5wdXQoKVxuICBnZXQgaGlkZGVuKCkge1xuICAgIHJldHVybiB0aGlzLl9oaWRkZW47XG4gIH1cbiAgc2V0IGhpZGRlbihoaWRkZW4pIHtcbiAgICB0aGlzLl9oaWRkZW4gPSBjb2VyY2VCb29sZWFuUHJvcGVydHkoaGlkZGVuKTtcbiAgfVxuXG4gIC8vIGVzbGludC1kaXNhYmxlLW5leHQtbGluZSBAYW5ndWxhci1lc2xpbnQvbm8taW5wdXQtcmVuYW1lXG4gIEBJbnB1dCgnb3B0aW9uVGVtcGxhdGUnKVxuICBfb3B0aW9uVGVtcGxhdGVJbnB1dDogVGVtcGxhdGVSZWY8YW55PjtcblxuICBAQ29udGVudENoaWxkKFNlbGVjdE9wdGlvblRlbXBsYXRlRGlyZWN0aXZlLCB7IHJlYWQ6IFRlbXBsYXRlUmVmLCBzdGF0aWM6IHRydWUgfSlcbiAgX29wdGlvblRlbXBsYXRlUXVlcnk6IFRlbXBsYXRlUmVmPGFueT47XG5cbiAgZ2V0IG9wdGlvblRlbXBsYXRlKCk6IFRlbXBsYXRlUmVmPGFueT4ge1xuICAgIHJldHVybiB0aGlzLl9vcHRpb25UZW1wbGF0ZUlucHV0IHx8IHRoaXMuX29wdGlvblRlbXBsYXRlUXVlcnk7XG4gIH1cblxuICAvLyBlc2xpbnQtZGlzYWJsZS1uZXh0LWxpbmUgQGFuZ3VsYXItZXNsaW50L25vLWlucHV0LXJlbmFtZVxuICBASW5wdXQoJ2lucHV0VGVtcGxhdGUnKVxuICBfaW5wdXRUZW1wbGF0ZUlucHV0OiBUZW1wbGF0ZVJlZjxhbnk+O1xuXG4gIEBDb250ZW50Q2hpbGQoU2VsZWN0T3B0aW9uSW5wdXRUZW1wbGF0ZURpcmVjdGl2ZSwgeyByZWFkOiBUZW1wbGF0ZVJlZiwgc3RhdGljOiB0cnVlIH0pXG4gIF9pbnB1dFRlbXBsYXRlUXVlcnk6IFRlbXBsYXRlUmVmPGFueT47XG5cbiAgZ2V0IGlucHV0VGVtcGxhdGUoKTogVGVtcGxhdGVSZWY8YW55PiB7XG4gICAgcmV0dXJuIHRoaXMuX2lucHV0VGVtcGxhdGVJbnB1dCB8fCB0aGlzLl9pbnB1dFRlbXBsYXRlUXVlcnk7XG4gIH1cblxuICBwcml2YXRlIF9kaXNhYmxlZCA9IGZhbHNlO1xuICBwcml2YXRlIF9oaWRkZW4gPSBmYWxzZTtcbn1cbiJdfQ==

@@ -1,0 +1,52 @@
+import { Component, Input, Output, EventEmitter, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { TipStatus } from './tip-status.enum';
+const ICONS = {
+    [TipStatus.Error]: 'warning-filled-sm',
+    [TipStatus.Warning]: 'alert',
+    default: 'info-filled-small'
+};
+function getIcon(status) {
+    return ICONS[status] || ICONS['default'];
+}
+export class TipComponent {
+    constructor() {
+        this.isCloseable = false;
+        this.close = new EventEmitter();
+        this.TipStatus = TipStatus;
+    }
+    ngOnChanges() {
+        if (!this.icon) {
+            this.icon = getIcon(this.status);
+        }
+    }
+    ngOnDestroy() {
+        this.close.emit();
+    }
+    onClose() {
+        this.close.emit();
+    }
+}
+TipComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'ngx-tip',
+                exportAs: 'ngxTip',
+                template: "<div class=\"tip-container\">\n  <div class=\"tip-content\">\n    <div class=\"tip-content--icon\">\n      <ngx-icon [fontIcon]=\"icon\"></ngx-icon>\n    </div>\n    <div class=\"tip-content--template\">\n      <ng-content></ng-content>\n    </div>\n  </div>\n  <div *ngIf=\"isCloseable\" class=\"tip-container--close\" (click)=\"onClose()\">\n    <ngx-icon fontIcon=\"x\"></ngx-icon>\n  </div>\n</div>\n",
+                encapsulation: ViewEncapsulation.None,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                host: {
+                    class: 'ngx-tip',
+                    '[class.ngx-tip--success]': 'status === TipStatus.Success',
+                    '[class.ngx-tip--error]': 'status === TipStatus.Error',
+                    '[class.ngx-tip--notice]': 'status === TipStatus.Notice',
+                    '[class.ngx-tip--warning]': 'status === TipStatus.Warning'
+                },
+                styles: [".ngx-tip .tip-container{border:2px solid #3b4457;box-sizing:border-box;border-radius:2px;display:flex;justify-content:space-between;padding:10px;position:relative}.ngx-tip .tip-container:before{content:\"\";position:absolute;top:-2px;bottom:-2px;background:#818fa9;border-top-left-radius:2px;border-bottom-left-radius:2px;width:2px;left:-2px}.ngx-tip .tip-container .tip-content{display:flex;height:100%}.ngx-tip .tip-container .tip-content--icon{color:#818fa9;font-size:14px;padding-top:3px}.ngx-tip .tip-container .tip-content--template{font-size:14px;line-height:18px;margin:0 10px;color:#a0aabe}.ngx-tip .tip-container--close{margin-top:-2px;cursor:pointer}.ngx-tip .tip-container--close .ngx-icon{color:#72819f;font-size:10px}.ngx-tip.ngx-tip--success .tip-container:before{background:#1ddeb6}.ngx-tip.ngx-tip--success .tip-container .tip-content--icon .ngx-icon{color:#1ddeb6}.ngx-tip.ngx-tip--error .tip-container:before{background:#ff4514}.ngx-tip.ngx-tip--error .tip-container .tip-content--icon .ngx-icon{color:#ff4514}.ngx-tip.ngx-tip--warning .tip-container:before{background:#ffbb47}.ngx-tip.ngx-tip--warning .tip-container .tip-content--icon .ngx-icon{color:#ffbb47}"]
+            },] }
+];
+TipComponent.propDecorators = {
+    status: [{ type: Input }],
+    isCloseable: [{ type: Input }],
+    icon: [{ type: Input }],
+    close: [{ type: Output }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidGlwLmNvbXBvbmVudC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL3N3aW1sYW5lL25neC11aS9zcmMvbGliL2NvbXBvbmVudHMvdGlwL3RpcC5jb21wb25lbnQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUNMLFNBQVMsRUFDVCxLQUFLLEVBQ0wsTUFBTSxFQUNOLFlBQVksRUFDWixpQkFBaUIsRUFDakIsdUJBQXVCLEVBR3hCLE1BQU0sZUFBZSxDQUFDO0FBQ3ZCLE9BQU8sRUFBRSxTQUFTLEVBQUUsTUFBTSxtQkFBbUIsQ0FBQztBQUU5QyxNQUFNLEtBQUssR0FBRztJQUNaLENBQUMsU0FBUyxDQUFDLEtBQUssQ0FBQyxFQUFFLG1CQUFtQjtJQUN0QyxDQUFDLFNBQVMsQ0FBQyxPQUFPLENBQUMsRUFBRSxPQUFPO0lBQzVCLE9BQU8sRUFBRSxtQkFBbUI7Q0FDN0IsQ0FBQztBQUVGLFNBQVMsT0FBTyxDQUFDLE1BQWlCO0lBQ2hDLE9BQU8sS0FBSyxDQUFDLE1BQU0sQ0FBQyxJQUFJLEtBQUssQ0FBQyxTQUFTLENBQUMsQ0FBQztBQUMzQyxDQUFDO0FBaUJELE1BQU0sT0FBTyxZQUFZO0lBZnpCO1FBaUJXLGdCQUFXLEdBQUcsS0FBSyxDQUFDO1FBR25CLFVBQUssR0FBRyxJQUFJLFlBQVksRUFBRSxDQUFDO1FBRTVCLGNBQVMsR0FBRyxTQUFTLENBQUM7SUFlakMsQ0FBQztJQWJDLFdBQVc7UUFDVCxJQUFJLENBQUMsSUFBSSxDQUFDLElBQUksRUFBRTtZQUNkLElBQUksQ0FBQyxJQUFJLEdBQUcsT0FBTyxDQUFDLElBQUksQ0FBQyxNQUFNLENBQUMsQ0FBQztTQUNsQztJQUNILENBQUM7SUFFRCxXQUFXO1FBQ1QsSUFBSSxDQUFDLEtBQUssQ0FBQyxJQUFJLEVBQUUsQ0FBQztJQUNwQixDQUFDO0lBRUQsT0FBTztRQUNMLElBQUksQ0FBQyxLQUFLLENBQUMsSUFBSSxFQUFFLENBQUM7SUFDcEIsQ0FBQzs7O1lBcENGLFNBQVMsU0FBQztnQkFDVCxRQUFRLEVBQUUsU0FBUztnQkFDbkIsUUFBUSxFQUFFLFFBQVE7Z0JBQ2xCLGdhQUFtQztnQkFFbkMsYUFBYSxFQUFFLGlCQUFpQixDQUFDLElBQUk7Z0JBQ3JDLGVBQWUsRUFBRSx1QkFBdUIsQ0FBQyxNQUFNO2dCQUMvQyxJQUFJLEVBQUU7b0JBQ0osS0FBSyxFQUFFLFNBQVM7b0JBQ2hCLDBCQUEwQixFQUFFLDhCQUE4QjtvQkFDMUQsd0JBQXdCLEVBQUUsNEJBQTRCO29CQUN0RCx5QkFBeUIsRUFBRSw2QkFBNkI7b0JBQ3hELDBCQUEwQixFQUFFLDhCQUE4QjtpQkFDM0Q7O2FBQ0Y7OztxQkFFRSxLQUFLOzBCQUNMLEtBQUs7bUJBQ0wsS0FBSztvQkFFTCxNQUFNIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtcbiAgQ29tcG9uZW50LFxuICBJbnB1dCxcbiAgT3V0cHV0LFxuICBFdmVudEVtaXR0ZXIsXG4gIFZpZXdFbmNhcHN1bGF0aW9uLFxuICBDaGFuZ2VEZXRlY3Rpb25TdHJhdGVneSxcbiAgT25DaGFuZ2VzLFxuICBPbkRlc3Ryb3lcbn0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5pbXBvcnQgeyBUaXBTdGF0dXMgfSBmcm9tICcuL3RpcC1zdGF0dXMuZW51bSc7XG5cbmNvbnN0IElDT05TID0ge1xuICBbVGlwU3RhdHVzLkVycm9yXTogJ3dhcm5pbmctZmlsbGVkLXNtJyxcbiAgW1RpcFN0YXR1cy5XYXJuaW5nXTogJ2FsZXJ0JyxcbiAgZGVmYXVsdDogJ2luZm8tZmlsbGVkLXNtYWxsJ1xufTtcblxuZnVuY3Rpb24gZ2V0SWNvbihzdGF0dXM6IFRpcFN0YXR1cyk6IHN0cmluZyB7XG4gIHJldHVybiBJQ09OU1tzdGF0dXNdIHx8IElDT05TWydkZWZhdWx0J107XG59XG5cbkBDb21wb25lbnQoe1xuICBzZWxlY3RvcjogJ25neC10aXAnLFxuICBleHBvcnRBczogJ25neFRpcCcsXG4gIHRlbXBsYXRlVXJsOiAnLi90aXAuY29tcG9uZW50Lmh0bWwnLFxuICBzdHlsZVVybHM6IFsnLi90aXAuY29tcG9uZW50LnNjc3MnXSxcbiAgZW5jYXBzdWxhdGlvbjogVmlld0VuY2Fwc3VsYXRpb24uTm9uZSxcbiAgY2hhbmdlRGV0ZWN0aW9uOiBDaGFuZ2VEZXRlY3Rpb25TdHJhdGVneS5PblB1c2gsXG4gIGhvc3Q6IHtcbiAgICBjbGFzczogJ25neC10aXAnLFxuICAgICdbY2xhc3Mubmd4LXRpcC0tc3VjY2Vzc10nOiAnc3RhdHVzID09PSBUaXBTdGF0dXMuU3VjY2VzcycsXG4gICAgJ1tjbGFzcy5uZ3gtdGlwLS1lcnJvcl0nOiAnc3RhdHVzID09PSBUaXBTdGF0dXMuRXJyb3InLFxuICAgICdbY2xhc3Mubmd4LXRpcC0tbm90aWNlXSc6ICdzdGF0dXMgPT09IFRpcFN0YXR1cy5Ob3RpY2UnLFxuICAgICdbY2xhc3Mubmd4LXRpcC0td2FybmluZ10nOiAnc3RhdHVzID09PSBUaXBTdGF0dXMuV2FybmluZydcbiAgfVxufSlcbmV4cG9ydCBjbGFzcyBUaXBDb21wb25lbnQgaW1wbGVtZW50cyBPbkNoYW5nZXMsIE9uRGVzdHJveSB7XG4gIEBJbnB1dCgpIHN0YXR1czogVGlwU3RhdHVzO1xuICBASW5wdXQoKSBpc0Nsb3NlYWJsZSA9IGZhbHNlO1xuICBASW5wdXQoKSBpY29uOiBzdHJpbmc7XG5cbiAgQE91dHB1dCgpIGNsb3NlID0gbmV3IEV2ZW50RW1pdHRlcigpO1xuXG4gIHJlYWRvbmx5IFRpcFN0YXR1cyA9IFRpcFN0YXR1cztcblxuICBuZ09uQ2hhbmdlcygpOiB2b2lkIHtcbiAgICBpZiAoIXRoaXMuaWNvbikge1xuICAgICAgdGhpcy5pY29uID0gZ2V0SWNvbih0aGlzLnN0YXR1cyk7XG4gICAgfVxuICB9XG5cbiAgbmdPbkRlc3Ryb3koKTogdm9pZCB7XG4gICAgdGhpcy5jbG9zZS5lbWl0KCk7XG4gIH1cblxuICBvbkNsb3NlKCk6IHZvaWQge1xuICAgIHRoaXMuY2xvc2UuZW1pdCgpO1xuICB9XG59XG4iXX0=

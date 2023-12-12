@@ -1,0 +1,1 @@
+{"version":3,"file":"dbl-click-copy.module.d.ts","sources":["dbl-click-copy.module.d.ts"],"names":[],"mappings":";;;AAAA;;;;AACA","sourcesContent":["export declare class DblClickCopyModule {\n}\n"]}

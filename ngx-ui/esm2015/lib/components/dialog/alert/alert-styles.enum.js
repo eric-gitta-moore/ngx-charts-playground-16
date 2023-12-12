@@ -1,0 +1,7 @@
+export var AlertStyles;
+(function (AlertStyles) {
+    AlertStyles["Danger"] = "danger";
+    AlertStyles["Warning"] = "warning";
+    AlertStyles["Info"] = "info";
+})(AlertStyles || (AlertStyles = {}));
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYWxlcnQtc3R5bGVzLmVudW0uanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9jb21wb25lbnRzL2RpYWxvZy9hbGVydC9hbGVydC1zdHlsZXMuZW51bS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxNQUFNLENBQU4sSUFBWSxXQUlYO0FBSkQsV0FBWSxXQUFXO0lBQ3JCLGdDQUFpQixDQUFBO0lBQ2pCLGtDQUFtQixDQUFBO0lBQ25CLDRCQUFhLENBQUE7QUFDZixDQUFDLEVBSlcsV0FBVyxLQUFYLFdBQVcsUUFJdEIiLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgZW51bSBBbGVydFN0eWxlcyB7XG4gIERhbmdlciA9ICdkYW5nZXInLFxuICBXYXJuaW5nID0gJ3dhcm5pbmcnLFxuICBJbmZvID0gJ2luZm8nXG59XG4iXX0=

@@ -1,0 +1,26 @@
+import { AfterContentChecked, AfterViewInit, ElementRef, Renderer2 } from '@angular/core';
+import { NgModel } from '@angular/forms';
+export declare class AutoSizeInputDirective implements AfterContentChecked, AfterViewInit {
+    private element;
+    private ngModel;
+    private renderer;
+    extraWidth: number;
+    includeBorders: boolean;
+    includePadding: boolean;
+    includePlaceholder: boolean;
+    maxWidth: number;
+    minWidth: number;
+    setParentWidth: boolean;
+    constructor(element: ElementRef, ngModel: NgModel, renderer: Renderer2);
+    get borderWidth(): number;
+    get paddingWidth(): number;
+    ngAfterContentChecked(): void;
+    ngAfterViewInit(): void;
+    onInput(): void;
+    setWidth(width: number): void;
+    setWidthUsingText(text: string): void;
+    textWidth(value: string): number;
+    updateWidth(): void;
+    private _getProperty;
+    private _getPropertyWidth;
+}

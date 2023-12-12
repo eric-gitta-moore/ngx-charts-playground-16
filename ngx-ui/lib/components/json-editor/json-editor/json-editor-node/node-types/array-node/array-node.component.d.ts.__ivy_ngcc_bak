@@ -1,0 +1,4 @@
+import { ArrayNode } from '../../../../node-types/array-node.component';
+export declare class ArrayNodeComponent extends ArrayNode {
+    isDuplicated: boolean;
+}

@@ -1,0 +1,20 @@
+import { EventEmitter, Renderer2, ElementRef, OnInit } from '@angular/core';
+import { ToolbarTitleDirective } from './toolbar-title.directive';
+import { ToolbarContentDirective } from './toolbar-content.directive';
+import { ToolbarMenuItem } from './toolbar-menu-item.interface';
+export declare class ToolbarComponent implements OnInit {
+    private renderer;
+    private elRef;
+    title: string;
+    mainTitle: string;
+    subtitle: string;
+    menu: ToolbarMenuItem[];
+    menuClick: EventEmitter<any>;
+    toolbarTitle: ToolbarTitleDirective;
+    toolbarContent: ToolbarContentDirective;
+    get toolbarItems(): ToolbarMenuItem[];
+    get dropdownItems(): ToolbarMenuItem[];
+    constructor(renderer: Renderer2, elRef: ElementRef);
+    onMenuClicked(item: ToolbarMenuItem, $event: Event): void;
+    ngOnInit(): void;
+}

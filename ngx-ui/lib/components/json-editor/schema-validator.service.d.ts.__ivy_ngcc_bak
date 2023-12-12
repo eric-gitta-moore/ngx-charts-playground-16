@@ -1,0 +1,9 @@
+import Ajv from 'ajv';
+export declare class SchemaValidatorService {
+    ajv: Ajv.Ajv;
+    constructor();
+    /**
+     * Validates schemas of a specified type
+     */
+    validate(schema: any, model: any): any[];
+}

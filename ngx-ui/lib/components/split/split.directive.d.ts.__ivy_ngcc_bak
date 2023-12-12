@@ -1,0 +1,21 @@
+import { AfterContentInit, QueryList, ElementRef, OnChanges, OnDestroy } from '@angular/core';
+import { SplitAreaDirective } from './split-area.directive';
+import { SplitHandleComponent } from './split-handle.component';
+import { SplitDirection } from './split-direction.enum';
+export declare class SplitDirective implements AfterContentInit, OnChanges, OnDestroy {
+    private readonly elementRef;
+    direction: SplitDirection;
+    get rowCss(): boolean;
+    get columnCss(): boolean;
+    readonly handles: QueryList<SplitHandleComponent>;
+    readonly areas: QueryList<SplitAreaDirective>;
+    private subscriptions;
+    constructor(elementRef: ElementRef);
+    ngAfterContentInit(): void;
+    ngOnChanges(): void;
+    ngOnDestroy(): void;
+    resize(delta: number): void;
+    private updateHandles;
+    private onDblClick;
+    private onDrag;
+}

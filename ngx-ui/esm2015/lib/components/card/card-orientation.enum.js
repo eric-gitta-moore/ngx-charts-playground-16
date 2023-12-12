@@ -1,0 +1,6 @@
+export var CardOrientation;
+(function (CardOrientation) {
+    CardOrientation["Horizontal"] = "horizontal";
+    CardOrientation["Vertical"] = "vertical";
+})(CardOrientation || (CardOrientation = {}));
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2FyZC1vcmllbnRhdGlvbi5lbnVtLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvc3dpbWxhbmUvbmd4LXVpL3NyYy9saWIvY29tcG9uZW50cy9jYXJkL2NhcmQtb3JpZW50YXRpb24uZW51bS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxNQUFNLENBQU4sSUFBWSxlQUdYO0FBSEQsV0FBWSxlQUFlO0lBQ3pCLDRDQUF5QixDQUFBO0lBQ3pCLHdDQUFxQixDQUFBO0FBQ3ZCLENBQUMsRUFIVyxlQUFlLEtBQWYsZUFBZSxRQUcxQiIsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBlbnVtIENhcmRPcmllbnRhdGlvbiB7XG4gIEhvcml6b250YWwgPSAnaG9yaXpvbnRhbCcsXG4gIFZlcnRpY2FsID0gJ3ZlcnRpY2FsJ1xufVxuIl19

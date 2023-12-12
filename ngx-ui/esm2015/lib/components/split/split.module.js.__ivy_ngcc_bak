@@ -1,0 +1,15 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { SplitDirective } from './split.directive';
+import { SplitAreaDirective } from './split-area.directive';
+import { SplitHandleComponent } from './split-handle.component';
+export class SplitModule {
+}
+SplitModule.decorators = [
+    { type: NgModule, args: [{
+                declarations: [SplitDirective, SplitAreaDirective, SplitHandleComponent],
+                exports: [SplitDirective, SplitAreaDirective, SplitHandleComponent],
+                imports: [CommonModule]
+            },] }
+];
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic3BsaXQubW9kdWxlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvc3dpbWxhbmUvbmd4LXVpL3NyYy9saWIvY29tcG9uZW50cy9zcGxpdC9zcGxpdC5tb2R1bGUudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLFFBQVEsRUFBRSxNQUFNLGVBQWUsQ0FBQztBQUN6QyxPQUFPLEVBQUUsWUFBWSxFQUFFLE1BQU0saUJBQWlCLENBQUM7QUFFL0MsT0FBTyxFQUFFLGNBQWMsRUFBRSxNQUFNLG1CQUFtQixDQUFDO0FBQ25ELE9BQU8sRUFBRSxrQkFBa0IsRUFBRSxNQUFNLHdCQUF3QixDQUFDO0FBQzVELE9BQU8sRUFBRSxvQkFBb0IsRUFBRSxNQUFNLDBCQUEwQixDQUFDO0FBT2hFLE1BQU0sT0FBTyxXQUFXOzs7WUFMdkIsUUFBUSxTQUFDO2dCQUNSLFlBQVksRUFBRSxDQUFDLGNBQWMsRUFBRSxrQkFBa0IsRUFBRSxvQkFBb0IsQ0FBQztnQkFDeEUsT0FBTyxFQUFFLENBQUMsY0FBYyxFQUFFLGtCQUFrQixFQUFFLG9CQUFvQixDQUFDO2dCQUNuRSxPQUFPLEVBQUUsQ0FBQyxZQUFZLENBQUM7YUFDeEIiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBOZ01vZHVsZSB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHsgQ29tbW9uTW9kdWxlIH0gZnJvbSAnQGFuZ3VsYXIvY29tbW9uJztcblxuaW1wb3J0IHsgU3BsaXREaXJlY3RpdmUgfSBmcm9tICcuL3NwbGl0LmRpcmVjdGl2ZSc7XG5pbXBvcnQgeyBTcGxpdEFyZWFEaXJlY3RpdmUgfSBmcm9tICcuL3NwbGl0LWFyZWEuZGlyZWN0aXZlJztcbmltcG9ydCB7IFNwbGl0SGFuZGxlQ29tcG9uZW50IH0gZnJvbSAnLi9zcGxpdC1oYW5kbGUuY29tcG9uZW50JztcblxuQE5nTW9kdWxlKHtcbiAgZGVjbGFyYXRpb25zOiBbU3BsaXREaXJlY3RpdmUsIFNwbGl0QXJlYURpcmVjdGl2ZSwgU3BsaXRIYW5kbGVDb21wb25lbnRdLFxuICBleHBvcnRzOiBbU3BsaXREaXJlY3RpdmUsIFNwbGl0QXJlYURpcmVjdGl2ZSwgU3BsaXRIYW5kbGVDb21wb25lbnRdLFxuICBpbXBvcnRzOiBbQ29tbW9uTW9kdWxlXVxufSlcbmV4cG9ydCBjbGFzcyBTcGxpdE1vZHVsZSB7fVxuIl19

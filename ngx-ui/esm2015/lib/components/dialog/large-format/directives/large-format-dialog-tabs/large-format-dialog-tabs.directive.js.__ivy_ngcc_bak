@@ -1,0 +1,9 @@
+import { Directive } from '@angular/core';
+export class LargeFormatDialogTabsDirective {
+}
+LargeFormatDialogTabsDirective.decorators = [
+    { type: Directive, args: [{
+                selector: 'ng-template[largeFormatDialogTabs]'
+            },] }
+];
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibGFyZ2UtZm9ybWF0LWRpYWxvZy10YWJzLmRpcmVjdGl2ZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL3N3aW1sYW5lL25neC11aS9zcmMvbGliL2NvbXBvbmVudHMvZGlhbG9nL2xhcmdlLWZvcm1hdC9kaXJlY3RpdmVzL2xhcmdlLWZvcm1hdC1kaWFsb2ctdGFicy9sYXJnZS1mb3JtYXQtZGlhbG9nLXRhYnMuZGlyZWN0aXZlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBRSxTQUFTLEVBQUUsTUFBTSxlQUFlLENBQUM7QUFLMUMsTUFBTSxPQUFPLDhCQUE4Qjs7O1lBSDFDLFNBQVMsU0FBQztnQkFDVCxRQUFRLEVBQUUsb0NBQW9DO2FBQy9DIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgRGlyZWN0aXZlIH0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5cbkBEaXJlY3RpdmUoe1xuICBzZWxlY3RvcjogJ25nLXRlbXBsYXRlW2xhcmdlRm9ybWF0RGlhbG9nVGFic10nXG59KVxuZXhwb3J0IGNsYXNzIExhcmdlRm9ybWF0RGlhbG9nVGFic0RpcmVjdGl2ZSB7fVxuIl19

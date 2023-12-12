@@ -1,0 +1,1 @@
+{"version":3,"file":"object-values.pipe.d.ts","sources":["object-values.pipe.d.ts"],"names":[],"mappings":"AAAA;;AACA;AACA;;;AACA","sourcesContent":["import { PipeTransform } from '@angular/core';\nexport declare class ObjectValuesPipe implements PipeTransform {\n    transform(object: any): unknown[];\n}\n"]}

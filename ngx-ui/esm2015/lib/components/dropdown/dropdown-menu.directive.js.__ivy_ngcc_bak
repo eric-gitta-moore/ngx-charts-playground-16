@@ -1,0 +1,27 @@
+import { ElementRef, Directive, Inject, PLATFORM_ID } from '@angular/core';
+import { InViewportDirective, InViewportService } from 'ng-in-viewport';
+export class DropdownMenuDirective extends InViewportDirective {
+    constructor(_platformIdentifier, _elementReference, _insideViewport) {
+        super(_platformIdentifier, _elementReference, _insideViewport);
+        this._platformIdentifier = _platformIdentifier;
+        this._elementReference = _elementReference;
+        this._insideViewport = _insideViewport;
+        this.element = this._elementReference.nativeElement;
+    }
+    getCallbackFn() {
+        return this.inViewportAction;
+    }
+}
+DropdownMenuDirective.decorators = [
+    { type: Directive, args: [{
+                exportAs: 'ngxDropdownMenu',
+                selector: 'ngx-dropdown-menu',
+                host: { class: 'ngx-dropdown-menu' }
+            },] }
+];
+DropdownMenuDirective.ctorParameters = () => [
+    { type: undefined, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
+    { type: ElementRef },
+    { type: InViewportService }
+];
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZHJvcGRvd24tbWVudS5kaXJlY3RpdmUuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9jb21wb25lbnRzL2Ryb3Bkb3duL2Ryb3Bkb3duLW1lbnUuZGlyZWN0aXZlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBRSxVQUFVLEVBQUUsU0FBUyxFQUFFLE1BQU0sRUFBRSxXQUFXLEVBQWdCLE1BQU0sZUFBZSxDQUFDO0FBQ3pGLE9BQU8sRUFBRSxtQkFBbUIsRUFBRSxpQkFBaUIsRUFBRSxNQUFNLGdCQUFnQixDQUFDO0FBT3hFLE1BQU0sT0FBTyxxQkFBc0IsU0FBUSxtQkFBbUI7SUFHNUQsWUFDZ0MsbUJBQXdCLEVBQzdDLGlCQUE2QixFQUM3QixlQUFrQztRQUUzQyxLQUFLLENBQUMsbUJBQW1CLEVBQUUsaUJBQWlCLEVBQUUsZUFBZSxDQUFDLENBQUM7UUFKakMsd0JBQW1CLEdBQW5CLG1CQUFtQixDQUFLO1FBQzdDLHNCQUFpQixHQUFqQixpQkFBaUIsQ0FBWTtRQUM3QixvQkFBZSxHQUFmLGVBQWUsQ0FBbUI7UUFHM0MsSUFBSSxDQUFDLE9BQU8sR0FBRyxJQUFJLENBQUMsaUJBQWlCLENBQUMsYUFBYSxDQUFDO0lBQ3RELENBQUM7SUFFRCxhQUFhO1FBQ1gsT0FBTyxJQUFJLENBQUMsZ0JBQWdCLENBQUM7SUFDL0IsQ0FBQzs7O1lBbkJGLFNBQVMsU0FBQztnQkFDVCxRQUFRLEVBQUUsaUJBQWlCO2dCQUMzQixRQUFRLEVBQUUsbUJBQW1CO2dCQUM3QixJQUFJLEVBQUUsRUFBRSxLQUFLLEVBQUUsbUJBQW1CLEVBQUU7YUFDckM7Ozs0Q0FLSSxNQUFNLFNBQUMsV0FBVztZQVpkLFVBQVU7WUFDVyxpQkFBaUIiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBFbGVtZW50UmVmLCBEaXJlY3RpdmUsIEluamVjdCwgUExBVEZPUk1fSUQsIEV2ZW50RW1pdHRlciB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHsgSW5WaWV3cG9ydERpcmVjdGl2ZSwgSW5WaWV3cG9ydFNlcnZpY2UgfSBmcm9tICduZy1pbi12aWV3cG9ydCc7XG5cbkBEaXJlY3RpdmUoe1xuICBleHBvcnRBczogJ25neERyb3Bkb3duTWVudScsXG4gIHNlbGVjdG9yOiAnbmd4LWRyb3Bkb3duLW1lbnUnLFxuICBob3N0OiB7IGNsYXNzOiAnbmd4LWRyb3Bkb3duLW1lbnUnIH1cbn0pXG5leHBvcnQgY2xhc3MgRHJvcGRvd25NZW51RGlyZWN0aXZlIGV4dGVuZHMgSW5WaWV3cG9ydERpcmVjdGl2ZSB7XG4gIHJlYWRvbmx5IGVsZW1lbnQ6IEhUTUxFbGVtZW50O1xuXG4gIGNvbnN0cnVjdG9yKFxuICAgIEBJbmplY3QoUExBVEZPUk1fSUQpIHJlYWRvbmx5IF9wbGF0Zm9ybUlkZW50aWZpZXI6IGFueSxcbiAgICByZWFkb25seSBfZWxlbWVudFJlZmVyZW5jZTogRWxlbWVudFJlZixcbiAgICByZWFkb25seSBfaW5zaWRlVmlld3BvcnQ6IEluVmlld3BvcnRTZXJ2aWNlXG4gICkge1xuICAgIHN1cGVyKF9wbGF0Zm9ybUlkZW50aWZpZXIsIF9lbGVtZW50UmVmZXJlbmNlLCBfaW5zaWRlVmlld3BvcnQpO1xuICAgIHRoaXMuZWxlbWVudCA9IHRoaXMuX2VsZW1lbnRSZWZlcmVuY2UubmF0aXZlRWxlbWVudDtcbiAgfVxuXG4gIGdldENhbGxiYWNrRm4oKTogRXZlbnRFbWl0dGVyPGFueT4ge1xuICAgIHJldHVybiB0aGlzLmluVmlld3BvcnRBY3Rpb247XG4gIH1cbn1cbiJdfQ==

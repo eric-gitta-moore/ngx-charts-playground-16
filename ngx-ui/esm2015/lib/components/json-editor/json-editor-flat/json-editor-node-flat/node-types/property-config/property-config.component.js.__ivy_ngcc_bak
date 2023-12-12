@@ -1,0 +1,117 @@
+import { Component, Input, EventEmitter, Output, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { DialogService } from '../../../../../dialog/dialog.service';
+import { propTypes } from '../../../../json-editor.helper';
+export class PropertyConfigComponent {
+    constructor(dialogService) {
+        this.dialogService = dialogService;
+        this.formats = [];
+        this.arrayItem = false;
+        this.rootItem = false;
+        this.updateSchema = new EventEmitter();
+        this.propTypes = propTypes;
+        this.required = false;
+        this.newEnumValue = '';
+    }
+    ngOnInit() {
+        this.editableProperty = JSON.parse(JSON.stringify(this.property));
+        if (!this.arrayItem) {
+            this.setRequired();
+        }
+    }
+    applyChanges() {
+        this.dialogService.destroyAll();
+        this.updateSchema.emit({
+            required: this.required,
+            index: this.index,
+            newProperty: this.editableProperty,
+            oldProperty: this.property
+        });
+    }
+    updateType(type) {
+        if (this.editableProperty.type !== type) {
+            this.editableProperty.type = type;
+            delete this.editableProperty.format;
+            this.cleanUpPropertyConstrains();
+        }
+    }
+    updateExamples(examples) {
+        if (examples && examples.length) {
+            this.editableProperty.examples = examples;
+        }
+        else {
+            delete this.editableProperty.examples;
+        }
+    }
+    updateFormat(format) {
+        if (this.editableProperty.format !== format) {
+            this.editableProperty.type = 'string';
+            this.editableProperty.format = format;
+            this.cleanUpPropertyConstrains();
+        }
+    }
+    addEnumValue() {
+        const enumValues = (this.editableProperty.enum = this.editableProperty.enum || []);
+        if (!enumValues.includes(this.newEnumValue)) {
+            enumValues.push(this.newEnumValue);
+            this.newEnumValue = '';
+            delete this.editableProperty.format;
+        }
+    }
+    updateDefault(enumValue) {
+        if (!enumValue) {
+            delete this.editableProperty.default;
+        }
+        else {
+            this.editableProperty.default = enumValue;
+        }
+    }
+    removeEnumValue(val) {
+        const enumValues = this.editableProperty.enum;
+        const index = enumValues.indexOf(val);
+        if (index > -1) {
+            enumValues.splice(index, 1);
+        }
+        if (!enumValues.length) {
+            // Remove enum property if empty
+            delete this.editableProperty.enum;
+        }
+    }
+    cleanUpPropertyConstrains() {
+        delete this.editableProperty.enum;
+        delete this.editableProperty.properties;
+        delete this.editableProperty.required;
+        delete this.editableProperty.items;
+        delete this.editableProperty.minimum;
+        delete this.editableProperty.maximum;
+        delete this.editableProperty.default;
+        delete this.editableProperty.minLength;
+        delete this.editableProperty.maxLength;
+        delete this.editableProperty.minItems;
+        delete this.editableProperty.maxItems;
+    }
+    setRequired() {
+        this.required = this.schema.required.includes(this.property.propertyName);
+    }
+}
+PropertyConfigComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'ngx-property-config',
+                template: "<div class=\"property-config\">\n  <div class=\"header\">\n    <span>Property Configuration</span>\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"applyChanges()\">\n      <i class=\"ngx-icon ngx-check has-text\"></i> Apply\n    </button>\n  </div>\n  <ngx-tabs *ngIf=\"property\">\n    <ngx-tab label=\"GENERAL\">\n      <!-- PROPERTY NAME -->\n      <ngx-input\n        *ngIf=\"!arrayItem && !rootItem\"\n        type=\"text\"\n        name=\"propertyName\"\n        [(ngModel)]=\"editableProperty.propertyName\"\n        [label]=\"'PROPERTY NAME'\"\n        [required]=\"true\"\n        [hint]=\"'Must only contain A-Z, a-z, 0-9 or _'\"\n      >\n      </ngx-input>\n\n      <!-- TITLE -->\n      <ngx-input\n        *ngIf=\"!arrayItem\"\n        type=\"text\"\n        [(ngModel)]=\"editableProperty.title\"\n        [label]=\"'PROPERTY TITLE'\"\n        [hint]=\"'A human-readable name for this property'\"\n      >\n      </ngx-input>\n\n      <!-- DESCRIPTION -->\n      <ngx-input\n        *ngIf=\"!arrayItem\"\n        type=\"text\"\n        [(ngModel)]=\"editableProperty.description\"\n        [label]=\"'PROPERTY DESCRIPTION'\"\n        [hint]=\"'A description for the property'\"\n      >\n      </ngx-input>\n\n      <ng-container *ngIf=\"!rootItem\">\n        <!-- TYPE -->\n        <ngx-select\n          class=\"prop-types-formats\"\n          [filterable]=\"false\"\n          [ngModel]=\"[editableProperty.type]\"\n          (ngModelChange)=\"updateType($event[0])\"\n          [required]=\"true\"\n          [label]=\"'TYPE'\"\n        >\n          <ngx-select-option *ngFor=\"let propType of propTypes\" [name]=\"propType\" [value]=\"propType\">\n          </ngx-select-option>\n        </ngx-select>\n\n        <!-- FORMAT -->\n        <ngx-select\n          class=\"prop-types-formats\"\n          *ngIf=\"editableProperty.type === 'string' && formats?.length && !editableProperty.enum?.length\"\n          [filterable]=\"false\"\n          [ngModel]=\"[editableProperty.format]\"\n          (ngModelChange)=\"updateFormat($event[0])\"\n          [label]=\"'FORMAT'\"\n        >\n          <ngx-select-option\n            *ngFor=\"let propFormat of formats\"\n            [name]=\"propFormat.name\"\n            [value]=\"propFormat.schema.format\"\n          >\n          </ngx-select-option>\n        </ngx-select>\n\n        <!-- ENUM -->\n        <ngx-input\n          *ngIf=\"editableProperty.type === 'string' && !editableProperty.format\"\n          type=\" text\"\n          class=\"new-enum-input\"\n          [(ngModel)]=\"newEnumValue\"\n          [label]=\"'ADD ENUM VALUE'\"\n        >\n          <ngx-input-suffix>\n            <button (click)=\"addEnumValue()\" [disabled]=\"!newEnumValue.length\">\n              <i class=\"ngx-icon ngx-ngx-icon ngx-check\"></i>\n            </button>\n          </ngx-input-suffix>\n        </ngx-input>\n\n        <ng-container *ngIf=\"editableProperty.enum?.length\">\n          <div *ngIf=\"editableProperty.enum?.length\" class=\"enum-edit\">\n            <div class=\"tag\" *ngFor=\"let value of editableProperty.enum\">\n              <span>{{ value }}</span>\n              <button type=\"button\" (click)=\"removeEnumValue(value)\">\n                <i class=\"ngx-icon ngx-x\"></i>\n              </button>\n            </div>\n          </div>\n\n          <ngx-select\n            [filterable]=\"false\"\n            [ngModel]=\"[editableProperty.default]\"\n            (ngModelChange)=\"updateDefault($event[0])\"\n            [label]=\"'DEFAULT'\"\n          >\n            <ngx-select-option *ngFor=\"let value of editableProperty.enum\" [name]=\"value\" [value]=\"value\">\n            </ngx-select-option>\n          </ngx-select>\n        </ng-container>\n\n        <!-- CONSTRAINS -->\n        <div class=\"constrain-row\" *ngIf=\"editableProperty.type === 'number' || editableProperty.type === 'integer'\">\n          <ngx-input type=\"number\" [(ngModel)]=\"editableProperty.minimum\" [label]=\"'MINIMUM'\"></ngx-input>\n\n          <ngx-input type=\"number\" [(ngModel)]=\"editableProperty.maximum\" [label]=\"'MAXIMUM'\"></ngx-input>\n        </div>\n\n        <div class=\"constrain-row\" *ngIf=\"editableProperty.type === 'string'\">\n          <ngx-input type=\"number\" [(ngModel)]=\"editableProperty.minLength\" [label]=\"'MINIMUM LENGTH'\"></ngx-input>\n\n          <ngx-input type=\"number\" [(ngModel)]=\"editableProperty.maxLength\" [label]=\"'MAXIMUM LENGTH'\"></ngx-input>\n        </div>\n\n        <div class=\"constrain-row\" *ngIf=\"editableProperty.type === 'array'\">\n          <ngx-input type=\"number\" [(ngModel)]=\"editableProperty.minItems\" [label]=\"'MIN ITEMS'\"></ngx-input>\n          <ngx-input type=\"number\" [(ngModel)]=\"editableProperty.maxItems\" [label]=\"'MAX ITEMS'\"></ngx-input>\n        </div>\n\n        <!-- PATTERN -->\n        <ngx-input\n          type=\"text\"\n          *ngIf=\"['string', 'number', 'integer'].includes($any(editableProperty.type))\"\n          [(ngModel)]=\"editableProperty.pattern\"\n          [label]=\"'PATTERN TO MATCH'\"\n        >\n        </ngx-input>\n\n        <!-- REQUIRED -->\n        <ngx-checkbox *ngIf=\"!arrayItem\" [(ngModel)]=\"required\">\n          Required\n        </ngx-checkbox>\n      </ng-container>\n    </ngx-tab>\n    <ngx-tab label=\"EXAMPLE VALUES\">\n      <div class=\"examples-container\">\n        <ngx-orderable-inputs-list\n          [data]=\"editableProperty.examples\"\n          (onUpdate)=\"updateExamples($event)\"\n        ></ngx-orderable-inputs-list>\n      </div>\n    </ngx-tab>\n  </ngx-tabs>\n</div>\n",
+                encapsulation: ViewEncapsulation.None,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                styles: [".property-config .header{background:linear-gradient(180deg,#3b4457,#262c38);height:75px;display:flex;align-items:center;justify-content:space-between;padding:0 35px}.property-config .header span{font-size:19px;color:#fff}.property-config .header button{font-size:14px;line-height:18px}.property-config .ngx-tab-content{max-height:65vh;overflow:auto}.property-config .new-enum-input button{color:#696969}.property-config .new-enum-input .ngx-input-hint{display:none}.property-config .enum-edit button{font-size:9px;padding-right:0}.property-config .constrain-row{display:flex}.property-config .constrain-row ngx-input{flex-basis:50%}.property-config .constrain-row ngx-input:first-child{margin-right:30px}.property-config ngx-checkbox label{display:flex;align-items:center;margin:1.2rem 1.2rem 1.2rem 0!important}.property-config .prop-types-formats .ngx-select-dropdown-option,.property-config .prop-types-formats .ngx-select-input-name{text-transform:capitalize}.property-config .examples-container{border:1px solid #505c75;padding:14px}"]
+            },] }
+];
+PropertyConfigComponent.ctorParameters = () => [
+    { type: DialogService }
+];
+PropertyConfigComponent.propDecorators = {
+    property: [{ type: Input }],
+    index: [{ type: Input }],
+    schema: [{ type: Input }],
+    formats: [{ type: Input }],
+    arrayItem: [{ type: Input }],
+    rootItem: [{ type: Input }],
+    updateSchema: [{ type: Output }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJvcGVydHktY29uZmlnLmNvbXBvbmVudC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL3N3aW1sYW5lL25neC11aS9zcmMvbGliL2NvbXBvbmVudHMvanNvbi1lZGl0b3IvanNvbi1lZGl0b3ItZmxhdC9qc29uLWVkaXRvci1ub2RlLWZsYXQvbm9kZS10eXBlcy9wcm9wZXJ0eS1jb25maWcvcHJvcGVydHktY29uZmlnLmNvbXBvbmVudC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQ0wsU0FBUyxFQUVULEtBQUssRUFDTCxZQUFZLEVBQ1osTUFBTSxFQUNOLGlCQUFpQixFQUNqQix1QkFBdUIsRUFDeEIsTUFBTSxlQUFlLENBQUM7QUFDdkIsT0FBTyxFQUFFLGFBQWEsRUFBRSxNQUFNLHNDQUFzQyxDQUFDO0FBQ3JFLE9BQU8sRUFBb0IsU0FBUyxFQUFzQixNQUFNLGdDQUFnQyxDQUFDO0FBaUJqRyxNQUFNLE9BQU8sdUJBQXVCO0lBdUJsQyxZQUFvQixhQUE0QjtRQUE1QixrQkFBYSxHQUFiLGFBQWEsQ0FBZTtRQWhCdkMsWUFBTyxHQUF5QixFQUFFLENBQUM7UUFFbkMsY0FBUyxHQUFJLEtBQUssQ0FBQztRQUVuQixhQUFRLEdBQUksS0FBSyxDQUFDO1FBRWpCLGlCQUFZLEdBQUcsSUFBSSxZQUFZLEVBQXlCLENBQUM7UUFFbkUsY0FBUyxHQUFhLFNBQVMsQ0FBQztRQUloQyxhQUFRLEdBQUcsS0FBSyxDQUFDO1FBRWpCLGlCQUFZLEdBQUcsRUFBRSxDQUFDO0lBRWlDLENBQUM7SUFFcEQsUUFBUTtRQUNOLElBQUksQ0FBQyxnQkFBZ0IsR0FBRyxJQUFJLENBQUMsS0FBSyxDQUFDLElBQUksQ0FBQyxTQUFTLENBQUMsSUFBSSxDQUFDLFFBQVEsQ0FBQyxDQUFDLENBQUM7UUFFbEUsSUFBSSxDQUFDLElBQUksQ0FBQyxTQUFTLEVBQUU7WUFDbkIs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UUFDeEMsT0FBTyxJQUFJLENBQUMsZ0JBQWdCLENBQUMsUUFBUSxDQUFDO1FBQ3RDLE9BQU8sSUFBSSxDQUFDLGdCQUFnQixDQUFDLEtBQUssQ0FBQztRQUNuQyxPQUFPLElBQUksQ0FBQyxnQkFBZ0IsQ0FBQyxPQUFPLENBQUM7UUFDckMsT0FBTyxJQUFJLENBQUMsZ0JBQWdCLENBQUMsT0FBTyxDQUFDO1FBQ3JDLE9BQU8sSUFBSSxDQUFDLGdCQUFnQixDQUFDLE9BQU8sQ0FBQztRQUNyQyxPQUFPLElBQUksQ0FBQyxnQkFBZ0IsQ0FBQyxTQUFTLENBQUM7UUFDdkMsT0FBTyxJQUFJLENBQUMsZ0JBQWdCLENBQUMsU0FBUyxDQUFDO1FBQ3ZDLE9BQU8sSUFBSSxDQUFDLGdCQUFnQixDQUFDLFFBQVEsQ0FBQztRQUN0QyxPQUFPLElBQUksQ0FBQyxnQkFBZ0IsQ0FBQyxRQUFRLENBQUM7SUFDeEMsQ0FBQztJQUVPLFdBQVc7UUFDakIsSUFBSSxDQUFDLFFBQVEsR0FBRyxJQUFJLENBQUMsTUFBTSxDQUFDLFFBQVEsQ0FBQyxRQUFRLENBQUMsSUFBSSxDQUFDLFFBQVEsQ0FBQyxZQUFZLENBQUMsQ0FBQztJQUM1RSxDQUFDOzs7WUEzSEYsU0FBUyxTQUFDO2dCQUNULFFBQVEsRUFBRSxxQkFBcUI7Z0JBQy9CLDJnTEFBK0M7Z0JBRS9DLGFBQWEsRUFBRSxpQkFBaUIsQ0FBQyxJQUFJO2dCQUNyQyxlQUFlLEVBQUUsdUJBQXVCLENBQUMsTUFBTTs7YUFDaEQ7OztZQWpCUSxhQUFhOzs7dUJBbUJuQixLQUFLO29CQUVMLEtBQUs7cUJBRUwsS0FBSztzQkFFTCxLQUFLO3dCQUVMLEtBQUs7dUJBRUwsS0FBSzsyQkFFTCxNQUFNIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtcbiAgQ29tcG9uZW50LFxuICBPbkluaXQsXG4gIElucHV0LFxuICBFdmVudEVtaXR0ZXIsXG4gIE91dHB1dCxcbiAgVmlld0VuY2Fwc3VsYXRpb24sXG4gIENoYW5nZURldGVjdGlvblN0cmF0ZWd5XG59IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHsgRGlhbG9nU2VydmljZSB9IGZyb20gJy4uLy4uLy4uLy4uLy4uL2RpYWxvZy9kaWFsb2cuc2VydmljZSc7XG5pbXBvcnQgeyBKU09ORWRpdG9yU2NoZW1hLCBwcm9wVHlwZXMsIEpzb25TY2hlbWFEYXRhVHlwZSB9IGZyb20gJy4uLy4uLy4uLy4uL2pzb24tZWRpdG9yLmhlbHBlcic7XG5pbXBvcnQgeyBKU09OU2NoZW1hN1R5cGVOYW1lIH0gZnJvbSAnanNvbi1zY2hlbWEnO1xuXG5leHBvcnQgaW50ZXJmYWNlIFByb3BlcnR5Q29uZmlnT3B0aW9ucyB7XG4gIHJlcXVpcmVkOiBib29sZWFuO1xuICBpbmRleDogbnVtYmVyO1xuICBuZXdQcm9wZXJ0eTogSlNPTkVkaXRvclNjaGVtYTtcbiAgb2xkUHJvcGVydHk6IEpTT05FZGl0b3JTY2hlbWE7XG59XG5cbkBDb21wb25lbnQoe1xuICBzZWxlY3RvcjogJ25neC1wcm9wZXJ0eS1jb25maWcnLFxuICB0ZW1wbGF0ZVVybDogJy4vcHJvcGVydHktY29uZmlnLmNvbXBvbmVudC5odG1sJyxcbiAgc3R5bGVVcmxzOiBbJy4vcHJvcGVydHktY29uZmlnLmNvbXBvbmVudC5zY3NzJ10sXG4gIGVuY2Fwc3VsYXRpb246IFZpZXdFbmNhcHN1bGF0aW9uLk5vbmUsXG4gIGNoYW5nZURldGVjdGlvbjogQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3kuT25QdXNoXG59KVxuZXhwb3J0IGNsYXNzIFByb3BlcnR5Q29uZmlnQ29tcG9uZW50IGltcGxlbWVudHMgT25Jbml0IHtcbiAgQElucHV0KCkgcHJvcGVydHk6IEpTT05FZGl0b3JTY2hlbWE7XG5cbiAgQElucHV0KCkgaW5kZXg/OiBudW1iZXI7XG5cbiAgQElucHV0KCkgc2NoZW1hOiBKU09ORWRpdG9yU2NoZW1hO1xuXG4gIEBJbnB1dCgpIGZvcm1hdHM6IEpzb25TY2hlbWFEYXRhVHlwZVtdID0gW107XG5cbiAgQElucHV0KCkgYXJyYXlJdGVtPyA9IGZhbHNlO1xuXG4gIEBJbnB1dCgpIHJvb3RJdGVtPyA9IGZhbHNlO1xuXG4gIEBPdXRwdXQoKSB1cGRhdGVTY2hlbWEgPSBuZXcgRXZlbnRFbWl0dGVyPFByb3BlcnR5Q29uZmlnT3B0aW9ucz4oKTtcblxuICBwcm9wVHlwZXM6IHN0cmluZ1tdID0gcHJvcFR5cGVzO1xuXG4gIGVkaXRhYmxlUHJvcGVydHk6IEpTT05FZGl0b3JTY2hlbWE7XG5cbiAgcmVxdWlyZWQgPSBmYWxzZTtcblxuICBuZXdFbnVtVmFsdWUgPSAnJztcblxuICBjb25zdHJ1Y3Rvcihwcml2YXRlIGRpYWxvZ1NlcnZpY2U6IERpYWxvZ1NlcnZpY2UpIHt9XG5cbiAgbmdPbkluaXQoKSB7XG4gICAgdGhpcy5lZGl0YWJsZVByb3BlcnR5ID0gSlNPTi5wYXJzZShKU09OLnN0cmluZ2lmeSh0aGlzLnByb3BlcnR5KSk7XG5cbiAgICBpZiAoIXRoaXMuYXJyYXlJdGVtKSB7XG4gICAgICB0aGlzLnNldFJlcXVpcmVkKCk7XG4gICAgfVxuICB9XG5cbiAgYXBwbHlDaGFuZ2VzKCk6IHZvaWQge1xuICAgIHRoaXMuZGlhbG9nU2VydmljZS5kZXN0cm95QWxsKCk7XG4gICAgdGhpcy51cGRhdGVTY2hlbWEuZW1pdCh7XG4gICAgICByZXF1aXJlZDogdGhpcy5yZXF1aXJlZCxcbiAgICAgIGluZGV4OiB0aGlzLmluZGV4LFxuICAgICAgbmV3UHJvcGVydHk6IHRoaXMuZWRpdGFibGVQcm9wZXJ0eSxcbiAgICAgIG9sZFByb3BlcnR5OiB0aGlzLnByb3BlcnR5XG4gICAgfSk7XG4gIH1cblxuICB1cGRhdGVUeXBlKHR5cGU6IHN0cmluZyk6IHZvaWQge1xuICAgIGlmICh0aGlzLmVkaXRhYmxlUHJvcGVydHkudHlwZSAhPT0gdHlwZSkge1xuICAgICAgdGhpcy5lZGl0YWJsZVByb3BlcnR5LnR5cGUgPSB0eXBlIGFzIEpTT05TY2hlbWE3VHlwZU5hbWU7XG4gICAgICBkZWxldGUgdGhpcy5lZGl0YWJsZVByb3BlcnR5LmZvcm1hdDtcblxuICAgICAgdGhpcy5jbGVhblVwUHJvcGVydHlDb25zdHJhaW5zKCk7XG4gICAgfVxuICB9XG5cbiAgdXBkYXRlRXhhbXBsZXMoZXhhbXBsZXM6IHN0cmluZ1tdKTogdm9pZCB7XG4gICAgaWYgKGV4YW1wbGVzICYmIGV4YW1wbGVzLmxlbmd0aCkge1xuICAgICAgdGhpcy5lZGl0YWJsZVByb3BlcnR5LmV4YW1wbGVzID0gZXhhbXBsZXM7XG4gICAgfSBlbHNlIHtcbiAgICAgIGRlbGV0ZSB0aGlzLmVkaXRhYmxlUHJvcGVydHkuZXhhbXBsZXM7XG4gICAgfVxuICB9XG5cbiAgdXBkYXRlRm9ybWF0KGZvcm1hdDogc3RyaW5nKTogdm9pZCB7XG4gICAgaWYgKHRoaXMuZWRpdGFibGVQcm9wZXJ0eS5mb3JtYXQgIT09IGZvcm1hdCkge1xuICAgICAgdGhpcy5lZGl0YWJsZVByb3BlcnR5LnR5cGUgPSAnc3RyaW5nJztcbiAgICAgIHRoaXMuZWRpdGFibGVQcm9wZXJ0eS5mb3JtYXQgPSBmb3JtYXQ7XG4gICAgICB0aGlzLmNsZWFuVXBQcm9wZXJ0eUNvbnN0cmFpbnMoKTtcbiAgICB9XG4gIH1cblxuICBhZGRFbnVtVmFsdWUoKTogdm9pZCB7XG4gICAgY29uc3QgZW51bVZhbHVlcyA9ICh0aGlzLmVkaXRhYmxlUHJvcGVydHkuZW51bSA9IHRoaXMuZWRpdGFibGVQcm9wZXJ0eS5lbnVtIHx8IFtdKTtcblxuICAgIGlmICghZW51bVZhbHVlcy5pbmNsdWRlcyh0aGlzLm5ld0VudW1WYWx1ZSkpIHtcbiAgICAgIGVudW1WYWx1ZXMucHVzaCh0aGlzLm5ld0VudW1WYWx1ZSk7XG4gICAgICB0aGlzLm5ld0VudW1WYWx1ZSA9ICcnO1xuICAgICAgZGVsZXRlIHRoaXMuZWRpdGFibGVQcm9wZXJ0eS5mb3JtYXQ7XG4gICAgfVxuICB9XG5cbiAgdXBkYXRlRGVmYXVsdChlbnVtVmFsdWU6IHN0cmluZyk6IHZvaWQge1xuICAgIGlmICghZW51bVZhbHVlKSB7XG4gICAgICBkZWxldGUgdGhpcy5lZGl0YWJsZVByb3BlcnR5LmRlZmF1bHQ7XG4gICAgfSBlbHNlIHtcbiAgICAgIHRoaXMuZWRpdGFibGVQcm9wZXJ0eS5kZWZhdWx0ID0gZW51bVZhbHVlO1xuICAgIH1cbiAgfVxuXG4gIHJlbW92ZUVudW1WYWx1ZSh2YWw6IHN0cmluZyk6IHZvaWQge1xuICAgIGNvbnN0IGVudW1WYWx1ZXMgPSB0aGlzLmVkaXRhYmxlUHJvcGVydHkuZW51bTtcbiAgICBjb25zdCBpbmRleCA9IGVudW1WYWx1ZXMuaW5kZXhPZih2YWwpO1xuXG4gICAgaWYgKGluZGV4ID4gLTEpIHtcbiAgICAgIGVudW1WYWx1ZXMuc3BsaWNlKGluZGV4LCAxKTtcbiAgICB9XG5cbiAgICBpZiAoIWVudW1WYWx1ZXMubGVuZ3RoKSB7XG4gICAgICAvLyBSZW1vdmUgZW51bSBwcm9wZXJ0eSBpZiBlbXB0eVxuICAgICAgZGVsZXRlIHRoaXMuZWRpdGFibGVQcm9wZXJ0eS5lbnVtO1xuICAgIH1cbiAgfVxuXG4gIHByaXZhdGUgY2xlYW5VcFByb3BlcnR5Q29uc3RyYWlucygpOiB2b2lkIHtcbiAgICBkZWxldGUgdGhpcy5lZGl0YWJsZVByb3BlcnR5LmVudW07XG4gICAgZGVsZXRlIHRoaXMuZWRpdGFibGVQcm9wZXJ0eS5wcm9wZXJ0aWVzO1xuICAgIGRlbGV0ZSB0aGlzLmVkaXRhYmxlUHJvcGVydHkucmVxdWlyZWQ7XG4gICAgZGVsZXRlIHRoaXMuZWRpdGFibGVQcm9wZXJ0eS5pdGVtcztcbiAgICBkZWxldGUgdGhpcy5lZGl0YWJsZVByb3BlcnR5Lm1pbmltdW07XG4gICAgZGVsZXRlIHRoaXMuZWRpdGFibGVQcm9wZXJ0eS5tYXhpbXVtO1xuICAgIGRlbGV0ZSB0aGlzLmVkaXRhYmxlUHJvcGVydHkuZGVmYXVsdDtcbiAgICBkZWxldGUgdGhpcy5lZGl0YWJsZVByb3BlcnR5Lm1pbkxlbmd0aDtcbiAgICBkZWxldGUgdGhpcy5lZGl0YWJsZVByb3BlcnR5Lm1heExlbmd0aDtcbiAgICBkZWxldGUgdGhpcy5lZGl0YWJsZVByb3BlcnR5Lm1pbkl0ZW1zO1xuICAgIGRlbGV0ZSB0aGlzLmVkaXRhYmxlUHJvcGVydHkubWF4SXRlbXM7XG4gIH1cblxuICBwcml2YXRlIHNldFJlcXVpcmVkKCk6IHZvaWQge1xuICAgIHRoaXMucmVxdWlyZWQgPSB0aGlzLnNjaGVtYS5yZXF1aXJlZC5pbmNsdWRlcyh0aGlzLnByb3BlcnR5LnByb3BlcnR5TmFtZSk7XG4gIH1cbn1cbiJdfQ==

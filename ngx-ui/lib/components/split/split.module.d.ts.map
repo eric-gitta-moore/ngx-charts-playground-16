@@ -1,0 +1,1 @@
+{"version":3,"file":"split.module.d.ts","sources":["split.module.d.ts"],"names":[],"mappings":";;;;;AAAA;;;;AACA","sourcesContent":["export declare class SplitModule {\n}\n"]}

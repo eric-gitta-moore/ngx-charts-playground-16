@@ -1,0 +1,6 @@
+export var SectionApperance;
+(function (SectionApperance) {
+    SectionApperance["Legacy"] = "legacy";
+    SectionApperance["Outline"] = "outline";
+})(SectionApperance || (SectionApperance = {}));
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2VjdGlvbi1hcHBlYXJhbmNlLmVudW0uanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9jb21wb25lbnRzL3NlY3Rpb24vc2VjdGlvbi1hcHBlYXJhbmNlLmVudW0udHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsTUFBTSxDQUFOLElBQVksZ0JBR1g7QUFIRCxXQUFZLGdCQUFnQjtJQUMxQixxQ0FBaUIsQ0FBQTtJQUNqQix1Q0FBbUIsQ0FBQTtBQUNyQixDQUFDLEVBSFcsZ0JBQWdCLEtBQWhCLGdCQUFnQixRQUczQiIsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBlbnVtIFNlY3Rpb25BcHBlcmFuY2Uge1xuICBMZWdhY3kgPSAnbGVnYWN5JyxcbiAgT3V0bGluZSA9ICdvdXRsaW5lJ1xufVxuIl19

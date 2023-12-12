@@ -1,0 +1,1 @@
+{"version":3,"file":"card-footer.component.d.ts","sources":["card-footer.component.d.ts"],"names":[],"mappings":";AAAA;AACA;;;AACA","sourcesContent":["export declare class CardFooterComponent {\n    label: string;\n}\n"]}

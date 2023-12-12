@@ -1,0 +1,95 @@
+import { EventEmitter, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { JsonSchemaDataType, JSONEditorSchema, PropertyIndex } from '../json-editor.helper';
+export declare class ObjectNode implements OnInit, OnChanges {
+    protected cdr: ChangeDetectorRef;
+    schema: JSONEditorSchema;
+    model: any;
+    required: boolean;
+    expanded: boolean;
+    path: string;
+    errors: any[];
+    typeCheckOverrides?: any;
+    schemaBuilderMode: boolean;
+    schemaRef: JSONEditorSchema;
+    showKnownProperties: boolean;
+    modelChange: EventEmitter<any>;
+    schemaUpdate: EventEmitter<JSONEditorSchema>;
+    requiredCache: {
+        [key: string]: boolean;
+    };
+    initialized: boolean;
+    dataTypes: JsonSchemaDataType[];
+    propertyCounter: number;
+    propertyId: number;
+    propertyIndex: PropertyIndex;
+    duplicatedFields: Map<string, string>;
+    dataTypeMap: Record<string, any>;
+    constructor(cdr: ChangeDetectorRef);
+    ngOnInit(): void;
+    ngOnChanges(changes: SimpleChanges): void;
+    update(): void;
+    /**
+     * Updates a property on the model and emits the change event
+     *
+     * @param propName
+     * @param value
+     */
+    updateProp(id: number | string, value: any): void;
+    /**
+     * Updates the name of a property
+     *
+     * @param id
+     * @param name
+     */
+    updatePropertyName(id: number | string, name: string): void;
+    /**
+     * Adds a new property to the model
+     */
+    addProperty(dataType: JsonSchemaDataType): void;
+    /**
+     * Adds a new property as defined in the schema
+     */
+    addSchemaProperty(propName: string): void;
+    /**
+     * Adds a new patternProperty as defined in the schema
+     */
+    addSchemaPatternProperty(propName: string): void;
+    /**
+     * Deletes a property
+     */
+    deleteProperty(propName: string): void;
+    /**
+     * Returns the absolute tree path of the property
+     */
+    getPath(propName: string): string;
+    /**
+     * Updates the required cache
+     */
+    updateRequiredCache(): void;
+    /**
+     * Creates an index out of all the properties in the model
+     */
+    indexProperties(): void;
+    isIndexed(propertyName: string): boolean;
+    /**
+     * Inits the required properties on the model
+     */
+    addRequiredProperties(): void;
+    /**
+     *
+     * @param property
+     * @param type
+     */
+    changePropertyType(property: JSONEditorSchema, type: string): void;
+    /**
+     * Track By function for the array ittierator
+     *
+     * @param index
+     * @param value
+     */
+    trackBy(_: any, value: any): any;
+    /**
+     * Updates the icons in the schemas
+     */
+    protected updateIcons(): void;
+}

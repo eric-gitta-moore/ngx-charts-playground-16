@@ -1,0 +1,1 @@
+{"version":3,"file":"pattern-validator.module.d.ts","sources":["pattern-validator.module.d.ts"],"names":[],"mappings":";;;AAAA;;;;AACA","sourcesContent":["export declare class PatternValidatorModule {\n}\n"]}

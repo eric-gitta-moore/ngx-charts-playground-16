@@ -1,0 +1,52 @@
+import { OnDestroy, AfterContentInit, Renderer2, ChangeDetectorRef } from '@angular/core';
+import { DropdownMenuDirective } from './dropdown-menu.directive';
+import { DropdownToggleDirective } from './dropdown-toggle.directive';
+import { Subject } from 'rxjs';
+import { InViewportMetadata } from 'ng-in-viewport';
+import * as ɵngcc0 from '@angular/core';
+export declare class DropdownComponent implements AfterContentInit, OnDestroy {
+    private readonly renderer;
+    private readonly cd;
+    destroy$: Subject<unknown>;
+    private _positionAdjusted;
+    get positionAdjusted(): boolean;
+    get open(): boolean;
+    set open(open: boolean);
+    get showCaret(): boolean;
+    set showCaret(showCaret: boolean);
+    get closeOnClick(): boolean;
+    set closeOnClick(closeOnClick: boolean);
+    get closeOnOutsideClick(): boolean;
+    set closeOnOutsideClick(closeOnOutsideClick: boolean);
+    get closeOnMouseLeave(): boolean;
+    set closeOnMouseLeave(val: boolean);
+    readonly dropdownToggle: DropdownToggleDirective;
+    readonly dropdownMenu: DropdownMenuDirective;
+    private _documentListener?;
+    private _open;
+    private _showCaret;
+    private _closeOnClick;
+    private _closeOnOutsideClick;
+    private _closeOnMouseLeave;
+    private _leaveTimeout;
+    constructor(renderer: Renderer2, cd: ChangeDetectorRef);
+    ngAfterContentInit(): void;
+    adjustMenuDirection(event: {
+        [InViewportMetadata]: {
+            entry: IntersectionObserverEntry;
+        };
+        target: HTMLElement;
+        visible: boolean;
+    }): void;
+    isIntersectingBottom(entry: IntersectionObserverEntry): boolean;
+    ngOnDestroy(): void;
+    onDocumentClick(e: Event): void;
+    onToggleClick(_: Event): void;
+    onMouseLeave(): void;
+    onMouseEnter(): void;
+    private close;
+    static ɵfac: ɵngcc0.ɵɵFactoryDeclaration<DropdownComponent, never>;
+    static ɵcmp: ɵngcc0.ɵɵComponentDeclaration<DropdownComponent, "ngx-dropdown", ["ngxDropdown"], { "open": "open"; "showCaret": "showCaret"; "closeOnClick": "closeOnClick"; "closeOnOutsideClick": "closeOnOutsideClick"; "closeOnMouseLeave": "closeOnMouseLeave"; }, {}, ["dropdownToggle", "dropdownMenu"], ["*"]>;
+}
+
+//# sourceMappingURL=dropdown.component.d.ts.map

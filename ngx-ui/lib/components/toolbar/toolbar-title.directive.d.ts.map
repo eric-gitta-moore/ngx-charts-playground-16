@@ -1,0 +1,1 @@
+{"version":3,"file":"toolbar-title.directive.d.ts","sources":["toolbar-title.directive.d.ts"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;;AACA;;;AACA","sourcesContent":["/**\n * Toolbar Title Directive\n * See: https://github.com/angular/angular/issues/11251\n */\nexport declare class ToolbarTitleDirective {\n}\n"]}

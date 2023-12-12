@@ -1,0 +1,127 @@
+import { ChangeDetectorRef, ElementRef, EventEmitter, OnDestroy, QueryList, Renderer2, TemplateRef } from '@angular/core';
+import { ControlValueAccessor } from '@angular/forms';
+import { SelectDropdownOption } from './select-dropdown-option.interface';
+import { SelectInputComponent } from './select-input.component';
+import { SelectOptionDirective } from './select-option.directive';
+declare const _InputMixinBase: any;
+export declare class SelectComponent extends _InputMixinBase implements ControlValueAccessor, OnDestroy {
+    private readonly _element;
+    private readonly _renderer;
+    private readonly _cdr;
+    id: string;
+    name: string;
+    label: string;
+    hint: string;
+    placeholder: string;
+    emptyPlaceholder: string;
+    filterEmptyPlaceholder: string;
+    filterPlaceholder: string;
+    allowAdditionsText: string;
+    groupBy: string;
+    selectCaret: string;
+    requiredIndicator: string | boolean;
+    options: SelectDropdownOption[];
+    identifier: string;
+    get minSelections(): number;
+    set minSelections(minSelections: number);
+    get autosizeMinWidth(): number | string;
+    set autosizeMinWidth(autosizeMinWidth: number | string);
+    get maxSelections(): number;
+    set maxSelections(maxSelections: number);
+    get autofocus(): boolean;
+    set autofocus(autofocus: boolean);
+    get autosize(): boolean;
+    set autosize(autosize: boolean);
+    get allowClear(): boolean;
+    set allowClear(allowClear: boolean);
+    get allowAdditions(): boolean;
+    set allowAdditions(allowAdditions: boolean);
+    get disableDropdown(): boolean;
+    set disableDropdown(disableDropdown: boolean);
+    get closeOnSelect(): boolean;
+    set closeOnSelect(closeOnSelect: boolean);
+    get closeOnBodyClick(): boolean;
+    set closeOnBodyClick(closeOnBodyClick: boolean);
+    get filterable(): boolean;
+    set filterable(filterable: boolean);
+    get required(): boolean;
+    set required(required: boolean);
+    get filterCaseSensitive(): boolean;
+    set filterCaseSensitive(filterCaseSensitive: boolean);
+    get tagging(): boolean;
+    set tagging(tagging: boolean);
+    get multiple(): boolean;
+    set multiple(multiple: boolean);
+    get disabled(): boolean;
+    set disabled(disabled: boolean);
+    change: EventEmitter<any[]>;
+    keyup: EventEmitter<{
+        event: KeyboardEvent;
+        value?: string;
+    }>;
+    toggle: EventEmitter<boolean>;
+    readonly inputComponent: SelectInputComponent;
+    /**
+     * Custom Template for groupBy
+     * Only works with groupBy on
+     *
+     * TemplateContext:
+     * - groupName: the name of the group (`option.value[this.groupBy]` is the value)
+     * - index, first, last, odd, even (ngFor properties)
+     */
+    groupByTemplate: TemplateRef<unknown>;
+    get optionTemplates(): QueryList<SelectOptionDirective>;
+    set optionTemplates(val: QueryList<SelectOptionDirective>);
+    get invalid(): boolean;
+    get requiredIndicatorView(): string;
+    get isSingleSelect(): boolean;
+    get hasSelections(): boolean;
+    get hasPlaceholder(): boolean;
+    get value(): any[];
+    set value(val: any[]);
+    get dropdownVisible(): boolean;
+    toggleListener?: () => void;
+    filterQuery: string;
+    focusIndex: number;
+    dropdownActive: boolean;
+    touched: boolean;
+    private _optionTemplates;
+    private _value;
+    private _minSelections?;
+    private _maxSelections?;
+    private _autofocus;
+    private _autosize;
+    private _allowClear;
+    private _allowAdditions;
+    private _disableDropdown;
+    private _closeOnSelect;
+    private _closeOnBodyClick;
+    private _filterable;
+    private _required;
+    private _filterCaseSensitive;
+    private _tagging;
+    private _multiple;
+    private _disabled;
+    private _autosizeMinWidth;
+    constructor(_element: ElementRef, _renderer: Renderer2, _cdr: ChangeDetectorRef);
+    ngOnDestroy(): void;
+    onDropdownSelection(selection: SelectDropdownOption): void;
+    onInputSelection(selections: any[]): void;
+    onFocus(): void;
+    onClear(): void;
+    onBodyClick(event: Event): void;
+    onClose(): void;
+    onToggle(): void;
+    toggleDropdown(state: boolean): void;
+    onKeyUp({ event, value }: {
+        event: KeyboardEvent;
+        value?: string;
+    }): void;
+    writeValue(val: any[]): void;
+    registerOnChange(fn: any): void;
+    registerOnTouched(fn: any): void;
+    private checkInvalidValue;
+    private onChangeCallback;
+    private onTouchedCallback;
+}
+export {};

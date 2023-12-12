@@ -1,0 +1,10 @@
+export declare class CardBodyDirective {
+}
+export declare class CardTagDirective {
+}
+export declare class CardTitleDirective {
+}
+export declare class CardSubtitleDirective {
+}
+export declare class CardSectionDirective {
+}

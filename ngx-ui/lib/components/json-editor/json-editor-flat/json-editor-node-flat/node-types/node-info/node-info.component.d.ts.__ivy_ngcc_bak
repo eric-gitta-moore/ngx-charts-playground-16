@@ -1,0 +1,12 @@
+import { EventEmitter } from '@angular/core';
+export declare class JsonEditorNodeInfoComponent {
+    nameEditable: boolean;
+    title: string;
+    propertyName: string;
+    description: string;
+    type: string;
+    examples: string[];
+    compressed: boolean;
+    propertyNameChange: EventEmitter<string>;
+    updatePropertyName(name: string): void;
+}

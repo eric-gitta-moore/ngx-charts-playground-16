@@ -1,0 +1,58 @@
+import { trigger } from '@angular/animations';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Subject, BehaviorSubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { fadeInAnimation } from '../../animations/fade-in.animation';
+import { slideDownFadeOutAnimation } from '../../animations/slide-down-fade-out.animation';
+import { HotkeysService } from './hotkeys.service';
+import { HotkeyStatus } from './hotkey-status.enum';
+export class HotkeysComponent {
+    constructor(_hotkeysService) {
+        this._hotkeysService = _hotkeysService;
+        this.hotkeys$ = new BehaviorSubject([]);
+        this.visible = false;
+        this._destroy = new Subject();
+    }
+    ngOnInit() {
+        this._hotkeysService.changeEvent.pipe(takeUntil(this._destroy)).subscribe(this.updateHotkeys.bind(this));
+        this.updateHotkeys(this._hotkeysService.hotkeys);
+    }
+    ngOnDestroy() {
+        this._destroy.next();
+        this._destroy.complete();
+    }
+    updateHotkeys(hotkeys) {
+        const hks = [];
+        for (const comb in hotkeys) {
+            for (const hotkey of hotkeys[comb]) {
+                if (hotkey.status === HotkeyStatus.Active && hotkey.visible) {
+                    hks.push(hotkey);
+                }
+            }
+        }
+        this.hotkeys$.next(hks);
+    }
+    show() {
+        this.visible = true;
+    }
+    hide() {
+        this.visible = false;
+    }
+}
+HotkeysComponent.decorators = [
+    { type: Component, args: [{
+                exportAs: 'ngxHotkeys',
+                selector: 'ngx-hotkeys',
+                template: "<div class=\"hotkeys-container\" *ngIf=\"(hotkeys$ | async).length > 0\">\n  <div class=\"hotkeys\" *ngIf=\"visible\" [@containerAnimationState]=\"'active'\">\n    <div *ngFor=\"let hotkey of hotkeys$ | async\" class=\"hotkey-row\">\n      {{ hotkey.description }}\n      <div class=\"combination\">\n        <span *ngFor=\"let key of hotkey.keys; let i = index\">\n          <span class=\"key\">{{ key }}</span> <span *ngIf=\"i < hotkey.keys.length - 1\"> + </span>\n        </span>\n      </div>\n    </div>\n  </div>\n  <div\n    class=\"close-icon icon icon-x-filled\"\n    *ngIf=\"visible\"\n    (click)=\"hide()\"\n    [@iconAnimationState]=\"'active'\"\n  ></div>\n  <div\n    class=\"hotkeys-icon icon icon-keyboard\"\n    *ngIf=\"!visible\"\n    (click)=\"show()\"\n    [@iconAnimationState]=\"'active'\"\n  ></div>\n</div>\n",
+                animations: [
+                    trigger('containerAnimationState', slideDownFadeOutAnimation()),
+                    trigger('iconAnimationState', fadeInAnimation())
+                ],
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                styles: [".hotkeys-container{position:fixed;bottom:20px;right:20px;z-index:2000}.hotkeys-container .icon{cursor:pointer;width:40px;height:40px;line-height:43px;text-align:center;border-radius:20px;position:absolute;bottom:0;right:0}.hotkeys-container .close-icon{font-size:40px;color:#909cb4;float:right;line-height:1em}.hotkeys-container .hotkeys-icon{color:#909cb4;font-size:14px;background-color:#000}.hotkeys-container .icon:hover{color:#cdd2dd}.hotkeys{background:#12141a;border:1px solid #5a6884;padding:15px;box-shadow:0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);color:#909cb4;font-size:14px;border-radius:2px;margin-bottom:45px}.hotkeys .hotkey-row{padding:10px 0;border-bottom:1px solid #455066}.hotkeys .hotkey-row:first-child{padding-top:0}.hotkeys .hotkey-row:last-child{border-bottom:none;padding-bottom:0}.hotkeys .hotkey-row .combination{float:right;margin-left:30px}.hotkeys .hotkey-row .combination .key{background:#5a6884;color:#12141a;padding:2px 7px;border-radius:2px}"]
+            },] }
+];
+HotkeysComponent.ctorParameters = () => [
+    { type: HotkeysService }
+];
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaG90a2V5cy5jb21wb25lbnQuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9jb21wb25lbnRzL2hvdGtleXMvaG90a2V5cy5jb21wb25lbnQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLE9BQU8sRUFBRSxNQUFNLHFCQUFxQixDQUFDO0FBQzlDLE9BQU8sRUFBRSxTQUFTLEVBQXFCLHVCQUF1QixFQUFFLE1BQU0sZUFBZSxDQUFDO0FBQ3RGLE9BQU8sRUFBRSxPQUFPLEVBQUUsZUFBZSxFQUFFLE1BQU0sTUFBTSxDQUFDO0FBQ2hELE9BQU8sRUFBRSxTQUFTLEVBQUUsTUFBTSxnQkFBZ0IsQ0FBQztBQUUzQyxPQUFPLEVBQUUsZUFBZSxFQUFFLE1BQU0sb0NBQW9DLENBQUM7QUFDckUsT0FBTyxFQUFFLHlCQUF5QixFQUFFLE1BQU0sZ0RBQWdELENBQUM7QUFDM0YsT0FBTyxFQUFFLGNBQWMsRUFBRSxNQUFNLG1CQUFtQixDQUFDO0FBRW5ELE9BQU8sRUFBRSxZQUFZLEVBQUUsTUFBTSxzQkFBc0IsQ0FBQztBQWFwRCxNQUFNLE9BQU8sZ0JBQWdCO0lBTTNCLFlBQTZCLGVBQStCO1FBQS9CLG9CQUFlLEdBQWYsZUFBZSxDQUFnQjtRQUxuRCxhQUFRLEdBQUcsSUFBSSxlQUFlLENBQVcsRUFBRSxDQUFDLENBQUM7UUFDdEQsWUFBTyxHQUFHLEtBQUssQ0FBQztRQUVDLGFBQVEsR0FBRyxJQUFJLE9BQU8sRUFBUSxDQUFDO0lBRWUsQ0FBQztJQUVoRSxRQUFRO1FBQ04sSUFBSSxDQUFDLGVBQWUsQ0FBQyxXQUFXLENBQUMsSUFBSSxDQUFDLFNBQVMsQ0FBQyxJQUFJLENBQUMsUUFBUSxDQUFDLENBQUMsQ0FBQyxTQUFTLENBQUMsSUFBSSxDQUFDLGFBQWEsQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFDLENBQUMsQ0FBQztRQUN6RyxJQUFJLENBQUMsYUFBYSxDQUFDLElBQUksQ0FBQyxlQUFlLENBQUMsT0FBTyxDQUFDLENBQUM7SUFDbkQsQ0FBQztJQUVELFdBQVc7UUFDVCxJQUFJLENBQUMsUUFBUSxDQUFDLElBQUksRUFBRSxDQUFDO1FBQ3JCLElBQUksQ0FBQyxRQUFRLENBQUMsUUFBUSxFQUFFLENBQUM7SUFDM0IsQ0FBQztJQUVELGFBQWEsQ0FBQyxPQUFzQztRQUNsRCxNQUFNLEdBQUcsR0FBYSxFQUFFLENBQUM7UUFFekIsS0FBSyxNQUFNLElBQUksSUFBSSxPQUFPLEVBQUU7WUFDMUIsS0FBSyxNQUFNLE1BQU0sSUFBSSxPQUFPLENBQUMsSUFBSSxDQUFDLEVBQUU7Z0JBQ2xDLElBQUksTUFBTSxDQUFDLE1BQU0sS0FBSyxZQUFZLENBQUMsTUFBTSxJQUFJLE1BQU0sQ0FBQyxPQUFPLEVBQUU7b0JBQzNELEdBQUcsQ0FBQyxJQUFJLENBQUMsTUFBTSxDQUFDLENBQUM7aUJBQ2xCO2FBQ0Y7U0FDRjtRQUVELElBQUksQ0FBQyxRQUFRLENBQUMsSUFBSSxDQUFDLEdBQUcsQ0FBQyxDQUFDO0lBQzFCLENBQUM7SUFFRCxJQUFJO1FBQ0YsSUFBSSxDQUFDLE9BQU8sR0FBRyxJQUFJLENBQUM7SUFDdEIsQ0FBQztJQUVELElBQUk7UUFDRixJQUFJLENBQUMsT0FBTyxHQUFHLEtBQUssQ0FBQztJQUN2QixDQUFDOzs7WUFqREYsU0FBUyxTQUFDO2dCQUNULFFBQVEsRUFBRSxZQUFZO2dCQUN0QixRQUFRLEVBQUUsYUFBYTtnQkFDdkIsODBCQUF1QztnQkFFdkMsVUFBVSxFQUFFO29CQUNWLE9BQU8sQ0FBQyx5QkFBeUIsRUFBRSx5QkFBeUIsRUFBRSxDQUFDO29CQUMvRCxPQUFPLENBQUMsb0JBQW9CLEVBQUUsZUFBZSxFQUFFLENBQUM7aUJBQ2pEO2dCQUNELGVBQWUsRUFBRSx1QkFBdUIsQ0FBQyxNQUFNOzthQUNoRDs7O1lBZFEsY0FBYyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IHRyaWdnZXIgfSBmcm9tICdAYW5ndWxhci9hbmltYXRpb25zJztcbmltcG9ydCB7IENvbXBvbmVudCwgT25EZXN0cm95LCBPbkluaXQsIENoYW5nZURldGVjdGlvblN0cmF0ZWd5IH0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5pbXBvcnQgeyBTdWJqZWN0LCBCZWhhdmlvclN1YmplY3QgfSBmcm9tICdyeGpzJztcbmltcG9ydCB7IHRha2VVbnRpbCB9IGZyb20gJ3J4anMvb3BlcmF0b3JzJztcblxuaW1wb3J0IHsgZmFkZUluQW5pbWF0aW9uIH0gZnJvbSAnLi4vLi4vYW5pbWF0aW9ucy9mYWRlLWluLmFuaW1hdGlvbic7XG5pbXBvcnQgeyBzbGlkZURvd25GYWRlT3V0QW5pbWF0aW9uIH0gZnJvbSAnLi4vLi4vYW5pbWF0aW9ucy9zbGlkZS1kb3duLWZhZGUtb3V0LmFuaW1hdGlvbic7XG5pbXBvcnQgeyBIb3RrZXlzU2VydmljZSB9IGZyb20gJy4vaG90a2V5cy5zZXJ2aWNlJztcbmltcG9ydCB7IEhvdGtleSB9IGZyb20gJy4vaG90a2V5LmludGVyZmFjZSc7XG5pbXBvcnQgeyBIb3RrZXlTdGF0dXMgfSBmcm9tICcuL2hvdGtleS1zdGF0dXMuZW51bSc7XG5cbkBDb21wb25lbnQoe1xuICBleHBvcnRBczogJ25neEhvdGtleXMnLFxuICBzZWxlY3RvcjogJ25neC1ob3RrZXlzJyxcbiAgdGVtcGxhdGVVcmw6ICcuL2hvdGtleXMuY29tcG9uZW50Lmh0bWwnLFxuICBzdHlsZVVybHM6IFsnLi9ob3RrZXlzLmNvbXBvbmVudC5zY3NzJ10sXG4gIGFuaW1hdGlvbnM6IFtcbiAgICB0cmlnZ2VyKCdjb250YWluZXJBbmltYXRpb25TdGF0ZScsIHNsaWRlRG93bkZhZGVPdXRBbmltYXRpb24oKSksXG4gICAgdHJpZ2dlcignaWNvbkFuaW1hdGlvblN0YXRlJywgZmFkZUluQW5pbWF0aW9uKCkpXG4gIF0sXG4gIGNoYW5nZURldGVjdGlvbjogQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3kuT25QdXNoXG59KVxuZXhwb3J0IGNsYXNzIEhvdGtleXNDb21wb25lbnQgaW1wbGVtZW50cyBPbkluaXQsIE9uRGVzdHJveSB7XG4gIHJlYWRvbmx5IGhvdGtleXMkID0gbmV3IEJlaGF2aW9yU3ViamVjdDxIb3RrZXlbXT4oW10pO1xuICB2aXNpYmxlID0gZmFsc2U7XG5cbiAgcHJpdmF0ZSByZWFkb25seSBfZGVzdHJveSA9IG5ldyBTdWJqZWN0PHZvaWQ+KCk7XG5cbiAgY29uc3RydWN0b3IocHJpdmF0ZSByZWFkb25seSBfaG90a2V5c1NlcnZpY2U6IEhvdGtleXNTZXJ2aWNlKSB7fVxuXG4gIG5nT25Jbml0KCk6IHZvaWQge1xuICAgIHRoaXMuX2hvdGtleXNTZXJ2aWNlLmNoYW5nZUV2ZW50LnBpcGUodGFrZVVudGlsKHRoaXMuX2Rlc3Ryb3kpKS5zdWJzY3JpYmUodGhpcy51cGRhdGVIb3RrZXlzLmJpbmQodGhpcykpO1xuICAgIHRoaXMudXBkYXRlSG90a2V5cyh0aGlzLl9ob3RrZXlzU2VydmljZS5ob3RrZXlzKTtcbiAgfVxuXG4gIG5nT25EZXN0cm95KCk6IHZvaWQge1xuICAgIHRoaXMuX2Rlc3Ryb3kubmV4dCgpO1xuICAgIHRoaXMuX2Rlc3Ryb3kuY29tcGxldGUoKTtcbiAgfVxuXG4gIHVwZGF0ZUhvdGtleXMoaG90a2V5czogeyBbY29tYm86IHN0cmluZ106IEhvdGtleVtdIH0pIHtcbiAgICBjb25zdCBoa3M6IEhvdGtleVtdID0gW107XG5cbiAgICBmb3IgKGNvbnN0IGNvbWIgaW4gaG90a2V5cykge1xuICAgICAgZm9yIChjb25zdCBob3RrZXkgb2YgaG90a2V5c1tjb21iXSkge1xuICAgICAgICBpZiAoaG90a2V5LnN0YXR1cyA9PT0gSG90a2V5U3RhdHVzLkFjdGl2ZSAmJiBob3RrZXkudmlzaWJsZSkge1xuICAgICAgICAgIGhrcy5wdXNoKGhvdGtleSk7XG4gICAgICAgIH1cbiAgICAgIH1cbiAgICB9XG5cbiAgICB0aGlzLmhvdGtleXMkLm5leHQoaGtzKTtcbiAgfVxuXG4gIHNob3coKSB7XG4gICAgdGhpcy52aXNpYmxlID0gdHJ1ZTtcbiAgfVxuXG4gIGhpZGUoKSB7XG4gICAgdGhpcy52aXNpYmxlID0gZmFsc2U7XG4gIH1cbn1cbiJdfQ==

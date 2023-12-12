@@ -1,0 +1,16 @@
+import { Directive, TemplateRef } from '@angular/core';
+export class SelectOptionTemplateDirective {
+    constructor(template) {
+        this.template = template;
+    }
+}
+SelectOptionTemplateDirective.decorators = [
+    { type: Directive, args: [{
+                exportAs: 'ngxSelectOptionTemplate',
+                selector: '[ngx-select-option-template]'
+            },] }
+];
+SelectOptionTemplateDirective.ctorParameters = () => [
+    { type: TemplateRef }
+];
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2VsZWN0LW9wdGlvbi10ZW1wbGF0ZS5kaXJlY3RpdmUuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9jb21wb25lbnRzL3NlbGVjdC9zZWxlY3Qtb3B0aW9uLXRlbXBsYXRlLmRpcmVjdGl2ZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQUUsU0FBUyxFQUFFLFdBQVcsRUFBRSxNQUFNLGVBQWUsQ0FBQztBQU12RCxNQUFNLE9BQU8sNkJBQTZCO0lBQ3hDLFlBQXFCLFFBQTBCO1FBQTFCLGFBQVEsR0FBUixRQUFRLENBQWtCO0lBQUcsQ0FBQzs7O1lBTHBELFNBQVMsU0FBQztnQkFDVCxRQUFRLEVBQUUseUJBQXlCO2dCQUNuQyxRQUFRLEVBQUUsOEJBQThCO2FBQ3pDOzs7WUFMbUIsV0FBVyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IERpcmVjdGl2ZSwgVGVtcGxhdGVSZWYgfSBmcm9tICdAYW5ndWxhci9jb3JlJztcblxuQERpcmVjdGl2ZSh7XG4gIGV4cG9ydEFzOiAnbmd4U2VsZWN0T3B0aW9uVGVtcGxhdGUnLFxuICBzZWxlY3RvcjogJ1tuZ3gtc2VsZWN0LW9wdGlvbi10ZW1wbGF0ZV0nXG59KVxuZXhwb3J0IGNsYXNzIFNlbGVjdE9wdGlvblRlbXBsYXRlRGlyZWN0aXZlIHtcbiAgY29uc3RydWN0b3IocmVhZG9ubHkgdGVtcGxhdGU6IFRlbXBsYXRlUmVmPGFueT4pIHt9XG59XG4iXX0=

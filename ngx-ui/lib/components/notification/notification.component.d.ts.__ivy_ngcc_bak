@@ -1,0 +1,29 @@
+import { EventEmitter, TemplateRef } from '@angular/core';
+import { NotificationStyleType } from './notification-style-type.enum';
+export declare class NotificationComponent {
+    cssClass: string;
+    title: string;
+    body: string;
+    template: TemplateRef<any>;
+    styleType: NotificationStyleType;
+    icon: string;
+    timeout: false | number;
+    get showClose(): boolean;
+    set showClose(showClose: boolean);
+    get pauseOnHover(): boolean;
+    set pauseOnHover(pauseOnHover: boolean);
+    get timestamp(): number;
+    set timestamp(timestamp: number);
+    close: EventEmitter<void>;
+    pause: EventEmitter<void>;
+    resume: EventEmitter<void>;
+    get cssClasses(): string;
+    get animationDuration(): string;
+    readonly NotificationStyleType: typeof NotificationStyleType;
+    timer: any;
+    private _showClose?;
+    private _pauseOnHover?;
+    private _timestamp?;
+    onMouseEnter(): void;
+    onMouseLeave(): void;
+}

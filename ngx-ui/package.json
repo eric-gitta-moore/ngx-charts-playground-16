@@ -1,0 +1,72 @@
+{
+  "name": "@swimlane/ngx-ui",
+  "version": "35.6.8",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swimlane/ngx-ui.git"
+  },
+  "author": "Swimlane",
+  "maintainers": [
+    "Marjan Georgiev",
+    "Jayson Harshbarger",
+    "Antonio Vazquez",
+    "Haemin Park"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "angular",
+    "components",
+    "directives"
+  ],
+  "bugs": {
+    "url": "https://github.com/swimlane/ngx-ui/issues"
+  },
+  "homepage": "https://github.com/swimlane/ngx-ui#readme",
+  "sideEffects": true,
+  "peerDependencies": {
+    "@angular/common": ">=10.0.0",
+    "@angular/core": ">=10.0.0",
+    "rxjs": "^6.5.0",
+    "@angular/cdk": ">=10.0.0",
+    "@angular/animations": ">=10.0.0",
+    "@angular/forms": ">=10.0.0",
+    "@angular/platform-browser": ">=10.0.0",
+    "@types/json-schema": "^7.0.3",
+    "codemirror": "5.42.0",
+    "core-js": "^2.5.0",
+    "moment": "^2.21.0",
+    "moment-timezone": "^0.5.23",
+    "zone.js": "^0.10.2",
+    "ajv": "^6.5.0",
+    "json-schema": "*",
+    "ngx-autosize-input": "^2.3.7",
+    "ng-in-viewport": "^6.1.5"
+  },
+  "dependencies": {
+    "mousetrap": "^1.6.2",
+    "@swimlane/ng2-file-upload": "1.1.0",
+    "normalize.css": "^5.0.0",
+    "tslib": "^2.0.0"
+  },
+  "main": "bundles/swimlane-ngx-ui.umd.js",
+  "module": "fesm2015/swimlane-ngx-ui.js",
+  "es2015": "fesm2015/swimlane-ngx-ui.js",
+  "esm2015": "esm2015/swimlane-ngx-ui.js",
+  "fesm2015": "fesm2015/swimlane-ngx-ui.js",
+  "typings": "swimlane-ngx-ui.d.ts",
+  "metadata": "swimlane-ngx-ui.metadata.json",
+  "__processed_by_ivy_ngcc__": {
+    "es2015": "13.1.0",
+    "esm2015": "13.1.0",
+    "fesm2015": "13.1.0",
+    "main": "13.1.0",
+    "module": "13.1.0",
+    "typings": "13.1.0"
+  },
+  "scripts": {
+    "prepublishOnly": "node --eval \"console.error('ERROR: Trying to publish a package that has been compiled by NGCC. This is not allowed.\\nPlease delete and rebuild the package, without compiling with NGCC, before attempting to publish.\\nNote that NGCC may have been run by importing this package into another project that is being built with Ivy enabled.\\n')\" && exit 1"
+  }
+}

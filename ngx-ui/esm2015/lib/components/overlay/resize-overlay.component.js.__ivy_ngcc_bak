@@ -1,0 +1,83 @@
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, ViewEncapsulation } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { map, startWith } from 'rxjs/operators';
+import { HotkeysService } from '../hotkeys/hotkeys.service';
+export class ResizeOverlayComponent {
+    constructor(breakpointObserver, hotkeysService, cdr) {
+        this.breakpointObserver = breakpointObserver;
+        this.hotkeysService = hotkeysService;
+        this.cdr = cdr;
+        this.combo = 'ctrl+shift+o';
+        this._disabled = localStorage.getItem('overlay-disabled') === 'true';
+        this._query = '(min-width: 959px) and (min-height: 650px)';
+        this._buildObservable();
+    }
+    get query() {
+        return this._query;
+    }
+    set query(value) {
+        this._query = value;
+        this._buildObservable();
+    }
+    set disabled(value) {
+        this._disabled = coerceBooleanProperty(value);
+        this.cdr.markForCheck();
+        localStorage.setItem('overlay-disabled', value.toString());
+    }
+    get disabled() {
+        return this._disabled;
+    }
+    get keys() {
+        if (this.hotkeysService.hotkeys && this.hotkeysService.hotkeys[this.combo]) {
+            return this.hotkeysService.hotkeys[this.combo][0].keys;
+        }
+        else {
+            return [];
+        }
+    }
+    ngOnInit() {
+        this.hotkeysService.add(this.combo, {
+            callback: this.toggle.bind(this),
+            description: 'Toggle browser size warning',
+            visible: false,
+            component: this
+        });
+    }
+    ngOnDestroy() {
+        this.hotkeysService.deregister(this.combo);
+    }
+    onClick(ev) {
+        if (ev.metaKey && ev.shiftKey) {
+            this.disabled = true;
+        }
+    }
+    toggle() {
+        this.disabled = !this.disabled;
+    }
+    _buildObservable() {
+        const query = Array.isArray(this.query) ? this.query : [this.query];
+        this.visible$ = this.breakpointObserver.observe(query).pipe(map((v) => !v.matches), startWith(!this.breakpointObserver.isMatched(this.query)));
+    }
+}
+ResizeOverlayComponent.decorators = [
+    { type: Component, args: [{
+                exportAs: 'ngxResizeOverlay',
+                selector: 'ngx-resize-overlay',
+                template: "<ngx-overlay\n  class=\"resize-overlay\"\n  [class.visible]=\"!disabled && (visible$ | async)\"\n  [visible]=\"!disabled && (visible$ | async)\"\n  [zIndex]=\"10000\"\n  (click)=\"onClick($event)\"\n>\n  <span class=\"resize-overlay-content\">\n    <h1><i class=\"ngx-icon ngx-browser-size icon-fx-dbl-sized\"></i></h1>\n    <h3>Your browser is too small</h3>\n    <ng-content></ng-content>\n    <br />\n    <button class=\"btn btn-bordered continue\" (click)=\"toggle()\">Continue Anyway</button>\n    <a class=\"browser-size-popover--container\">\n      <ngx-icon fontIcon=\"question\"></ngx-icon>\n\n      <div class=\"browser-size-popover\">\n        Bypass this warning\n        <span class=\"combination\">\n          <span *ngFor=\"let key of keys; let i = index\">\n            <span class=\"key\">{{ key }}</span> <span *ngIf=\"i < keys.length - 1\"> + </span>\n          </span>\n        </span>\n      </div>\n    </a>\n  </span>\n</ngx-overlay>\n",
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                encapsulation: ViewEncapsulation.None,
+                styles: [".resize-overlay .ngx-overlay{opacity:1!important;background-color:transparent;transition:background-color .5s}.resize-overlay .ngx-overlay .resize-overlay-content{display:flex;flex-direction:column;align-items:center;position:absolute;transform:translate(-50%,-50%);top:50%;left:50%;font-size:14px;line-height:17px;max-width:250px;color:#cdd2dd}.resize-overlay .ngx-overlay .resize-overlay-content h3{font-size:18px!important;line-height:28px;color:#fff}.resize-overlay .ngx-overlay .resize-overlay-content .ngx-icon.ngx-browser-size{color:#ff4514;font-size:46px;line-height:46px}.resize-overlay .ngx-overlay .resize-overlay-content .ngx-icon.ngx-question{color:#cdd2dd;font-size:1.5rem;line-height:1.5rem;margin-top:1rem}.resize-overlay .ngx-overlay .resize-overlay-content .browser-size-popover{opacity:0;text-align:center;margin-top:1rem;line-height:1.5rem;transition:opacity .5s;background:#afb7c8;color:#060709;box-shadow:0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);border-radius:0;font-size:13px;padding:7px}.resize-overlay .ngx-overlay .resize-overlay-content .browser-size-popover .combination{margin-left:5px}.resize-overlay .ngx-overlay .resize-overlay-content .browser-size-popover .combination .key{background-color:#d1d5e1;border-radius:3px;padding:3px;box-shadow:0 1px 5px 0 rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.12)}.resize-overlay .ngx-overlay .resize-overlay-content .browser-size-popover--container:hover .browser-size-popover{opacity:1}.resize-overlay .ngx-overlay .resize-overlay-content .continue{margin-top:20px;color:#fff;border-color:#fff}.resize-overlay.visible .ngx-overlay{background-color:rgba(0,0,0,.8)}"]
+            },] }
+];
+ResizeOverlayComponent.ctorParameters = () => [
+    { type: BreakpointObserver },
+    { type: HotkeysService },
+    { type: ChangeDetectorRef }
+];
+ResizeOverlayComponent.propDecorators = {
+    combo: [{ type: Input }],
+    query: [{ type: Input }],
+    disabled: [{ type: Input }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicmVzaXplLW92ZXJsYXkuY29tcG9uZW50LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvc3dpbWxhbmUvbmd4LXVpL3NyYy9saWIvY29tcG9uZW50cy9vdmVybGF5L3Jlc2l6ZS1vdmVybGF5LmNvbXBvbmVudC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQ0wsdUJBQXVCLEVBQ3ZCLGlCQUFpQixFQUNqQixTQUFTLEVBQ1QsS0FBSyxFQUdMLGlCQUFpQixFQUNsQixNQUFNLGVBQWUsQ0FBQztBQUN2QixPQUFPLEVBQUUsa0JBQWtCLEVBQUUsTUFBTSxxQkFBcUIsQ0FBQztBQUN6RCxPQUFPLEVBQUUscUJBQXFCLEVBQUUsTUFBTSx1QkFBdUIsQ0FBQztBQUM5RCxPQUFPLEVBQUUsR0FBRyxFQUFFLFNBQVMsRUFBRSxNQUFNLGdCQUFnQixDQUFDO0FBR2hELE9BQU8sRUFBRSxjQUFjLEVBQUUsTUFBTSw0QkFBNEIsQ0FBQztBQVU1RCxNQUFNLE9BQU8sc0JBQXNCO0lBcUNqQyxZQUNVLGtCQUFzQyxFQUN0QyxjQUE4QixFQUM5QixHQUFzQjtRQUZ0Qix1QkFBa0IsR0FBbEIsa0JBQWtCLENBQW9CO1FBQ3RDLG1CQUFjLEdBQWQsY0FBYyxDQUFnQjtRQUM5QixRQUFHLEdBQUgsR0FBRyxDQUFtQjtRQXZDdkIsVUFBSyxHQUFHLGNBQWMsQ0FBQztRQXlCeEIsY0FBUyxHQUFZLFlBQVksQ0FBQyxPQUFPLENBQUMsa0JBQWtCLENBQUMsS0FBSyxNQUFNLENBQUM7UUFDekUsV0FBTSxHQUFHLDRDQUE0QyxDQUFDO1FBZTVELElBQUksQ0FBQyxnQkFBZ0IsRUFBRSxDQUFDO0lBQzFCLENBQUM7SUF4Q0QsSUFDSSxLQUFLO1FBQ1AsT0FBTyxJQUFJLENBQUMsTUFBTSxDQUFDO0lBQ3JCLENBQUM7SUFFRCxJQUFJLEtBQUssQ0FBQyxLQUFhO1FBQ3JCLElBQUksQ0FBQyxNQUFNLEdBQUcsS0FBSyxDQUFDO1FBQ3BCLElBQUksQ0FBQyxnQkFBZ0IsRUFBRSxDQUFDO0lBQzFCLENBQUM7SUFFRCxJQUNJLFFBQVEsQ0FBQyxLQUFjO1FBQ3pCLElBQUksQ0FBQyxTQUFTLEdBQUcscUJBQXFCLENBQUMsS0FBSyxDQUFDLENBQUM7UUFDOUMsSUFBSSxDQUFDLEdBQUcsQ0FBQyxZQUFZLEVBQUUsQ0FBQztRQUN4QixZQUFZLENBQUMsT0FBTyxDQUFDLGtCQUFrQixFQUFFLEtBQUssQ0FBQyxRQUFRLEVBQUUsQ0FBQyxDQUFDO0lBQzdELENBQUM7SUFFRCxJQUFJLFFBQVE7UUFDVixPQUFPLElBQUksQ0FBQyxTQUFTLENBQUM7SUFDeEIsQ0FBQztJQU9ELElBQUksSUFBSTtRQUNOLElBQUksSUFBSSxDQUFDLGNBQWMsQ0FBQyxPQUFPLElBQUksSUFBSSxDQUFDLGNBQWMsQ0FBQyxPQUFPLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxFQUFFO1lBQzFFLE9BQU8sSUFBSSxDQUFDLGNBQWMsQ0FBQyxPQUFPLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLElBQUksQ0FBQztTQUN4RDthQUFNO1lBQ0wsT0FBTyxFQUFFLENBQUM7U0FDWDtJQUNILENBQUM7SUFVRCxRQUFRO1FBQ04sSUFBSSxDQUFDLGNBQWMsQ0FBQyxHQUFHLENBQUMsSUFBSSxDQUFDLEtBQUssRUFBRTtZQUNsQyxRQUFRLEVBQUUsSUFBSSxDQUFDLE1BQU0sQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFDO1lBQ2hDLFdBQVcsRUFBRSw2QkFBNkI7WUFDMUMsT0FBTyxFQUFFLEtBQUs7WUFDZCxTQUFTLEVBQUUsSUFBSTtTQUNoQixDQUFDLENBQUM7SUFDTCxDQUFDO0lBRUQsV0FBVztRQUNULElBQUksQ0FBQyxjQUFjLENBQUMsVUFBVSxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsQ0FBQztJQUM3QyxDQUFDO0lBRUQsT0FBTyxDQUFDLEVBQWlCO1FBQ3ZCLElBQUksRUFBRSxDQUFDLE9BQU8sSUFBSSxFQUFFLENBQUMsUUFBUSxFQUFFO1lBQzdCLElBQUksQ0FBQyxRQUFRLEdBQUcsSUFBSSxDQUFDO1NBQ3RCO0lBQ0gsQ0FBQztJQUVELE1BQU07UUFDSixJQUFJLENBQUMsUUFBUSxHQUFHLENBQUMsSUFBSSxDQUFDLFFBQVEsQ0FBQztJQUNqQyxDQUFDO0lBRU8sZ0JBQWdCO1FBQ3RCLE1BQU0sS0FBSyxHQUFHLEtBQUssQ0FBQyxPQUFPLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxDQUFDLENBQUMsQ0FBQyxJQUFJLENBQUMsS0FBSyxDQUFDLENBQUMsQ0FBQyxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsQ0FBQztRQUVwRSxJQUFJLENBQUMsUUFBUSxHQUFHLElBQUksQ0FBQyxrQkFBa0IsQ0FBQyxPQUFPLENBQUMsS0FBSyxDQUFDLENBQUMsSUFBSSxDQUN6RCxHQUFHLENBQUMsQ0FBQyxDQUFNLEVBQUUsRUFBRSxDQUFDLENBQUMsQ0FBQyxDQUFDLE9BQU8sQ0FBQyxFQUMzQixTQUFTLENBQUMsQ0FBQyxJQUFJLENBQUMsa0JBQWtCLENBQUMsU0FBUyxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsQ0FBQyxDQUMxRCxDQUFDO0lBQ0osQ0FBQzs7O1lBbkZGLFNBQVMsU0FBQztnQkFDVCxRQUFRLEVBQUUsa0JBQWtCO2dCQUM1QixRQUFRLEVBQUUsb0JBQW9CO2dCQUM5QiwwOEJBQThDO2dCQUU5QyxlQUFlLEVBQUUsdUJBQXVCLENBQUMsTUFBTTtnQkFDL0MsYUFBYSxFQUFFLGlCQUFpQixDQUFDLElBQUk7O2FBQ3RDOzs7WUFkUSxrQkFBa0I7WUFLbEIsY0FBYztZQVpyQixpQkFBaUI7OztvQkF1QmhCLEtBQUs7b0JBRUwsS0FBSzt1QkFVTCxLQUFLIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtcbiAgQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3ksXG4gIENoYW5nZURldGVjdG9yUmVmLFxuICBDb21wb25lbnQsXG4gIElucHV0LFxuICBPbkRlc3Ryb3ksXG4gIE9uSW5pdCxcbiAgVmlld0VuY2Fwc3VsYXRpb25cbn0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5pbXBvcnQgeyBCcmVha3BvaW50T2JzZXJ2ZXIgfSBmcm9tICdAYW5ndWxhci9jZGsvbGF5b3V0JztcbmltcG9ydCB7IGNvZXJjZUJvb2xlYW5Qcm9wZXJ0eSB9IGZyb20gJ0Bhbmd1bGFyL2Nkay9jb2VyY2lvbic7XG5pbXBvcnQgeyBtYXAsIHN0YXJ0V2l0aCB9IGZyb20gJ3J4anMvb3BlcmF0b3JzJztcbmltcG9ydCB7IE9ic2VydmFibGUgfSBmcm9tICdyeGpzJztcblxuaW1wb3J0IHsgSG90a2V5c1NlcnZpY2UgfSBmcm9tICcuLi9ob3RrZXlzL2hvdGtleXMuc2VydmljZSc7XG5cbkBDb21wb25lbnQoe1xuICBleHBvcnRBczogJ25neFJlc2l6ZU92ZXJsYXknLFxuICBzZWxlY3RvcjogJ25neC1yZXNpemUtb3ZlcmxheScsXG4gIHRlbXBsYXRlVXJsOiAnLi9yZXNpemUtb3ZlcmxheS5jb21wb25lbnQuaHRtbCcsXG4gIHN0eWxlVXJsczogWycuL3Jlc2l6ZS1vdmVybGF5LmNvbXBvbmVudC5zY3NzJ10sXG4gIGNoYW5nZURldGVjdGlvbjogQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3kuT25QdXNoLFxuICBlbmNhcHN1bGF0aW9uOiBWaWV3RW5jYXBzdWxhdGlvbi5Ob25lXG59KVxuZXhwb3J0IGNsYXNzIFJlc2l6ZU92ZXJsYXlDb21wb25lbnQgaW1wbGVtZW50cyBPbkluaXQsIE9uRGVzdHJveSB7XG4gIEBJbnB1dCgpIGNvbWJvID0gJ2N0cmwrc2hpZnQrbyc7XG5cbiAgQElucHV0KClcbiAgZ2V0IHF1ZXJ5KCk6IHN0cmluZyB7XG4gICAgcmV0dXJuIHRoaXMuX3F1ZXJ5O1xuICB9XG5cbiAgc2V0IHF1ZXJ5KHZhbHVlOiBzdHJpbmcpIHtcbiAgICB0aGlzLl9xdWVyeSA9IHZhbHVlO1xuICAgIHRoaXMuX2J1aWxkT2JzZXJ2YWJsZSgpO1xuICB9XG5cbiAgQElucHV0KClcbiAgc2V0IGRpc2FibGVkKHZhbHVlOiBib29sZWFuKSB7XG4gICAgdGhpcy5fZGlzYWJsZWQgPSBjb2VyY2VCb29sZWFuUHJvcGVydHkodmFsdWUpO1xuICAgIHRoaXMuY2RyLm1hcmtGb3JDaGVjaygpO1xuICAgIGxvY2FsU3RvcmFnZS5zZXRJdGVtKCdvdmVybGF5LWRpc2FibGVkJywgdmFsdWUudG9TdHJpbmcoKSk7XG4gIH1cblxuICBnZXQgZGlzYWJsZWQoKTogYm9vbGVhbiB7XG4gICAgcmV0dXJuIHRoaXMuX2Rpc2FibGVkO1xuICB9XG5cbiAgdmlzaWJsZSQ6IE9ic2VydmFibGU8Ym9vbGVhbj47XG5cbiAgcHJpdmF0ZSBfZGlzYWJsZWQ6IGJvb2xlYW4gPSBsb2NhbFN0b3JhZ2UuZ2V0SXRlbSgnb3ZlcmxheS1kaXNhYmxlZCcpID09PSAndHJ1ZSc7XG4gIHByaXZhdGUgX3F1ZXJ5ID0gJyhtaW4td2lkdGg6IDk1OXB4KSBhbmQgKG1pbi1oZWlnaHQ6IDY1MHB4KSc7XG5cbiAgZ2V0IGtleXMoKTogc3RyaW5nW10ge1xuICAgIGlmICh0aGlzLmhvdGtleXNTZXJ2aWNlLmhvdGtleXMgJiYgdGhpcy5ob3RrZXlzU2VydmljZS5ob3RrZXlzW3RoaXMuY29tYm9dKSB7XG4gICAgICByZXR1cm4gdGhpcy5ob3RrZXlzU2VydmljZS5ob3RrZXlzW3RoaXMuY29tYm9dWzBdLmtleXM7XG4gICAgfSBlbHNlIHtcbiAgICAgIHJldHVybiBbXTtcbiAgICB9XG4gIH1cblxuICBjb25zdHJ1Y3RvcihcbiAgICBwcml2YXRlIGJyZWFrcG9pbnRPYnNlcnZlcjogQnJlYWtwb2ludE9ic2VydmVyLFxuICAgIHByaXZhdGUgaG90a2V5c1NlcnZpY2U6IEhvdGtleXNTZXJ2aWNlLFxuICAgIHByaXZhdGUgY2RyOiBDaGFuZ2VEZXRlY3RvclJlZlxuICApIHtcbiAgICB0aGlzLl9idWlsZE9ic2VydmFibGUoKTtcbiAgfVxuXG4gIG5nT25Jbml0KCk6IHZvaWQge1xuICAgIHRoaXMuaG90a2V5c1NlcnZpY2UuYWRkKHRoaXMuY29tYm8sIHtcbiAgICAgIGNhbGxiYWNrOiB0aGlzLnRvZ2dsZS5iaW5kKHRoaXMpLFxuICAgICAgZGVzY3JpcHRpb246ICdUb2dnbGUgYnJvd3NlciBzaXplIHdhcm5pbmcnLFxuICAgICAgdmlzaWJsZTogZmFsc2UsXG4gICAgICBjb21wb25lbnQ6IHRoaXNcbiAgICB9KTtcbiAgfVxuXG4gIG5nT25EZXN0cm95KCk6IHZvaWQge1xuICAgIHRoaXMuaG90a2V5c1NlcnZpY2UuZGVyZWdpc3Rlcih0aGlzLmNvbWJvKTtcbiAgfVxuXG4gIG9uQ2xpY2soZXY6IEtleWJvYXJkRXZlbnQpOiB2b2lkIHtcbiAgICBpZiAoZXYubWV0YUtleSAmJiBldi5zaGlmdEtleSkge1xuICAgICAgdGhpcy5kaXNhYmxlZCA9IHRydWU7XG4gICAgfVxuICB9XG5cbiAgdG9nZ2xlKCk6IHZvaWQge1xuICAgIHRoaXMuZGlzYWJsZWQgPSAhdGhpcy5kaXNhYmxlZDtcbiAgfVxuXG4gIHByaXZhdGUgX2J1aWxkT2JzZXJ2YWJsZSgpOiB2b2lkIHtcbiAgICBjb25zdCBxdWVyeSA9IEFycmF5LmlzQXJyYXkodGhpcy5xdWVyeSkgPyB0aGlzLnF1ZXJ5IDogW3RoaXMucXVlcnldO1xuXG4gICAgdGhpcy52aXNpYmxlJCA9IHRoaXMuYnJlYWtwb2ludE9ic2VydmVyLm9ic2VydmUocXVlcnkpLnBpcGUoXG4gICAgICBtYXAoKHY6IGFueSkgPT4gIXYubWF0Y2hlcyksXG4gICAgICBzdGFydFdpdGgoIXRoaXMuYnJlYWtwb2ludE9ic2VydmVyLmlzTWF0Y2hlZCh0aGlzLnF1ZXJ5KSlcbiAgICApO1xuICB9XG59XG4iXX0=

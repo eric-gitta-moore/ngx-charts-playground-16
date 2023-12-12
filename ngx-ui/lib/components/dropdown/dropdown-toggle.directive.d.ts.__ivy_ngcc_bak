@@ -1,0 +1,15 @@
+import { ElementRef, EventEmitter } from '@angular/core';
+import { DropdownShowTypes } from './dropdown.show-types.enum';
+export declare class DropdownToggleDirective {
+    private readonly el;
+    showEvent: DropdownShowTypes;
+    get disabled(): boolean;
+    set disabled(disabled: boolean);
+    toggle: EventEmitter<Event>;
+    readonly element: HTMLElement;
+    private _disabled;
+    constructor(el: ElementRef<HTMLElement>);
+    onClick(event: Event): void;
+    onContextmenu(event: Event): void;
+    onDblclick(event: Event): void;
+}

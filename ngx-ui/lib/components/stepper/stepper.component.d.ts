@@ -1,0 +1,56 @@
+import { ChangeDetectorRef, EventEmitter, OnDestroy, QueryList } from '@angular/core';
+import { StepComponent } from './step.component';
+import { StepperAnimationStates } from './stepper-animation-states.enum';
+import { StepperBarAnimationStates } from './stepper-bar-animation-states.enum';
+import { StepperPosition } from './stepper-position.enum';
+import * as ɵngcc0 from '@angular/core';
+export declare class StepperComponent implements OnDestroy {
+    private readonly _cdr;
+    position: StepperPosition;
+    get completeIcon(): string;
+    set completeIcon(v: string);
+    get active(): number;
+    set active(v: number);
+    get readonly(): boolean;
+    set readonly(v: boolean);
+    get progress(): boolean;
+    set progress(v: boolean);
+    get large(): boolean;
+    set large(v: boolean);
+    get removeHighlight(): boolean;
+    set removeHighlight(v: boolean);
+    get trackBar(): boolean;
+    set trackBar(v: boolean);
+    activeChange: EventEmitter<number>;
+    get steps(): QueryList<StepComponent>;
+    set steps(v: QueryList<StepComponent>);
+    get completeSteps(): number;
+    get vertical(): boolean;
+    get barState(): StepperBarAnimationStates;
+    readonly StepperPosition: typeof StepperPosition;
+    private _active;
+    private _readonly;
+    private _trackBar;
+    private _progress;
+    private _large;
+    private _removeHighlight;
+    private _completeIcon;
+    private _steps?;
+    private _barState;
+    private readonly _destroy$;
+    constructor(_cdr: ChangeDetectorRef);
+    ngOnDestroy(): void;
+    previous(): void;
+    next(): void;
+    first(): void;
+    last(): void;
+    complete(): void;
+    onResize(): void;
+    onStepAnimationStart(i: number): void;
+    onStepAnimationEnd(i: number): void;
+    getStepState(i: number): StepperAnimationStates;
+    static ɵfac: ɵngcc0.ɵɵFactoryDeclaration<StepperComponent, never>;
+    static ɵcmp: ɵngcc0.ɵɵComponentDeclaration<StepperComponent, "ngx-stepper", ["ngxStepper"], { "position": "position"; "completeIcon": "completeIcon"; "active": "active"; "readonly": "readonly"; "progress": "progress"; "large": "large"; "removeHighlight": "removeHighlight"; "trackBar": "trackBar"; }, { "activeChange": "activeChange"; }, ["steps"], ["ngx-step"]>;
+}
+
+//# sourceMappingURL=stepper.component.d.ts.map

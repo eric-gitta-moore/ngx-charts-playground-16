@@ -1,0 +1,1 @@
+{"version":3,"file":"toolbar-content.directive.d.ts","sources":["toolbar-content.directive.d.ts"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;;AACA;;;AACA","sourcesContent":["/**\n * Toolbar Content Directive\n * See: https://github.com/angular/angular/issues/11251\n */\nexport declare class ToolbarContentDirective {\n}\n"]}

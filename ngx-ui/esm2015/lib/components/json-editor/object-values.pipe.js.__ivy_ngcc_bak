@@ -1,0 +1,10 @@
+import { Pipe } from '@angular/core';
+export class ObjectValuesPipe {
+    transform(object) {
+        return Object.values(object);
+    }
+}
+ObjectValuesPipe.decorators = [
+    { type: Pipe, args: [{ name: 'objectValues' },] }
+];
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoib2JqZWN0LXZhbHVlcy5waXBlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvc3dpbWxhbmUvbmd4LXVpL3NyYy9saWIvY29tcG9uZW50cy9qc29uLWVkaXRvci9vYmplY3QtdmFsdWVzLnBpcGUudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFpQixJQUFJLEVBQUUsTUFBTSxlQUFlLENBQUM7QUFHcEQsTUFBTSxPQUFPLGdCQUFnQjtJQUMzQixTQUFTLENBQUMsTUFBVztRQUNuQixPQUFPLE1BQU0sQ0FBQyxNQUFNLENBQUMsTUFBTSxDQUFDLENBQUM7SUFDL0IsQ0FBQzs7O1lBSkYsSUFBSSxTQUFDLEVBQUUsSUFBSSxFQUFFLGNBQWMsRUFBRSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IFBpcGVUcmFuc2Zvcm0sIFBpcGUgfSBmcm9tICdAYW5ndWxhci9jb3JlJztcblxuQFBpcGUoeyBuYW1lOiAnb2JqZWN0VmFsdWVzJyB9KVxuZXhwb3J0IGNsYXNzIE9iamVjdFZhbHVlc1BpcGUgaW1wbGVtZW50cyBQaXBlVHJhbnNmb3JtIHtcbiAgdHJhbnNmb3JtKG9iamVjdDogYW55KTogdW5rbm93bltdIHtcbiAgICByZXR1cm4gT2JqZWN0LnZhbHVlcyhvYmplY3QpO1xuICB9XG59XG4iXX0=

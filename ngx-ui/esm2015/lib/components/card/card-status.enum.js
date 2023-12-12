@@ -1,0 +1,7 @@
+export var CardStatus;
+(function (CardStatus) {
+    CardStatus["Success"] = "success";
+    CardStatus["Error"] = "error";
+    CardStatus["Disabled"] = "disabled";
+})(CardStatus || (CardStatus = {}));
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2FyZC1zdGF0dXMuZW51bS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL3N3aW1sYW5lL25neC11aS9zcmMvbGliL2NvbXBvbmVudHMvY2FyZC9jYXJkLXN0YXR1cy5lbnVtLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE1BQU0sQ0FBTixJQUFZLFVBSVg7QUFKRCxXQUFZLFVBQVU7SUFDcEIsaUNBQW1CLENBQUE7SUFDbkIsNkJBQWUsQ0FBQTtJQUNmLG1DQUFxQixDQUFBO0FBQ3ZCLENBQUMsRUFKVyxVQUFVLEtBQVYsVUFBVSxRQUlyQiIsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBlbnVtIENhcmRTdGF0dXMge1xuICBTdWNjZXNzID0gJ3N1Y2Nlc3MnLFxuICBFcnJvciA9ICdlcnJvcicsXG4gIERpc2FibGVkID0gJ2Rpc2FibGVkJ1xufVxuIl19

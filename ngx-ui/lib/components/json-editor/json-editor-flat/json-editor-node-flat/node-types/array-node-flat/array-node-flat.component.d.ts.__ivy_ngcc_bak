@@ -1,0 +1,25 @@
+import { TemplateRef, OnInit, SimpleChanges, OnChanges } from '@angular/core';
+import { ArrayNode } from '../../../../node-types/array-node.component';
+import { JSONEditorSchema, JsonSchemaDataType } from '../../../../json-editor.helper';
+import { DialogService } from '../../../../../dialog/dialog.service';
+import { PropertyConfigOptions, PropertyConfigComponent } from '../property-config/property-config.component';
+export declare class ArrayNodeFlatComponent extends ArrayNode implements OnInit, OnChanges {
+    private dialogService;
+    propertyConfigTmpl: TemplateRef<PropertyConfigComponent>;
+    level: number;
+    schemaBuilderMode: boolean;
+    formats: JsonSchemaDataType[];
+    compressed: boolean;
+    hideRoot: boolean;
+    isDuplicated: boolean;
+    indentationArray: number[];
+    constructor(dialogService: DialogService);
+    ngOnInit(): void;
+    ngOnChanges(changes: SimpleChanges): void;
+    onPropertyConfig(item: JSONEditorSchema, index: number): void;
+    updateSchema(options: PropertyConfigOptions): void;
+    addArrayItem(dataType?: JsonSchemaDataType): void;
+    deleteArrayItem(index: number): void;
+    addDefaultItemForSchemaBuilder(dataType: JsonSchemaDataType): void;
+    private removeDefaultItemForSchemaBuilder;
+}

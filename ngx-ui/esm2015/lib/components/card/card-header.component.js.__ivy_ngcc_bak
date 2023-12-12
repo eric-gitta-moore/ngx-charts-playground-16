@@ -1,0 +1,19 @@
+import { Component, ChangeDetectionStrategy, Input, ViewEncapsulation } from '@angular/core';
+export class CardHeaderComponent {
+}
+CardHeaderComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'ngx-card-header',
+                exportAs: 'ngxCardHeader',
+                template: "<ng-content select=\"ngx-card-avatar\"></ng-content>\n\n<div class=\"ngx-card-header--title-group\">\n  <ng-content></ng-content>\n  <ng-content select=\"ngx-card-tag\"></ng-content>\n  <ng-content select=\"ngx-card-title\"></ng-content>\n  <ng-content select=\"ngx-card-subtitle\"></ng-content>\n</div>\n\n<div *ngIf=\"label\" class=\"ngx-card-header--label\">{{label}}</div>\n\n",
+                host: {
+                    class: 'ngx-card-header'
+                },
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                encapsulation: ViewEncapsulation.None
+            },] }
+];
+CardHeaderComponent.propDecorators = {
+    label: [{ type: Input }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2FyZC1oZWFkZXIuY29tcG9uZW50LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvc3dpbWxhbmUvbmd4LXVpL3NyYy9saWIvY29tcG9uZW50cy9jYXJkL2NhcmQtaGVhZGVyLmNvbXBvbmVudC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQUUsU0FBUyxFQUFFLHVCQUF1QixFQUFFLEtBQUssRUFBRSxpQkFBaUIsRUFBRSxNQUFNLGVBQWUsQ0FBQztBQVk3RixNQUFNLE9BQU8sbUJBQW1COzs7WUFWL0IsU0FBUyxTQUFDO2dCQUNULFFBQVEsRUFBRSxpQkFBaUI7Z0JBQzNCLFFBQVEsRUFBRSxlQUFlO2dCQUN6Qix3WUFBMkM7Z0JBQzNDLElBQUksRUFBRTtvQkFDSixLQUFLLEVBQUUsaUJBQWlCO2lCQUN6QjtnQkFDRCxlQUFlLEVBQUUsdUJBQXVCLENBQUMsTUFBTTtnQkFDL0MsYUFBYSxFQUFFLGlCQUFpQixDQUFDLElBQUk7YUFDdEM7OztvQkFFRSxLQUFLIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgQ29tcG9uZW50LCBDaGFuZ2VEZXRlY3Rpb25TdHJhdGVneSwgSW5wdXQsIFZpZXdFbmNhcHN1bGF0aW9uIH0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5cbkBDb21wb25lbnQoe1xuICBzZWxlY3RvcjogJ25neC1jYXJkLWhlYWRlcicsXG4gIGV4cG9ydEFzOiAnbmd4Q2FyZEhlYWRlcicsXG4gIHRlbXBsYXRlVXJsOiAnLi9jYXJkLWhlYWRlci5jb21wb25lbnQuaHRtbCcsXG4gIGhvc3Q6IHtcbiAgICBjbGFzczogJ25neC1jYXJkLWhlYWRlcidcbiAgfSxcbiAgY2hhbmdlRGV0ZWN0aW9uOiBDaGFuZ2VEZXRlY3Rpb25TdHJhdGVneS5PblB1c2gsXG4gIGVuY2Fwc3VsYXRpb246IFZpZXdFbmNhcHN1bGF0aW9uLk5vbmVcbn0pXG5leHBvcnQgY2xhc3MgQ2FyZEhlYWRlckNvbXBvbmVudCB7XG4gIEBJbnB1dCgpIGxhYmVsOiBzdHJpbmc7IC8vIHVzZWQgZm9yIHZlcnRpY2FsIGNhcmRcbn1cbiJdfQ==

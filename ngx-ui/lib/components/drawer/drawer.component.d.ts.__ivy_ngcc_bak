@@ -1,0 +1,30 @@
+import { EventEmitter, OnDestroy, TemplateRef, OnInit } from '@angular/core';
+import { DrawerDirection } from './drawer-direction.enum';
+import { DrawerPosition } from './drawer-position.enum';
+export declare class DrawerComponent implements OnInit, OnDestroy {
+    cssClass: string;
+    direction: DrawerDirection;
+    template: TemplateRef<any>;
+    context: any;
+    isRoot: boolean;
+    get size(): number;
+    set size(val: number);
+    get zIndex(): number;
+    set zIndex(val: number);
+    get closeOnOutsideClick(): boolean;
+    set closeOnOutsideClick(val: boolean);
+    close: EventEmitter<boolean>;
+    get cssClasses(): string;
+    widthSize: string | number;
+    heightSize: string | number;
+    position: DrawerPosition;
+    private get isLeft();
+    private get isBottom();
+    private _size;
+    private _zIndex;
+    private _closeOnOutsideClick;
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    setDimensions(size: number): void;
+    onEscapeKey(): void;
+}

@@ -1,0 +1,131 @@
+import { Component, Input, Output, EventEmitter, NgZone, ViewEncapsulation, ContentChild, TemplateRef, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { FileUploader } from '@swimlane/ng2-file-upload';
+import { id } from '../../utils/id/id.util';
+import { FileButtonStyleType } from './file-button-style.type';
+export class FileButtonComponent {
+    constructor(_ngZone) {
+        this._ngZone = _ngZone;
+        this.id = `input-${id()}`;
+        this.styleType = FileButtonStyleType.standard;
+        this.afterAddingFile = new EventEmitter();
+        this.beforeUploadItem = new EventEmitter();
+        this.successItem = new EventEmitter();
+        this.errorItem = new EventEmitter();
+        this.progressAll = new EventEmitter();
+        this.FileButtonStyleType = FileButtonStyleType;
+        this.progress = 0;
+        this.fileName = '';
+        this.fileOverDropzone = false;
+        this._isItemSuccessful = false;
+        this._disabled = false;
+        this._multiple = false;
+    }
+    get disabled() {
+        return this._disabled;
+    }
+    set disabled(disabled) {
+        this._disabled = coerceBooleanProperty(disabled);
+    }
+    get multiple() {
+        return this._multiple;
+    }
+    set multiple(multiple) {
+        this._multiple = coerceBooleanProperty(multiple);
+    }
+    get isDisabled() {
+        return this.disabled || this.uploader.isUploading;
+    }
+    get cssClasses() {
+        return {
+            'ngx-file-button': true,
+            'standard-style': this.styleType === FileButtonStyleType.standard,
+            'progress-style': this.styleType === FileButtonStyleType.progress,
+            'show-progress': this.uploader && this.uploader.options.isHTML5,
+            success: this._isItemSuccessful,
+            active: this.uploader && this.uploader.isUploading
+        };
+    }
+    ngOnInit() {
+        if (!this.uploader && !this.options) {
+            throw new Error('You must pass either an uploader instance or options.');
+        }
+        // if options were passed, init a new uploader
+        if (!this.uploader && this.options) {
+            this.uploader = new FileUploader(this.options);
+        }
+        // always remove after upload for this case
+        this.uploader.options.removeAfterUpload = true;
+        this.uploader.onAfterAddingFile = this.onAfterAddingFile.bind(this);
+        this.uploader.onBeforeUploadItem = this.onBeforeUploadItem.bind(this);
+        this.uploader.onProgressAll = this.onProgressAll.bind(this);
+        this.uploader.onSuccessItem = this.onSuccessItem.bind(this);
+        this.uploader.onErrorItem = this.onErrorItem.bind(this);
+    }
+    onAfterAddingFile(fileItem) {
+        this._ngZone.run(() => {
+            this.fileName = fileItem.file.name;
+            this.afterAddingFile.emit({ fileItem });
+        });
+    }
+    onBeforeUploadItem(fileItem) {
+        this._ngZone.run(() => {
+            this.beforeUploadItem.emit({ fileItem });
+        });
+    }
+    onErrorItem(response, status, headers) {
+        this.errorItem.emit({ response, status, headers });
+    }
+    onProgressAll(progress) {
+        this._ngZone.run(() => {
+            this.progress = progress;
+            this.progressAll.emit({ progress });
+        });
+    }
+    onSuccessItem(item, response, status, headers) {
+        this._ngZone.run(() => {
+            this._isItemSuccessful = true;
+            setTimeout(() => {
+                this.fileName = '';
+                this._isItemSuccessful = false;
+            }, 2500);
+            this.successItem.emit({ item, response, status, headers });
+        });
+    }
+    fileOverBase(event) {
+        this.fileOverDropzone = event;
+    }
+    clearInput() {
+        this.fileInput.nativeElement.value = '';
+    }
+}
+FileButtonComponent.decorators = [
+    { type: Component, args: [{
+                exportAs: 'ngxFileButton',
+                selector: 'ngx-file-button',
+                template: "<div\n  *ngIf=\"dropzoneTemplate\"\n  ng2FileDrop\n  [class.file-over]=\"fileOverDropzone\"\n  [uploader]=\"uploader\"\n  (fileOver)=\"fileOverBase($event)\"\n>\n  <ng-template ng2FileDrop [ngTemplateOutlet]=\"dropzoneTemplate\" [ngTemplateOutletContext]=\"{ $implicit: uploader }\">\n  </ng-template>\n</div>\n\n<div *ngIf=\"!dropzoneTemplate\" [ngClass]=\"cssClasses\">\n  <div class=\"ngx-file-button-button\">\n    <input\n      #fileInput\n      ng2FileSelect\n      type=\"file\"\n      class=\"ngx-file-button-input\"\n      [disabled]=\"isDisabled\"\n      [multiple]=\"multiple\"\n      [id]=\"id + '-input'\"\n      [name]=\"name + '-input'\"\n      [uploader]=\"uploader\"\n    />\n    <label\n      [class.disabled]=\"isDisabled\"\n      [class.btn]=\"styleType === FileButtonStyleType.standard\"\n      [attr.for]=\"id + '-input'\"\n      class=\"ngx-file-button-label\"\n    >\n      <ng-content></ng-content>\n    </label>\n    <span class=\"ngx-file-button-text\" *ngIf=\"fileName\">\n      {{ fileName }}\n    </span>\n  </div>\n  <div class=\"ngx-file-button-fill\" [style.width.%]=\"progress\"></div>\n  <span class=\"icon-check\"></span>\n</div>\n",
+                encapsulation: ViewEncapsulation.None,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                styles: ["button{box-sizing:border-box;color:inherit;cursor:pointer;display:inline-block;position:relative;text-align:center;text-decoration:none;-webkit-user-select:none;-moz-user-select:none;user-select:none;font:inherit;background:transparent;border:none;text-shadow:1px 1px rgba(0,0,0,.07)}button:active,button:focus{outline:none}.btn{box-sizing:border-box;color:#fff;display:inline-block;padding:.35em .55em;position:relative;text-align:center;text-decoration:none;-webkit-user-select:none;-moz-user-select:none;user-select:none;font:inherit;font-size:.9em;font-weight:700;outline:none;line-height:1em;background:#455066;border:1px solid transparent;border-radius:2px;box-shadow:0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);transition:background-color .2s,box-shadow .2s}.btn .icon,.btn .ngx-icon{font-weight:400;vertical-align:middle;line-height:1em;font-size:.9em}.btn .icon:before,.btn .ngx-icon:before{font-weight:inherit}.btn .icon.has-text,.btn .icon.has-text-right,.btn .ngx-icon.has-text,.btn .ngx-icon.has-text-right{margin-right:.2em}.btn .icon.has-text-left,.btn .ngx-icon.has-text-left{margin-left:.2em}.btn::-moz-focus-inner{border:0;padding:0}.btn:focus{outline:none;box-shadow:0 1px 8px 0 rgba(0,0,0,.2),0 3px 4px 0 rgba(0,0,0,.14),0 3px 3px -2px rgba(0,0,0,.12)}.btn:active:hover:focus:not(.disabled),.btn:active:hover:focus:not([disabled]){cursor:pointer;background:#313847}.btn:active:hover:focus:not(.disabled).btn-primary,.btn:active:hover:focus:not([disabled]).btn-primary{background-color:#1483ff}.btn:active:hover:focus:not(.disabled).btn-warning,.btn:active:hover:focus:not([disabled]).btn-warning{background-color:#ffa814}.btn:active:hover:focus:not(.disabled).btn-danger,.btn:active:hover:focus:not([disabled]).btn-danger{background-color:#ff4514}.btn:active:hover:focus:not(.disabled).btn-link,.btn:active:hover:focus:not([disabled]).btn-link{background-color:transparent}.btn:active:hover:focus:not(.disabled).btn-bordered,.btn:active:hover:focus:not([disabled]).btn-bordered{border-color:#94c6ff;color:#94c6ff}.btn:active,.btn:focus,.btn:hover{text-decoration:none}.btn.small{font-size:.6em}.btn.large{font-size:1.3em}.btn.btn-primary{background-color:#479eff}.btn.btn-primary.btn-primary-gradient{background:linear-gradient(125.43deg,#54cdfc 10.86%,#479eff 49.11%)}.btn.btn-warning{background-color:#ffbb47;color:#07080b}.btn.btn-danger{background-color:#ff6d47}.btn.btn-link{background-color:transparent;box-shadow:none}.btn.btn-bordered,.btn.btn-primary.btn-bordered{border:1px solid #479eff;color:#479eff;background-color:transparent;box-shadow:none}.btn.btn-bordered.disabled-button,.btn.btn-primary.btn-bordered.disabled-button{opacity:.5}.btn.btn-bordered.disabled-button .button,.btn.btn-primary.btn-bordered.disabled-button .button{opacity:1}.btn.btn-default.btn-bordered{border:1px solid #fff;color:#fff;background-color:transparent;box-shadow:none}.btn.btn-default.btn-bordered:hover{border-color:#1483ff!important;color:#1483ff!important}.btn.btn-default.btn-bordered.disabled-button{opacity:.5}.btn.btn-default.btn-bordered.disabled-button .button{opacity:1}.btn.btn-file{cursor:pointer;padding:0}.btn.btn-file label{display:block;cursor:pointer;padding:.35em .75em}.btn.btn-file[disabled] label{cursor:not-allowed}.btn.btn-file input[type=file]{pointer-events:none;position:absolute;left:-9999px}.ngx-file-button{display:inline-block;box-sizing:border-box;position:relative}.ngx-file-button .ngx-file-button-input{position:absolute;left:-9999px}.ngx-file-button .ngx-file-button-label{cursor:pointer}.ngx-file-button.standard-style .icon-check{display:none}.ngx-file-button.standard-style .ngx-file-button-text{font-size:.9rem;margin-left:8px;color:#696969}.ngx-file-button.progress-style{min-width:150px;text-align:center;transition:all .3s ease .3s;max-height:50px;overflow:hidden}.ngx-file-button.progress-style .ngx-file-button-button{width:100%;background:#455066;border:none;border-radius:50px;padding:5px 0;transition:all .3s ease;position:relative;margin:0}.ngx-file-button.progress-style .ngx-file-button-button:focus:not(.disabled),.ngx-file-button.progress-style .ngx-file-button-button:focus:not([disabled]),.ngx-file-button.progress-style .ngx-file-button-button:hover:not(.disabled),.ngx-file-button.progress-style .ngx-file-button-button:hover:not([disabled]){background:#313847}.ngx-file-button.progress-style .ngx-file-button-button .ngx-file-button-label{color:#cfcfcf;font-size:18px;font-weight:400;line-height:40px;max-height:40px;transition:all .3s ease;cursor:pointer;display:block}.ngx-file-button.progress-style .ngx-file-button-button.disabled .ngx-file-button-label,.ngx-file-button.progress-style .ngx-file-button-button[disabled] .ngx-file-button-label{cursor:not-allowed}.ngx-file-button.progress-style .ngx-file-button-button .ngx-file-button-text{display:none}.ngx-file-button.progress-style .ngx-file-button-fill{position:absolute;top:0;left:0;bottom:0;right:0;width:0;background:#479eff;border-radius:50px;display:none}.ngx-file-button.progress-style .icon-check{font-size:25px;color:#cfcfcf;position:absolute;top:0;left:0;right:0;bottom:0;line-height:50px;transform:scale(0)}.ngx-file-button.progress-style.active{padding:0}.ngx-file-button.progress-style.active .ngx-file-button-button{background:#696969;margin-top:25px}.ngx-file-button.progress-style.active .ngx-file-button-fill{display:block;margin-top:25px;transition:all .1s ease .1s}.ngx-file-button.progress-style.active .ngx-file-button-label{display:none}.ngx-file-button.progress-style.success .ngx-file-button-button{margin:0;padding:25px;width:50px;background:#479eff}.ngx-file-button.progress-style.success .ngx-file-button-fill,.ngx-file-button.progress-style.success .ngx-file-button-label{display:none}.ngx-file-button.progress-style.success .icon-check{transform:scale(1);transition:all .3s ease .3s}"]
+            },] }
+];
+FileButtonComponent.ctorParameters = () => [
+    { type: NgZone }
+];
+FileButtonComponent.propDecorators = {
+    id: [{ type: Input }],
+    name: [{ type: Input }],
+    styleType: [{ type: Input }],
+    uploader: [{ type: Input }],
+    options: [{ type: Input }],
+    disabled: [{ type: Input }],
+    multiple: [{ type: Input }],
+    afterAddingFile: [{ type: Output }],
+    beforeUploadItem: [{ type: Output }],
+    successItem: [{ type: Output }],
+    errorItem: [{ type: Output }],
+    progressAll: [{ type: Output }],
+    dropzoneTemplate: [{ type: ContentChild, args: ['dropzoneTemplate',] }],
+    fileInput: [{ type: ViewChild, args: ['fileInput',] }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZmlsZS1idXR0b24uY29tcG9uZW50LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvc3dpbWxhbmUvbmd4LXVpL3NyYy9saWIvY29tcG9uZW50cy9idXR0b24vZmlsZS1idXR0b24uY29tcG9uZW50LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFDTCxTQUFTLEVBQ1QsS0FBSyxFQUNMLE1BQU0sRUFDTixZQUFZLEVBQ1osTUFBTSxFQUNOLGlCQUFpQixFQUVqQixZQUFZLEVBQ1osV0FBVyxFQUNYLFNBQVMsRUFDVCxVQUFVLEVBQ1YsdUJBQXVCLEVBQ3hCLE1BQU0sZUFBZSxDQUFDO0FBQ3ZCLE9BQU8sRUFBRSxxQkFBcUIsRUFBRSxNQUFNLHVCQUF1QixDQUFDO0FBQzlELE9BQU8sRUFBdUIsWUFBWSxFQUFZLE1BQU0sMkJBQTJCLENBQUM7QUFDeEYsT0FBTyxFQUFFLEVBQUUsRUFBRSxNQUFNLHdCQUF3QixDQUFDO0FBQzVDLE9BQU8sRUFBRSxtQkFBbUIsRUFBRSxNQUFNLDBCQUEwQixDQUFDO0FBVS9ELE1BQU0sT0FBTyxtQkFBbUI7SUEyRDlCLFlBQTRCLE9BQWU7UUFBZixZQUFPLEdBQVAsT0FBTyxDQUFRO1FBMURsQyxPQUFFLEdBQUcsU0FBUyxFQUFFLEVBQUUsRUFBRSxDQUFDO1FBRXJCLGNBQVMsR0FBRyxtQkFBbUIsQ0FBQyxRQUFRLENBQUM7UUFvQnhDLG9CQUFlLEdBQUcsSUFBSSxZQUFZLEVBQTBCLENBQUM7UUFDN0QscUJBQWdCLEdBQUcsSUFBSSxZQUFZLEVBQTBCLENBQUM7UUFDOUQsZ0JBQVcsR0FBRyxJQUFJLFlBQVksRUFBaUUsQ0FBQztRQUNoRyxjQUFTLEdBQUcsSUFBSSxZQUFZLEVBQXNELENBQUM7UUFDbkYsZ0JBQVcsR0FBRyxJQUFJLFlBQVksRUFBd0IsQ0FBQztRQXVCeEQsd0JBQW1CLEdBQUcsbUJBQW1CLENBQUM7UUFDbkQsYUFBUSxH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RCxDQUFDLENBQUMsQ0FBQztJQUNMLENBQUM7SUFFRCxZQUFZLENBQUMsS0FBYztRQUN6QixJQUFJLENBQUMsZ0JBQWdCLEdBQUcsS0FBSyxDQUFDO0lBQ2hDLENBQUM7SUFFRCxVQUFVO1FBQ1IsSUFBSSxDQUFDLFNBQVMsQ0FBQyxhQUFhLENBQUMsS0FBSyxHQUFHLEVBQUUsQ0FBQztJQUMxQyxDQUFDOzs7WUFwSUYsU0FBUyxTQUFDO2dCQUNULFFBQVEsRUFBRSxlQUFlO2dCQUN6QixRQUFRLEVBQUUsaUJBQWlCO2dCQUMzQiwycENBQTJDO2dCQUUzQyxhQUFhLEVBQUUsaUJBQWlCLENBQUMsSUFBSTtnQkFDckMsZUFBZSxFQUFFLHVCQUF1QixDQUFDLE1BQU07O2FBQ2hEOzs7WUFyQkMsTUFBTTs7O2lCQXVCTCxLQUFLO21CQUNMLEtBQUs7d0JBQ0wsS0FBSzt1QkFDTCxLQUFLO3NCQUNMLEtBQUs7dUJBRUwsS0FBSzt1QkFRTCxLQUFLOzhCQVFMLE1BQU07K0JBQ04sTUFBTTswQkFDTixNQUFNO3dCQUNOLE1BQU07MEJBQ04sTUFBTTsrQkFFTixZQUFZLFNBQUMsa0JBQWtCO3dCQUcvQixTQUFTLFNBQUMsV0FBVyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7XG4gIENvbXBvbmVudCxcbiAgSW5wdXQsXG4gIE91dHB1dCxcbiAgRXZlbnRFbWl0dGVyLFxuICBOZ1pvbmUsXG4gIFZpZXdFbmNhcHN1bGF0aW9uLFxuICBPbkluaXQsXG4gIENvbnRlbnRDaGlsZCxcbiAgVGVtcGxhdGVSZWYsXG4gIFZpZXdDaGlsZCxcbiAgRWxlbWVudFJlZixcbiAgQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3lcbn0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5pbXBvcnQgeyBjb2VyY2VCb29sZWFuUHJvcGVydHkgfSBmcm9tICdAYW5ndWxhci9jZGsvY29lcmNpb24nO1xuaW1wb3J0IHsgRmlsZVVwbG9hZGVyT3B0aW9ucywgRmlsZVVwbG9hZGVyLCBGaWxlSXRlbSB9IGZyb20gJ0Bzd2ltbGFuZS9uZzItZmlsZS11cGxvYWQnO1xuaW1wb3J0IHsgaWQgfSBmcm9tICcuLi8uLi91dGlscy9pZC9pZC51dGlsJztcbmltcG9ydCB7IEZpbGVCdXR0b25TdHlsZVR5cGUgfSBmcm9tICcuL2ZpbGUtYnV0dG9uLXN0eWxlLnR5cGUnO1xuXG5AQ29tcG9uZW50KHtcbiAgZXhwb3J0QXM6ICduZ3hGaWxlQnV0dG9uJyxcbiAgc2VsZWN0b3I6ICduZ3gtZmlsZS1idXR0b24nLFxuICB0ZW1wbGF0ZVVybDogJy4vZmlsZS1idXR0b24uY29tcG9uZW50Lmh0bWwnLFxuICBzdHlsZVVybHM6IFsnLi9maWxlLWJ1dHRvbi5jb21wb25lbnQuc2NzcyddLFxuICBlbmNhcHN1bGF0aW9uOiBWaWV3RW5jYXBzdWxhdGlvbi5Ob25lLFxuICBjaGFuZ2VEZXRlY3Rpb246IENoYW5nZURldGVjdGlvblN0cmF0ZWd5Lk9uUHVzaFxufSlcbmV4cG9ydCBjbGFzcyBGaWxlQnV0dG9uQ29tcG9uZW50IGltcGxlbWVudHMgT25Jbml0IHtcbiAgQElucHV0KCkgaWQgPSBgaW5wdXQtJHtpZCgpfWA7XG4gIEBJbnB1dCgpIG5hbWU6IHN0cmluZztcbiAgQElucHV0KCkgc3R5bGVUeXBlID0gRmlsZUJ1dHRvblN0eWxlVHlwZS5zdGFuZGFyZDtcbiAgQElucHV0KCkgdXBsb2FkZXI6IEZpbGVVcGxvYWRlcjtcbiAgQElucHV0KCkgb3B0aW9uczogRmlsZVVwbG9hZGVyT3B0aW9ucztcblxuICBASW5wdXQoKVxuICBnZXQgZGlzYWJsZWQoKSB7XG4gICAgcmV0dXJuIHRoaXMuX2Rpc2FibGVkO1xuICB9XG4gIHNldCBkaXNhYmxlZChkaXNhYmxlZCkge1xuICAgIHRoaXMuX2Rpc2FibGVkID0gY29lcmNlQm9vbGVhblByb3BlcnR5KGRpc2FibGVkKTtcbiAgfVxuXG4gIEBJbnB1dCgpXG4gIGdldCBtdWx0aXBsZSgpIHtcbiAgICByZXR1cm4gdGhpcy5fbXVsdGlwbGU7XG4gIH1cbiAgc2V0IG11bHRpcGxlKG11bHRpcGxlKSB7XG4gICAgdGhpcy5fbXVsdGlwbGUgPSBjb2VyY2VCb29sZWFuUHJvcGVydHkobXVsdGlwbGUpO1xuICB9XG5cbiAgQE91dHB1dCgpIGFmdGVyQWRkaW5nRmlsZSA9IG5ldyBFdmVudEVtaXR0ZXI8eyBmaWxlSXRlbTogRmlsZUl0ZW0gfT4oKTtcbiAgQE91dHB1dCgpIGJlZm9yZVVwbG9hZEl0ZW0gPSBuZXcgRXZlbnRFbWl0dGVyPHsgZmlsZUl0ZW06IEZpbGVJdGVtIH0+KCk7XG4gIEBPdXRwdXQoKSBzdWNjZXNzSXRlbSA9IG5ldyBFdmVudEVtaXR0ZXI8eyBpdGVtOiBhbnk7IHJlc3BvbnNlOiBzdHJpbmc7IHN0YXR1czogbnVtYmVyOyBoZWFkZXJzOiBhbnkgfT4oKTtcbiAgQE91dHB1dCgpIGVycm9ySXRlbSA9IG5ldyBFdmVudEVtaXR0ZXI8eyByZXNwb25zZTogc3RyaW5nOyBzdGF0dXM6IG51bWJlcjsgaGVhZGVyczogYW55IH0+KCk7XG4gIEBPdXRwdXQoKSBwcm9ncmVzc0FsbCA9IG5ldyBFdmVudEVtaXR0ZXI8eyBwcm9ncmVzczogbnVtYmVyIH0+KCk7XG5cbiAgQENvbnRlbnRDaGlsZCgnZHJvcHpvbmVUZW1wbGF0ZScpXG4gIHJlYWRvbmx5IGRyb3B6b25lVGVtcGxhdGU6IFRlbXBsYXRlUmVmPGFueT47XG5cbiAgQFZpZXdDaGlsZCgnZmlsZUlucHV0JylcbiAgcmVhZG9ubHkgZmlsZUlucHV0PzogRWxlbWVudFJlZjxIVE1MSW5wdXRFbGVtZW50PjtcblxuICBnZXQgaXNEaXNhYmxlZCgpOiBib29sZWFuIHtcbiAgICByZXR1cm4gdGhpcy5kaXNhYmxlZCB8fCB0aGlzLnVwbG9hZGVyLmlzVXBsb2FkaW5nO1xuICB9XG5cbiAgZ2V0IGNzc0NsYXNzZXMoKTogYW55IHtcbiAgICByZXR1cm4ge1xuICAgICAgJ25neC1maWxlLWJ1dHRvbic6IHRydWUsXG4gICAgICAnc3RhbmRhcmQtc3R5bGUnOiB0aGlzLnN0eWxlVHlwZSA9PT0gRmlsZUJ1dHRvblN0eWxlVHlwZS5zdGFuZGFyZCxcbiAgICAgICdwcm9ncmVzcy1zdHlsZSc6IHRoaXMuc3R5bGVUeXBlID09PSBGaWxlQnV0dG9uU3R5bGVUeXBlLnByb2dyZXNzLFxuICAgICAgJ3Nob3ctcHJvZ3Jlc3MnOiB0aGlzLnVwbG9hZGVyICYmIHRoaXMudXBsb2FkZXIub3B0aW9ucy5pc0hUTUw1LFxuICAgICAgc3VjY2VzczogdGhpcy5faXNJdGVtU3VjY2Vzc2Z1bCxcbiAgICAgIGFjdGl2ZTogdGhpcy51cGxvYWRlciAmJiB0aGlzLnVwbG9hZGVyLmlzVXBsb2FkaW5nXG4gICAgfTtcbiAgfVxuXG4gIHJlYWRvbmx5IEZpbGVCdXR0b25TdHlsZVR5cGUgPSBGaWxlQnV0dG9uU3R5bGVUeXBlO1xuICBwcm9ncmVzcyA9IDA7XG4gIGZpbGVOYW1lID0gJyc7XG4gIGZpbGVPdmVyRHJvcHpvbmUgPSBmYWxzZTtcblxuICBwcml2YXRlIF9pc0l0ZW1TdWNjZXNzZnVsID0gZmFsc2U7XG4gIHByaXZhdGUgX2Rpc2FibGVkID0gZmFsc2U7XG4gIHByaXZhdGUgX211bHRpcGxlID0gZmFsc2U7XG5cbiAgY29uc3RydWN0b3IocHVibGljIHJlYWRvbmx5IF9uZ1pvbmU6IE5nWm9uZSkge31cblxuICBuZ09uSW5pdCgpOiB2b2lkIHtcbiAgICBpZiAoIXRoaXMudXBsb2FkZXIgJiYgIXRoaXMub3B0aW9ucykge1xuICAgICAgdGhyb3cgbmV3IEVycm9yKCdZb3UgbXVzdCBwYXNzIGVpdGhlciBhbiB1cGxvYWRlciBpbnN0YW5jZSBvciBvcHRpb25zLicpO1xuICAgIH1cblxuICAgIC8vIGlmIG9wdGlvbnMgd2VyZSBwYXNzZWQsIGluaXQgYSBuZXcgdXBsb2FkZXJcbiAgICBpZiAoIXRoaXMudXBsb2FkZXIgJiYgdGhpcy5vcHRpb25zKSB7XG4gICAgICB0aGlzLnVwbG9hZGVyID0gbmV3IEZpbGVVcGxvYWRlcih0aGlzLm9wdGlvbnMpO1xuICAgIH1cblxuICAgIC8vIGFsd2F5cyByZW1vdmUgYWZ0ZXIgdXBsb2FkIGZvciB0aGlzIGNhc2VcbiAgICB0aGlzLnVwbG9hZGVyLm9wdGlvbnMucmVtb3ZlQWZ0ZXJVcGxvYWQgPSB0cnVlO1xuXG4gICAgdGhpcy51cGxvYWRlci5vbkFmdGVyQWRkaW5nRmlsZSA9IHRoaXMub25BZnRlckFkZGluZ0ZpbGUuYmluZCh0aGlzKTtcbiAgICB0aGlzLnVwbG9hZGVyLm9uQmVmb3JlVXBsb2FkSXRlbSA9IHRoaXMub25CZWZvcmVVcGxvYWRJdGVtLmJpbmQodGhpcyk7XG4gICAgdGhpcy51cGxvYWRlci5vblByb2dyZXNzQWxsID0gdGhpcy5vblByb2dyZXNzQWxsLmJpbmQodGhpcyk7XG4gICAgdGhpcy51cGxvYWRlci5vblN1Y2Nlc3NJdGVtID0gdGhpcy5vblN1Y2Nlc3NJdGVtLmJpbmQodGhpcyk7XG4gICAgdGhpcy51cGxvYWRlci5vbkVycm9ySXRlbSA9IHRoaXMub25FcnJvckl0ZW0uYmluZCh0aGlzKTtcbiAgfVxuXG4gIG9uQWZ0ZXJBZGRpbmdGaWxlKGZpbGVJdGVtOiBGaWxlSXRlbSk6IHZvaWQge1xuICAgIHRoaXMuX25nWm9uZS5ydW4oKCkgPT4ge1xuICAgICAgdGhpcy5maWxlTmFtZSA9IGZpbGVJdGVtLmZpbGUubmFtZTtcbiAgICAgIHRoaXMuYWZ0ZXJBZGRpbmdGaWxlLmVtaXQoeyBmaWxlSXRlbSB9KTtcbiAgICB9KTtcbiAgfVxuXG4gIG9uQmVmb3JlVXBsb2FkSXRlbShmaWxlSXRlbTogRmlsZUl0ZW0pIHtcbiAgICB0aGlzLl9uZ1pvbmUucnVuKCgpID0+IHtcbiAgICAgIHRoaXMuYmVmb3JlVXBsb2FkSXRlbS5lbWl0KHsgZmlsZUl0ZW0gfSk7XG4gICAgfSk7XG4gIH1cblxuICBvbkVycm9ySXRlbShyZXNwb25zZTogc3RyaW5nLCBzdGF0dXM6IG51bWJlciwgaGVhZGVyczogYW55KTogdm9pZCB7XG4gICAgdGhpcy5lcnJvckl0ZW0uZW1pdCh7IHJlc3BvbnNlLCBzdGF0dXMsIGhlYWRlcnMgfSk7XG4gIH1cblxuICBvblByb2dyZXNzQWxsKHByb2dyZXNzOiBudW1iZXIpOiB2b2lkIHtcbiAgICB0aGlzLl9uZ1pvbmUucnVuKCgpID0+IHtcbiAgICAgIHRoaXMucHJvZ3Jlc3MgPSBwcm9ncmVzcztcbiAgICAgIHRoaXMucHJvZ3Jlc3NBbGwuZW1pdCh7IHByb2dyZXNzIH0pO1xuICAgIH0pO1xuICB9XG5cbiAgb25TdWNjZXNzSXRlbShpdGVtOiBhbnksIHJlc3BvbnNlOiBzdHJpbmcsIHN0YXR1czogbnVtYmVyLCBoZWFkZXJzOiBhbnkpOiB2b2lkIHtcbiAgICB0aGlzLl9uZ1pvbmUucnVuKCgpID0+IHtcbiAgICAgIHRoaXMuX2lzSXRlbVN1Y2Nlc3NmdWwgPSB0cnVlO1xuXG4gICAgICBzZXRUaW1lb3V0KCgpID0+IHtcbiAgICAgICAgdGhpcy5maWxlTmFtZSA9ICcnO1xuICAgICAgICB0aGlzLl9pc0l0ZW1TdWNjZXNzZnVsID0gZmFsc2U7XG4gICAgICB9LCAyNTAwKTtcblxuICAgICAgdGhpcy5zdWNjZXNzSXRlbS5lbWl0KHsgaXRlbSwgcmVzcG9uc2UsIHN0YXR1cywgaGVhZGVycyB9KTtcbiAgICB9KTtcbiAgfVxuXG4gIGZpbGVPdmVyQmFzZShldmVudDogYm9vbGVhbikge1xuICAgIHRoaXMuZmlsZU92ZXJEcm9wem9uZSA9IGV2ZW50O1xuICB9XG5cbiAgY2xlYXJJbnB1dCgpIHtcbiAgICB0aGlzLmZpbGVJbnB1dC5uYXRpdmVFbGVtZW50LnZhbHVlID0gJyc7XG4gIH1cbn1cbiJdfQ==

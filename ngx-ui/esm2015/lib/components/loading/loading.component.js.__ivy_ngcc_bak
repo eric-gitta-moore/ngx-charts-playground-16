@@ -1,0 +1,42 @@
+import { Component, Input, ViewEncapsulation, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { coerceBooleanProperty, coerceNumberProperty } from '@angular/cdk/coercion';
+export class LoadingComponent {
+    constructor(cdr) {
+        this.cdr = cdr;
+        this._visible = false;
+        this._progress = 0;
+    }
+    get visible() {
+        return this._visible;
+    }
+    set visible(visible) {
+        this._visible = coerceBooleanProperty(visible);
+        this.cdr.markForCheck();
+    }
+    get progress() {
+        return this._progress;
+    }
+    set progress(progress) {
+        this._progress = coerceNumberProperty(progress);
+        this.cdr.markForCheck();
+    }
+}
+LoadingComponent.decorators = [
+    { type: Component, args: [{
+                exportAs: 'ngxLoadingBar',
+                selector: 'ngx-loading-bar',
+                template: "<div class=\"ngx-loading-bar--container\" *ngIf=\"visible\">\n  <div class=\"ngx-loading-bar--bar\" [style.width.%]=\"progress\"></div>\n</div>\n",
+                host: { class: 'ngx-loading-bar' },
+                encapsulation: ViewEncapsulation.None,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                styles: [".ngx-loading-bar{display:block}.ngx-loading-bar .ngx-loading-bar--container{position:fixed;margin:0;padding:0;top:0;left:0;right:0;z-index:99999}.ngx-loading-bar .ngx-loading-bar--container .ngx-loading-bar--bar{background-color:#7ab9ff;color:#7ab9ff;opacity:1;z-index:99998;box-shadow:0 0 10px 0;height:2px;transition:all .5s ease-in-out}"]
+            },] }
+];
+LoadingComponent.ctorParameters = () => [
+    { type: ChangeDetectorRef }
+];
+LoadingComponent.propDecorators = {
+    visible: [{ type: Input }],
+    progress: [{ type: Input }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibG9hZGluZy5jb21wb25lbnQuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9jb21wb25lbnRzL2xvYWRpbmcvbG9hZGluZy5jb21wb25lbnQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLFNBQVMsRUFBRSxLQUFLLEVBQUUsaUJBQWlCLEVBQUUsdUJBQXVCLEVBQUUsaUJBQWlCLEVBQUUsTUFBTSxlQUFlLENBQUM7QUFDaEgsT0FBTyxFQUFFLHFCQUFxQixFQUFFLG9CQUFvQixFQUFFLE1BQU0sdUJBQXVCLENBQUM7QUFXcEYsTUFBTSxPQUFPLGdCQUFnQjtJQXNCM0IsWUFBb0IsR0FBc0I7UUFBdEIsUUFBRyxHQUFILEdBQUcsQ0FBbUI7UUFIbEMsYUFBUSxHQUFHLEtBQUssQ0FBQztRQUNqQixjQUFTLEdBQUcsQ0FBQyxDQUFDO0lBRXVCLENBQUM7SUFyQjlDLElBQ0ksT0FBTztRQUNULE9BQU8sSUFBSSxDQUFDLFFBQVEsQ0FBQztJQUN2QixDQUFDO0lBQ0QsSUFBSSxPQUFPLENBQUMsT0FBZ0I7UUFDMUIsSUFBSSxDQUFDLFFBQVEsR0FBRyxxQkFBcUIsQ0FBQyxPQUFPLENBQUMsQ0FBQztRQUMvQyxJQUFJLENBQUMsR0FBRyxDQUFDLFlBQVksRUFBRSxDQUFDO0lBQzFCLENBQUM7SUFFRCxJQUNJLFFBQVE7UUFDVixPQUFPLElBQUksQ0FBQyxTQUFTLENBQUM7SUFDeEIsQ0FBQztJQUNELElBQUksUUFBUSxDQUFDLFFBQWdCO1FBQzNCLElBQUksQ0FBQyxTQUFTLEdBQUcsb0JBQW9CLENBQUMsUUFBUSxDQUFDLENBQUM7UUFDaEQsSUFBSSxDQUFDLEdBQUcsQ0FBQyxZQUFZLEVBQUUsQ0FBQztJQUMxQixDQUFDOzs7WUExQkYsU0FBUyxTQUFDO2dCQUNULFFBQVEsRUFBRSxlQUFlO2dCQUN6QixRQUFRLEVBQUUsaUJBQWlCO2dCQUMzQiw2SkFBdUM7Z0JBRXZDLElBQUksRUFBRSxFQUFFLEtBQUssRUFBRSxpQkFBaUIsRUFBRTtnQkFDbEMsYUFBYSxFQUFFLGlCQUFpQixDQUFDLElBQUk7Z0JBQ3JDLGVBQWUsRUFBRSx1QkFBdUIsQ0FBQyxNQUFNOzthQUNoRDs7O1lBWHNFLGlCQUFpQjs7O3NCQWFyRixLQUFLO3VCQVNMLEtBQUsiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBDb21wb25lbnQsIElucHV0LCBWaWV3RW5jYXBzdWxhdGlvbiwgQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3ksIENoYW5nZURldGVjdG9yUmVmIH0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5pbXBvcnQgeyBjb2VyY2VCb29sZWFuUHJvcGVydHksIGNvZXJjZU51bWJlclByb3BlcnR5IH0gZnJvbSAnQGFuZ3VsYXIvY2RrL2NvZXJjaW9uJztcblxuQENvbXBvbmVudCh7XG4gIGV4cG9ydEFzOiAnbmd4TG9hZGluZ0JhcicsXG4gIHNlbGVjdG9yOiAnbmd4LWxvYWRpbmctYmFyJyxcbiAgdGVtcGxhdGVVcmw6ICcuL2xvYWRpbmcuY29tcG9uZW50Lmh0bWwnLFxuICBzdHlsZVVybHM6IFsnLi9sb2FkaW5nLmNvbXBvbmVudC5zY3NzJ10sXG4gIGhvc3Q6IHsgY2xhc3M6ICduZ3gtbG9hZGluZy1iYXInIH0sXG4gIGVuY2Fwc3VsYXRpb246IFZpZXdFbmNhcHN1bGF0aW9uLk5vbmUsXG4gIGNoYW5nZURldGVjdGlvbjogQ2hhbmdlRGV0ZWN0aW9uU3RyYXRlZ3kuT25QdXNoXG59KVxuZXhwb3J0IGNsYXNzIExvYWRpbmdDb21wb25lbnQge1xuICBASW5wdXQoKVxuICBnZXQgdmlzaWJsZSgpIHtcbiAgICByZXR1cm4gdGhpcy5fdmlzaWJsZTtcbiAgfVxuICBzZXQgdmlzaWJsZSh2aXNpYmxlOiBib29sZWFuKSB7XG4gICAgdGhpcy5fdmlzaWJsZSA9IGNvZXJjZUJvb2xlYW5Qcm9wZXJ0eSh2aXNpYmxlKTtcbiAgICB0aGlzLmNkci5tYXJrRm9yQ2hlY2soKTtcbiAgfVxuXG4gIEBJbnB1dCgpXG4gIGdldCBwcm9ncmVzcygpIHtcbiAgICByZXR1cm4gdGhpcy5fcHJvZ3Jlc3M7XG4gIH1cbiAgc2V0IHByb2dyZXNzKHByb2dyZXNzOiBudW1iZXIpIHtcbiAgICB0aGlzLl9wcm9ncmVzcyA9IGNvZXJjZU51bWJlclByb3BlcnR5KHByb2dyZXNzKTtcbiAgICB0aGlzLmNkci5tYXJrRm9yQ2hlY2soKTtcbiAgfVxuXG4gIHByaXZhdGUgX3Zpc2libGUgPSBmYWxzZTtcbiAgcHJpdmF0ZSBfcHJvZ3Jlc3MgPSAwO1xuXG4gIGNvbnN0cnVjdG9yKHByaXZhdGUgY2RyOiBDaGFuZ2VEZXRlY3RvclJlZikge31cbn1cbiJdfQ==

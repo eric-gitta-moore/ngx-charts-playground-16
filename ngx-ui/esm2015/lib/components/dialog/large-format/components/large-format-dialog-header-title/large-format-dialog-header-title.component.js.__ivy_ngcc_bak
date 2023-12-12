@@ -1,0 +1,36 @@
+import { ChangeDetectionStrategy, Component, HostBinding, Input, ViewEncapsulation } from '@angular/core';
+export class LargeFormatDialogHeaderTitleComponent {
+    constructor() {
+        this.dialogTitle = '';
+        this.hostClass = true;
+    }
+}
+LargeFormatDialogHeaderTitleComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'ngx-large-format-dialog-header-title',
+                template: `
+    <div
+      class="ngx-large-format-dialog-header-title__text-wrapper"
+      [ngClass]="
+        !!dialogSubtitle
+          ? ['ngx-large-format-dialog-header-title__text-wrapper--title']
+          : ['ngx-large-format-dialog-header-title__text-wrapper--title-center']
+      "
+    >
+      <h1>{{ dialogTitle }}</h1>
+    </div>
+    <div *ngIf="dialogSubtitle" class="ngx-large-format-dialog-header-title__text-wrapper">
+      <h4>{{ dialogSubtitle }}</h4>
+    </div>
+  `,
+                encapsulation: ViewEncapsulation.None,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                styles: [".ngx-large-format-dialog-header-title{display:flex;flex-direction:column;grid-gap:.5rem;gap:.5rem;flex:0 0 20%;max-width:50%;height:100%;justify-content:center}.ngx-large-format-dialog-header-title__text-wrapper{height:100%;display:flex}.ngx-large-format-dialog-header-title__text-wrapper--title{align-items:flex-end}.ngx-large-format-dialog-header-title__text-wrapper--title-center{align-items:center}.ngx-large-format-dialog-header-title__text-wrapper h1,.ngx-large-format-dialog-header-title__text-wrapper h4{margin:0;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.ngx-large-format-dialog-header-title__text-wrapper h1{color:#fff;font-size:1.75rem;line-height:2rem}.ngx-large-format-dialog-header-title__text-wrapper h4{color:#a0aabe;font-size:1rem;line-height:.75rem}"]
+            },] }
+];
+LargeFormatDialogHeaderTitleComponent.propDecorators = {
+    dialogTitle: [{ type: Input }],
+    dialogSubtitle: [{ type: Input }],
+    hostClass: [{ type: HostBinding, args: ['class.ngx-large-format-dialog-header-title',] }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibGFyZ2UtZm9ybWF0LWRpYWxvZy1oZWFkZXItdGl0bGUuY29tcG9uZW50LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvc3dpbWxhbmUvbmd4LXVpL3NyYy9saWIvY29tcG9uZW50cy9kaWFsb2cvbGFyZ2UtZm9ybWF0L2NvbXBvbmVudHMvbGFyZ2UtZm9ybWF0LWRpYWxvZy1oZWFkZXItdGl0bGUvbGFyZ2UtZm9ybWF0LWRpYWxvZy1oZWFkZXItdGl0bGUuY29tcG9uZW50LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBRSx1QkFBdUIsRUFBRSxTQUFTLEVBQUUsV0FBVyxFQUFFLEtBQUssRUFBRSxpQkFBaUIsRUFBRSxNQUFNLGVBQWUsQ0FBQztBQXVCMUcsTUFBTSxPQUFPLHFDQUFxQztJQXJCbEQ7UUFzQlcsZ0JBQVcsR0FBRyxFQUFFLENBQUM7UUFHaUMsY0FBUyxHQUFHLElBQUksQ0FBQztJQUM5RSxDQUFDOzs7WUExQkEsU0FBUyxTQUFDO2dCQUNULFFBQVEsRUFBRSxzQ0FBc0M7Z0JBQ2hELFFBQVEsRUFBRTs7Ozs7Ozs7Ozs7Ozs7R0FjVDtnQkFFRCxhQUFhLEVBQUUsaUJBQWlCLENBQUMsSUFBSTtnQkFDckMsZUFBZSxFQUFFLHVCQUF1QixDQUFDLE1BQU07O2FBQ2hEOzs7MEJBRUUsS0FBSzs2QkFDTCxLQUFLO3dCQUVMLFdBQVcsU0FBQyw0Q0FBNEMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBDaGFuZ2VEZXRlY3Rpb25TdHJhdGVneSwgQ29tcG9uZW50LCBIb3N0QmluZGluZywgSW5wdXQsIFZpZXdFbmNhcHN1bGF0aW9uIH0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5cbkBDb21wb25lbnQoe1xuICBzZWxlY3RvcjogJ25neC1sYXJnZS1mb3JtYXQtZGlhbG9nLWhlYWRlci10aXRsZScsXG4gIHRlbXBsYXRlOiBgXG4gICAgPGRpdlxuICAgICAgY2xhc3M9XCJuZ3gtbGFyZ2UtZm9ybWF0LWRpYWxvZy1oZWFkZXItdGl0bGVfX3RleHQtd3JhcHBlclwiXG4gICAgICBbbmdDbGFzc109XCJcbiAgICAgICAgISFkaWFsb2dTdWJ0aXRsZVxuICAgICAgICAgID8gWyduZ3gtbGFyZ2UtZm9ybWF0LWRpYWxvZy1oZWFkZXItdGl0bGVfX3RleHQtd3JhcHBlci0tdGl0bGUnXVxuICAgICAgICAgIDogWyduZ3gtbGFyZ2UtZm9ybWF0LWRpYWxvZy1oZWFkZXItdGl0bGVfX3RleHQtd3JhcHBlci0tdGl0bGUtY2VudGVyJ11cbiAgICAgIFwiXG4gICAgPlxuICAgICAgPGgxPnt7IGRpYWxvZ1RpdGxlIH19PC9oMT5cbiAgICA8L2Rpdj5cbiAgICA8ZGl2ICpuZ0lmPVwiZGlhbG9nU3VidGl0bGVcIiBjbGFzcz1cIm5neC1sYXJnZS1mb3JtYXQtZGlhbG9nLWhlYWRlci10aXRsZV9fdGV4dC13cmFwcGVyXCI+XG4gICAgICA8aDQ+e3sgZGlhbG9nU3VidGl0bGUgfX08L2g0PlxuICAgIDwvZGl2PlxuICBgLFxuICBzdHlsZVVybHM6IFsnLi9sYXJnZS1mb3JtYXQtZGlhbG9nLWhlYWRlci10aXRsZS5jb21wb25lbnQuc2NzcyddLFxuICBlbmNhcHN1bGF0aW9uOiBWaWV3RW5jYXBzdWxhdGlvbi5Ob25lLFxuICBjaGFuZ2VEZXRlY3Rpb246IENoYW5nZURldGVjdGlvblN0cmF0ZWd5Lk9uUHVzaFxufSlcbmV4cG9ydCBjbGFzcyBMYXJnZUZvcm1hdERpYWxvZ0hlYWRlclRpdGxlQ29tcG9uZW50IHtcbiAgQElucHV0KCkgZGlhbG9nVGl0bGUgPSAnJztcbiAgQElucHV0KCkgZGlhbG9nU3VidGl0bGU/OiBzdHJpbmc7XG5cbiAgQEhvc3RCaW5kaW5nKCdjbGFzcy5uZ3gtbGFyZ2UtZm9ybWF0LWRpYWxvZy1oZWFkZXItdGl0bGUnKSBob3N0Q2xhc3MgPSB0cnVlO1xufVxuIl19

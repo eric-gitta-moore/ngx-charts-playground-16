@@ -1,0 +1,60 @@
+import { Directive, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { coerceNumberProperty, coerceBooleanProperty } from '@angular/cdk/coercion';
+export class LongPressDirective {
+    constructor() {
+        this.longPressStart = new EventEmitter();
+        this.longPressFinish = new EventEmitter();
+        this.longPressCancel = new EventEmitter();
+        this._duration = 3000;
+        this._disabled = false;
+        this._pressed = false;
+    }
+    get duration() {
+        return this._duration;
+    }
+    set duration(duration) {
+        this._duration = coerceNumberProperty(duration, 3000);
+    }
+    get disabled() {
+        return this._disabled;
+    }
+    set disabled(disabled) {
+        this._disabled = coerceBooleanProperty(disabled);
+    }
+    onPress(event) {
+        if (this.disabled) {
+            event.stopPropagation();
+            event.preventDefault();
+            return;
+        }
+        this._pressed = true;
+        this.longPressStart.emit(true);
+        this._pressTimeout = setTimeout(() => {
+            /* istanbul ignore else */
+            if (this._pressed) {
+                this._pressed = false;
+                this.longPressFinish.emit(true);
+            }
+        }, this.duration);
+    }
+    onRelease() {
+        this._pressed = false;
+        clearTimeout(this._pressTimeout);
+        this.longPressCancel.emit(true);
+    }
+}
+LongPressDirective.decorators = [
+    { type: Directive, args: [{
+                selector: '[long-press]'
+            },] }
+];
+LongPressDirective.propDecorators = {
+    duration: [{ type: Input }],
+    disabled: [{ type: Input }],
+    longPressStart: [{ type: Output }],
+    longPressFinish: [{ type: Output }],
+    longPressCancel: [{ type: Output }],
+    onPress: [{ type: HostListener, args: ['mousedown', ['$event'],] }],
+    onRelease: [{ type: HostListener, args: ['mouseout',] }, { type: HostListener, args: ['mouseup',] }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibG9uZy1wcmVzcy5kaXJlY3RpdmUuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9zd2ltbGFuZS9uZ3gtdWkvc3JjL2xpYi9kaXJlY3RpdmVzL2xvbmctcHJlc3MvbG9uZy1wcmVzcy5kaXJlY3RpdmUudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLFNBQVMsRUFBRSxLQUFLLEVBQUUsTUFBTSxFQUFFLFlBQVksRUFBRSxZQUFZLEVBQUUsTUFBTSxlQUFlLENBQUM7QUFDckYsT0FBTyxFQUFFLG9CQUFvQixFQUFFLHFCQUFxQixFQUFFLE1BQU0sdUJBQXVCLENBQUM7QUFLcEYsTUFBTSxPQUFPLGtCQUFrQjtJQUgvQjtRQW9CWSxtQkFBYyxHQUFHLElBQUksWUFBWSxFQUFXLENBQUM7UUFDN0Msb0JBQWUsR0FBRyxJQUFJLFlBQVksRUFBVyxDQUFDO1FBQzlDLG9CQUFlLEdBQUcsSUFBSSxZQUFZLEVBQVcsQ0FBQztRQUVoRCxjQUFTLEdBQUcsSUFBSSxDQUFDO1FBQ2pCLGNBQVMsR0FBRyxLQUFLLENBQUM7UUFDbEIsYUFBUSxHQUFHLEtBQUssQ0FBQztJQTZCM0IsQ0FBQztJQW5EQyxJQUNJLFFBQVE7UUFDVixPQUFPLElBQUksQ0FBQyxTQUFTLENBQUM7SUFDeEIsQ0FBQztJQUNELElBQUksUUFBUSxDQUFDLFFBQWdCO1FBQzNCLElBQUksQ0FBQyxTQUFTLEdBQUcsb0JBQW9CLENBQUMsUUFBUSxFQUFFLElBQUksQ0FBQyxDQUFDO0lBQ3hELENBQUM7SUFFRCxJQUNJLFFBQVE7UUFDVixPQUFPLElBQUksQ0FBQyxTQUFTLENBQUM7SUFDeEIsQ0FBQztJQUNELElBQUksUUFBUSxDQUFDLFFBQWlCO1FBQzVCLElBQUksQ0FBQyxTQUFTLEdBQUcscUJBQXFCLENBQUMsUUFBUSxDQUFDLENBQUM7SUFDbkQsQ0FBQztJQVlELE9BQU8sQ0FBQyxLQUFpQjtRQUN2QixJQUFJLElBQUksQ0FBQyxRQUFRLEVBQUU7WUFDakIsS0FBSyxDQUFDLGVBQWUsRUFBRSxDQUFDO1lBQ3hCLEtBQUssQ0FBQyxjQUFjLEVBQUUsQ0FBQztZQUN2QixPQUFPO1NBQ1I7UUFFRCxJQUFJLENBQUMsUUFBUSxHQUFHLElBQUksQ0FBQztRQUNyQixJQUFJLENBQUMsY0FBYyxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsQ0FBQztRQUMvQixJQUFJLENBQUMsYUFBYSxHQUFHLFVBQVUsQ0FBQyxHQUFHLEVBQUU7WUFDbkMsMEJBQTBCO1lBQzFCLElBQUksSUFBSSxDQUFDLFFBQVEsRUFBRTtnQkFDakIsSUFBSSxDQUFDLFFBQVEsR0FBRyxLQUFLLENBQUM7Z0JBQ3RCLElBQUksQ0FBQyxlQUFlLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxDQUFDO2FBQ2pDO1FBQ0gsQ0FBQyxFQUFFLElBQUksQ0FBQyxRQUFRLENBQUMsQ0FBQztJQUNwQixDQUFDO0lBSUQsU0FBUztRQUNQLElBQUksQ0FBQyxRQUFRLEdBQUcsS0FBSyxDQUFDO1FBQ3RCLFlBQVksQ0FBQyxJQUFJLENBQUMsYUFBYSxDQUFDLENBQUM7UUFDakMsSUFBSSxDQUFDLGVBQWUsQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFDLENBQUM7SUFDbEMsQ0FBQzs7O1lBdERGLFNBQVMsU0FBQztnQkFDVCxRQUFRLEVBQUUsY0FBYzthQUN6Qjs7O3VCQUVFLEtBQUs7dUJBUUwsS0FBSzs2QkFRTCxNQUFNOzhCQUNOLE1BQU07OEJBQ04sTUFBTTtzQkFPTixZQUFZLFNBQUMsV0FBVyxFQUFFLENBQUMsUUFBUSxDQUFDO3dCQW1CcEMsWUFBWSxTQUFDLFVBQVUsY0FDdkIsWUFBWSxTQUFDLFNBQVMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBEaXJlY3RpdmUsIElucHV0LCBPdXRwdXQsIEV2ZW50RW1pdHRlciwgSG9zdExpc3RlbmVyIH0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5pbXBvcnQgeyBjb2VyY2VOdW1iZXJQcm9wZXJ0eSwgY29lcmNlQm9vbGVhblByb3BlcnR5IH0gZnJvbSAnQGFuZ3VsYXIvY2RrL2NvZXJjaW9uJztcblxuQERpcmVjdGl2ZSh7XG4gIHNlbGVjdG9yOiAnW2xvbmctcHJlc3NdJ1xufSlcbmV4cG9ydCBjbGFzcyBMb25nUHJlc3NEaXJlY3RpdmUge1xuICBASW5wdXQoKVxuICBnZXQgZHVyYXRpb24oKTogbnVtYmVyIHtcbiAgICByZXR1cm4gdGhpcy5fZHVyYXRpb247XG4gIH1cbiAgc2V0IGR1cmF0aW9uKGR1cmF0aW9uOiBudW1iZXIpIHtcbiAgICB0aGlzLl9kdXJhdGlvbiA9IGNvZXJjZU51bWJlclByb3BlcnR5KGR1cmF0aW9uLCAzMDAwKTtcbiAgfVxuXG4gIEBJbnB1dCgpXG4gIGdldCBkaXNhYmxlZCgpOiBib29sZWFuIHtcbiAgICByZXR1cm4gdGhpcy5fZGlzYWJsZWQ7XG4gIH1cbiAgc2V0IGRpc2FibGVkKGRpc2FibGVkOiBib29sZWFuKSB7XG4gICAgdGhpcy5fZGlzYWJsZWQgPSBjb2VyY2VCb29sZWFuUHJvcGVydHkoZGlzYWJsZWQpO1xuICB9XG5cbiAgQE91dHB1dCgpIGxvbmdQcmVzc1N0YXJ0ID0gbmV3IEV2ZW50RW1pdHRlcjxib29sZWFuPigpO1xuICBAT3V0cHV0KCkgbG9uZ1ByZXNzRmluaXNoID0gbmV3IEV2ZW50RW1pdHRlcjxib29sZWFuPigpO1xuICBAT3V0cHV0KCkgbG9uZ1ByZXNzQ2FuY2VsID0gbmV3IEV2ZW50RW1pdHRlcjxib29sZWFuPigpO1xuXG4gIHByaXZhdGUgX2R1cmF0aW9uID0gMzAwMDtcbiAgcHJpdmF0ZSBfZGlzYWJsZWQgPSBmYWxzZTtcbiAgcHJpdmF0ZSBfcHJlc3NlZCA9IGZhbHNlO1xuICBwcml2YXRlIF9wcmVzc1RpbWVvdXQ6IGFueTtcblxuICBASG9zdExpc3RlbmVyKCdtb3VzZWRvd24nLCBbJyRldmVudCddKVxuICBvblByZXNzKGV2ZW50OiBNb3VzZUV2ZW50KTogdm9pZCB7XG4gICAgaWYgKHRoaXMuZGlzYWJsZWQpIHtcbiAgICAgIGV2ZW50LnN0b3BQcm9wYWdhdGlvbigpO1xuICAgICAgZXZlbnQucHJldmVudERlZmF1bHQoKTtcbiAgICAgIHJldHVybjtcbiAgICB9XG5cbiAgICB0aGlzLl9wcmVzc2VkID0gdHJ1ZTtcbiAgICB0aGlzLmxvbmdQcmVzc1N0YXJ0LmVtaXQodHJ1ZSk7XG4gICAgdGhpcy5fcHJlc3NUaW1lb3V0ID0gc2V0VGltZW91dCgoKSA9PiB7XG4gICAgICAvKiBpc3RhbmJ1bCBpZ25vcmUgZWxzZSAqL1xuICAgICAgaWYgKHRoaXMuX3ByZXNzZWQpIHtcbiAgICAgICAgdGhpcy5fcHJlc3NlZCA9IGZhbHNlO1xuICAgICAgICB0aGlzLmxvbmdQcmVzc0ZpbmlzaC5lbWl0KHRydWUpO1xuICAgICAgfVxuICAgIH0sIHRoaXMuZHVyYXRpb24pO1xuICB9XG5cbiAgQEhvc3RMaXN0ZW5lcignbW91c2VvdXQnKVxuICBASG9zdExpc3RlbmVyKCdtb3VzZXVwJylcbiAgb25SZWxlYXNlKCk6IHZvaWQge1xuICAgIHRoaXMuX3ByZXNzZWQgPSBmYWxzZTtcbiAgICBjbGVhclRpbWVvdXQodGhpcy5fcHJlc3NUaW1lb3V0KTtcbiAgICB0aGlzLmxvbmdQcmVzc0NhbmNlbC5lbWl0KHRydWUpO1xuICB9XG59XG4iXX0=

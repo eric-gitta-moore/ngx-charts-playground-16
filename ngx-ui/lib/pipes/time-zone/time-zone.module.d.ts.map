@@ -1,0 +1,1 @@
+{"version":3,"file":"time-zone.module.d.ts","sources":["time-zone.module.d.ts"],"names":[],"mappings":";;;AAAA;;;;AACA","sourcesContent":["export declare class TimeZoneModule {\n}\n"]}

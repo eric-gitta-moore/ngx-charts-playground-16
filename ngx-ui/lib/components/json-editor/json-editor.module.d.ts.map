@@ -1,0 +1,1 @@
+{"version":3,"file":"json-editor.module.d.ts","sources":["json-editor.module.d.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;;;;AACA","sourcesContent":["export declare class JsonEditorModule {\n}\n"]}

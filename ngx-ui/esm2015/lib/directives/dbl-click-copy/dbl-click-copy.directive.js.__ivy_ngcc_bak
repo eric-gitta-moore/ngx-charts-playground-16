@@ -1,0 +1,34 @@
+import { Directive, Output, EventEmitter, HostListener, ElementRef } from '@angular/core';
+export class DblClickCopyDirective {
+    constructor(element) {
+        this.element = element;
+        // eslint-disable-next-line @angular-eslint/no-output-on-prefix
+        this.onCopy = new EventEmitter();
+    }
+    onDblClick() {
+        const selection = getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(this.element.nativeElement);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand('copy');
+        this.onCopy.emit(range);
+    }
+}
+DblClickCopyDirective.decorators = [
+    { type: Directive, args: [{
+                selector: '[dbl-click-copy]',
+                // eslint-disable-next-line @angular-eslint/no-host-metadata-property
+                host: {
+                    title: 'Double click to copy to clipboard'
+                }
+            },] }
+];
+DblClickCopyDirective.ctorParameters = () => [
+    { type: ElementRef }
+];
+DblClickCopyDirective.propDecorators = {
+    onCopy: [{ type: Output }],
+    onDblClick: [{ type: HostListener, args: ['dblclick',] }]
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZGJsLWNsaWNrLWNvcHkuZGlyZWN0aXZlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvc3dpbWxhbmUvbmd4LXVpL3NyYy9saWIvZGlyZWN0aXZlcy9kYmwtY2xpY2stY29weS9kYmwtY2xpY2stY29weS5kaXJlY3RpdmUudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUFFLFNBQVMsRUFBRSxNQUFNLEVBQUUsWUFBWSxFQUFFLFlBQVksRUFBRSxVQUFVLEVBQUUsTUFBTSxlQUFlLENBQUM7QUFTMUYsTUFBTSxPQUFPLHFCQUFxQjtJQUloQyxZQUE2QixPQUFnQztRQUFoQyxZQUFPLEdBQVAsT0FBTyxDQUF5QjtRQUg3RCwrREFBK0Q7UUFDckQsV0FBTSxHQUFHLElBQUksWUFBWSxFQUFTLENBQUM7SUFFbUIsQ0FBQztJQUdqRSxVQUFVO1FBQ1IsTUFBTSxTQUFTLEdBQUcsWUFBWSxFQUFFLENBQUM7UUFDakMsTUFBTSxLQUFLLEdBQUcsUUFBUSxDQUFDLFdBQVcsRUFBRSxDQUFDO1FBRXJDLEtBQUssQ0FBQyxrQkFBa0IsQ0FBQyxJQUFJLENBQUMsT0FBTyxDQUFDLGFBQWEsQ0FBQyxDQUFDO1FBQ3JELFNBQVMsQ0FBQyxlQUFlLEVBQUUsQ0FBQztRQUM1QixTQUFTLENBQUMsUUFBUSxDQUFDLEtBQUssQ0FBQyxDQUFDO1FBQzFCLFFBQVEsQ0FBQyxXQUFXLENBQUMsTUFBTSxDQUFDLENBQUM7UUFFN0IsSUFBSSxDQUFDLE1BQU0sQ0FBQyxJQUFJLENBQUMsS0FBSyxDQUFDLENBQUM7SUFDMUIsQ0FBQzs7O1lBeEJGLFNBQVMsU0FBQztnQkFDVCxRQUFRLEVBQUUsa0JBQWtCO2dCQUM1QixxRUFBcUU7Z0JBQ3JFLElBQUksRUFBRTtvQkFDSixLQUFLLEVBQUUsbUNBQW1DO2lCQUMzQzthQUNGOzs7WUFSdUQsVUFBVTs7O3FCQVcvRCxNQUFNO3lCQUlOLFlBQVksU0FBQyxVQUFVIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgRGlyZWN0aXZlLCBPdXRwdXQsIEV2ZW50RW1pdHRlciwgSG9zdExpc3RlbmVyLCBFbGVtZW50UmVmIH0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5cbkBEaXJlY3RpdmUoe1xuICBzZWxlY3RvcjogJ1tkYmwtY2xpY2stY29weV0nLFxuICAvLyBlc2xpbnQtZGlzYWJsZS1uZXh0LWxpbmUgQGFuZ3VsYXItZXNsaW50L25vLWhvc3QtbWV0YWRhdGEtcHJvcGVydHlcbiAgaG9zdDoge1xuICAgIHRpdGxlOiAnRG91YmxlIGNsaWNrIHRvIGNvcHkgdG8gY2xpcGJvYXJkJ1xuICB9XG59KVxuZXhwb3J0IGNsYXNzIERibENsaWNrQ29weURpcmVjdGl2ZSB7XG4gIC8vIGVzbGludC1kaXNhYmxlLW5leHQtbGluZSBAYW5ndWxhci1lc2xpbnQvbm8tb3V0cHV0LW9uLXByZWZpeFxuICBAT3V0cHV0KCkgb25Db3B5ID0gbmV3IEV2ZW50RW1pdHRlcjxSYW5nZT4oKTtcblxuICBjb25zdHJ1Y3Rvcihwcml2YXRlIHJlYWRvbmx5IGVsZW1lbnQ6IEVsZW1lbnRSZWY8SFRNTEVsZW1lbnQ+KSB7fVxuXG4gIEBIb3N0TGlzdGVuZXIoJ2RibGNsaWNrJylcbiAgb25EYmxDbGljaygpOiB2b2lkIHtcbiAgICBjb25zdCBzZWxlY3Rpb24gPSBnZXRTZWxlY3Rpb24oKTtcbiAgICBjb25zdCByYW5nZSA9IGRvY3VtZW50LmNyZWF0ZVJhbmdlKCk7XG5cbiAgICByYW5nZS5zZWxlY3ROb2RlQ29udGVudHModGhpcy5lbGVtZW50Lm5hdGl2ZUVsZW1lbnQpO1xuICAgIHNlbGVjdGlvbi5yZW1vdmVBbGxSYW5nZXMoKTtcbiAgICBzZWxlY3Rpb24uYWRkUmFuZ2UocmFuZ2UpO1xuICAgIGRvY3VtZW50LmV4ZWNDb21tYW5kKCdjb3B5Jyk7XG5cbiAgICB0aGlzLm9uQ29weS5lbWl0KHJhbmdlKTtcbiAgfVxufVxuIl19
